@@ -2,7 +2,7 @@ import { STUDENT } from "./types";
 
 export const fetchStudent = () => (dispatch) => {
   dispatch({ type: STUDENT.FETCH });
-  return fetch("/api/students")
+  return fetch("/students/one")
     .then((res) => res.json())
     .then((student) => {
       dispatch({ type: STUDENT.FETCH_SUCCESS, student: student });
