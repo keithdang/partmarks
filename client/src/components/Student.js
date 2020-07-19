@@ -5,7 +5,7 @@ import "../App.css";
 
 class Student extends Component {
   componentDidMount() {
-    this.props.fetchStudent();
+    this.props.fetchStudent(1);
   }
 
   showStudents = () => {
@@ -22,7 +22,7 @@ class Student extends Component {
     );
   };
   render() {
-    const { student } = this.props;
+    const { student, fetchStudent } = this.props;
     return (
       <div className="App">
         {student.id !== "" ? (
@@ -30,7 +30,7 @@ class Student extends Component {
         ) : (
           <div>
             <h1>No Students :(</h1>
-            <button className="more" onClick={this.props.fetchStudent}>
+            <button className="more" onClick={() => fetchStudent(1)}>
               Try Again?
             </button>
           </div>

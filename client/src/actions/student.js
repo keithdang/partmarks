@@ -1,11 +1,10 @@
+import axios from "axios";
 import { STUDENT } from "./types";
 
-export const fetchStudent = () => (dispatch) => {
+export const fetchStudent = (value) => async (dispatch) => {
   dispatch({ type: STUDENT.FETCH });
-  return fetch("/students/one")
-    .then((res) => res.json())
-    .then((student) => {
-      dispatch({ type: STUDENT.FETCH_SUCCESS, student: student });
-    })
-    .catch((error) => console.log("error", error));
+  const res = await axios.get("/students/one", {
+    params: { id: value },
+  });
+  dispatch({ type: STUDENT.FETCH_SUCCESS, student: res.data });
 };

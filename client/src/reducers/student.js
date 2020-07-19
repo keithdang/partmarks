@@ -4,7 +4,6 @@ import fetchStates from "./fetchStates";
 const DEFAULT_STUDENT = { id: "", firstName: "" };
 
 const student = (state = DEFAULT_STUDENT, action) => {
-  console.log(action);
   switch (action.type) {
     case STUDENT.FETCH:
       return { ...state, status: fetchStates.fetching };
