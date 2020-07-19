@@ -1,12 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchStudent } from "../actions/student";
+import { fetchStudent, fetchStudentList } from "../actions/student";
 import "../App.css";
 
 class Student extends Component {
   componentDidMount() {
     this.props.fetchStudent(1);
+    this.props.fetchStudentList();
   }
+
+  showStudentList = () => {
+    const { studentList } = this.props;
+    return (
+      <div>
+        <h1>Student</h1>
+        <ul className="students">
+          {studentList.list.map((student) => (
+            <li key={student.id}>
+              {student.id}:{student.firstName}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   showStudents = () => {
     const { student } = this.props;
@@ -21,8 +38,8 @@ class Student extends Component {
       </div>
     );
   };
-  render() {
-    const { student, fetchStudent } = this.props;
+  studentUI = () => {
+    const { student, fetchStudent, studentList } = this.props;
     return (
       <div className="App">
         {student.id !== "" ? (
@@ -37,9 +54,34 @@ class Student extends Component {
         )}
       </div>
     );
+  };
+
+  studentListUI = () => {
+    const { student, fetchStudent, studentList } = this.props;
+    console.log(studentList.list !== undefined);
+    return (
+      <div className="App">
+        {studentList.list !== undefined ? (
+          this.showStudentList()
+        ) : (
+          <div>
+            <h1>No Students :(</h1>
+            <button className="more" onClick={() => fetchStudent(1)}>
+              Try Again?
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+  render() {
+    const { student, fetchStudent, studentList } = this.props;
+    // return this.studentUI();
+    return this.studentListUI();
   }
 }
 
-export default connect(({ student }) => ({ student }), { fetchStudent })(
-  Student
-);
+export default connect(
+  ({ student, studentList }) => ({ student, studentList }),
+  { fetchStudent, fetchStudentList }
+)(Student);

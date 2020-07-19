@@ -1,5 +1,5 @@
 import axios from "axios";
-import { STUDENT } from "./types";
+import { STUDENT, STUDENT_LIST } from "./types";
 
 export const fetchStudent = (value) => async (dispatch) => {
   dispatch({ type: STUDENT.FETCH });
@@ -7,4 +7,10 @@ export const fetchStudent = (value) => async (dispatch) => {
     params: { id: value },
   });
   dispatch({ type: STUDENT.FETCH_SUCCESS, student: res.data });
+};
+
+export const fetchStudentList = () => async (dispatch) => {
+  dispatch({ type: STUDENT_LIST.FETCH });
+  const res = await axios.get("/students/list");
+  dispatch({ type: STUDENT_LIST.FETCH_SUCCESS, studentList: res.data });
 };
