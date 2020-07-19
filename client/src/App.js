@@ -1,27 +1,16 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchStudent } from "./actions/student";
 import "./App.css";
+import student from "./reducers/student";
 
 class App extends Component {
-  // Initialize state
-  state = { passwords: [], student: {} };
-
   componentDidMount() {
-    this.getStudent();
+    this.props.fetchStudent();
   }
 
-  getStudent = () => {
-    console.log("button");
-    fetch("/api/students")
-      .then((res) => res.json())
-      .then((student) => {
-        this.setState(student);
-        console.log("student", student);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
   showStudents = () => {
-    const { student } = this.state;
+    const { student } = this.props;
     return (
       <div>
         <h1>Student</h1>
@@ -34,16 +23,16 @@ class App extends Component {
     );
   };
   render() {
-    const { student } = this.state;
-
+    const { student } = this.props;
+    console.log("render", student);
     return (
       <div className="App">
-        {Object.keys(student).length ? (
+        {student.id !== "" ? (
           this.showStudents()
         ) : (
           <div>
             <h1>No Students :(</h1>
-            <button className="more" onClick={this.getStudent}>
+            <button className="more" onClick={this.props.fetchStudent}>
               Try Again?
             </button>
           </div>
@@ -53,4 +42,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(({ student }) => ({ student }), { fetchStudent })(App);
