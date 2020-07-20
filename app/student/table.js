@@ -28,6 +28,21 @@ class StudentTable {
       });
     });
   }
+
+  static addStudent() {
+    const firstName = "Nina";
+    console.log("addStudent");
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `INSERT INTO students ("firstName") VALUES ($1)`,
+        [firstName],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve();
+        }
+      );
+    });
+  }
 }
 
 module.exports = StudentTable;

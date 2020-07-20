@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchStudent, fetchStudentList } from "../actions/student";
+import { fetchStudent, fetchStudentList, addStudent } from "../actions/student";
 import "../App.css";
 
 class Student extends Component {
   componentDidMount() {
-    this.props.fetchStudent(1);
+    // this.props.fetchStudent(1);
     this.props.fetchStudentList();
+    // this.props.addStudent();
   }
 
   showStudentList = () => {
     const { studentList } = this.props;
     return (
       <div>
-        <h1>Student</h1>
+        <h1>Students</h1>
         <ul className="students">
           {studentList.list.map((student) => (
             <li key={student.id}>
@@ -58,7 +59,6 @@ class Student extends Component {
 
   studentListUI = () => {
     const { student, fetchStudent, studentList } = this.props;
-    console.log(studentList.list !== undefined);
     return (
       <div className="App">
         {studentList.list !== undefined ? (
@@ -83,5 +83,5 @@ class Student extends Component {
 
 export default connect(
   ({ student, studentList }) => ({ student, studentList }),
-  { fetchStudent, fetchStudentList }
+  { fetchStudent, fetchStudentList, addStudent }
 )(Student);

@@ -3,7 +3,7 @@ import fetchStates from "./fetchStates";
 
 const DEFAULT_STUDENT_LIST = {};
 
-const student = (state = DEFAULT_STUDENT_LIST, action) => {
+const studentList = (state = DEFAULT_STUDENT_LIST, action) => {
   switch (action.type) {
     case STUDENT_LIST.FETCH:
       return { ...state, status: fetchStates.fetching };
@@ -20,4 +20,4 @@ const student = (state = DEFAULT_STUDENT_LIST, action) => {
   }
 };
 
-export default student;
+export default studentList;

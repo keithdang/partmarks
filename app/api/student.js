@@ -14,4 +14,11 @@ router.get("/list", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
+router.post("/add", async (req, res) => {
+  console.log("add");
+  StudentTable.addStudent()
+    .then(() => console.log("added"))
+    .catch((error) => console.error(error));
+});
+
 module.exports = router;

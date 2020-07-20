@@ -14,3 +14,9 @@ export const fetchStudentList = () => async (dispatch) => {
   const res = await axios.get("/students/list");
   dispatch({ type: STUDENT_LIST.FETCH_SUCCESS, studentList: res.data });
 };
+
+export const addStudent = () => async (dispatch) => {
+  dispatch({ type: STUDENT_LIST.FETCH });
+  const res = await axios.post("/students/add", { hello: "world" });
+  dispatch({ type: STUDENT_LIST.FETCH });
+};
