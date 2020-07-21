@@ -15,8 +15,13 @@ export const fetchStudentList = () => async (dispatch) => {
   dispatch({ type: STUDENT_LIST.FETCH_SUCCESS, studentList: res.data });
 };
 
-export const addStudent = () => async (dispatch) => {
+export const addStudent = (value) => async (dispatch) => {
   dispatch({ type: STUDENT_LIST.FETCH });
-  const res = await axios.post("/students/add", { hello: "world" });
-  dispatch({ type: STUDENT_LIST.FETCH });
+  const res = await axios({
+    method: "post",
+    url: "/students/add",
+    params: { firstName: value },
+    headers: { "Content-Type": "application/json; charset=UTF-8" },
+  });
+  dispatch({ type: STUDENT_LIST.FETCH_ADD, payload: res.data });
 };

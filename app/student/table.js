@@ -29,16 +29,14 @@ class StudentTable {
     });
   }
 
-  static addStudent() {
-    const firstName = "Nina";
-    console.log("addStudent");
+  static addStudent(firstName) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO students ("firstName") VALUES ($1)`,
+        `INSERT INTO students ("firstName") VALUES ($1) RETURNING *`,
         [firstName],
         (error, response) => {
           if (error) return reject(error);
-          resolve();
+          resolve({ student: response.rows[0] });
         }
       );
     });

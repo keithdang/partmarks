@@ -15,6 +15,9 @@ const studentList = (state = DEFAULT_STUDENT_LIST, action) => {
         status: fetchStates.success,
         list: action.studentList.studentList,
       };
+    case STUDENT_LIST.FETCH_ADD:
+      state.list.push(action.payload.student);
+      return { ...state, status: fetchStates.fetching };
     default:
       return state;
   }

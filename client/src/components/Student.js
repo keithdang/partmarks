@@ -5,9 +5,7 @@ import "../App.css";
 
 class Student extends Component {
   componentDidMount() {
-    // this.props.fetchStudent(1);
     this.props.fetchStudentList();
-    // this.props.addStudent();
   }
 
   showStudentList = () => {
