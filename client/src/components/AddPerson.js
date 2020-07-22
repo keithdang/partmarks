@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { addStudent } from "../actions/student";
 import "../App.css";
 
-class AddStudent extends Component {
+class AddPerson extends Component {
   render() {
+    const { add } = this.props;
     let input;
     return (
       <div>
@@ -14,7 +13,7 @@ class AddStudent extends Component {
             if (!input.value.trim()) {
               return;
             }
-            this.props.addStudent(input.value);
+            add(input.value);
             input.value = "";
           }}
         >
@@ -27,5 +26,4 @@ class AddStudent extends Component {
     );
   }
 }
-
-export default connect(({}) => ({}), { addStudent })(AddStudent);
+export default AddPerson;

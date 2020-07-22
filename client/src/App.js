@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Student from "./components/Student";
-import AddStudent from "./components/AddStudent";
+import Teacher from "./components/Teacher";
 
 class App extends Component {
   render() {
     return (
       <div>
         <Student />
-        <AddStudent />
+        <Teacher />
       </div>
     );
   }

@@ -12,7 +12,7 @@ export const fetchStudent = (value) => async (dispatch) => {
 export const fetchStudentList = () => async (dispatch) => {
   dispatch({ type: STUDENT_LIST.FETCH });
   const res = await axios.get("/students/list");
-  dispatch({ type: STUDENT_LIST.FETCH_SUCCESS, studentList: res.data });
+  dispatch({ type: STUDENT_LIST.FETCH_SUCCESS, payload: res.data });
 };
 
 export const addStudent = (value) => async (dispatch) => {

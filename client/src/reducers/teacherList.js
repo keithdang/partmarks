@@ -1,26 +1,26 @@
-import { STUDENT_LIST } from "../actions/types";
+import { TEACHER_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_STUDENT_LIST = {};
+const DEFAULT_TEACHER_LIST = {};
 
-const studentList = (state = DEFAULT_STUDENT_LIST, action) => {
+const teacherList = (state = DEFAULT_TEACHER_LIST, action) => {
   switch (action.type) {
-    case STUDENT_LIST.FETCH:
+    case TEACHER_LIST.FETCH:
       return { ...state, status: fetchStates.fetching };
-    case STUDENT_LIST.FETCH_ERROR:
+    case TEACHER_LIST.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
-    case STUDENT_LIST.FETCH_SUCCESS:
+    case TEACHER_LIST.FETCH_SUCCESS:
       return {
         ...state,
         status: fetchStates.success,
-        list: action.payload.studentList,
+        list: action.payload.teacherList,
       };
-    case STUDENT_LIST.FETCH_ADD:
-      state.list.push(action.payload.student);
+    case TEACHER_LIST.FETCH_ADD:
+      state.list.push(action.payload.teacher);
       return { ...state, status: fetchStates.fetching };
-    case STUDENT_LIST.FETCH_DELETE:
+    case TEACHER_LIST.FETCH_DELETE:
       for (var i = 0; i < state.list.length; i++) {
-        if (state.list[i].id === action.payload.student.id) {
+        if (state.list[i].id === action.payload.teacher.id) {
           state.list.splice(i, 1);
           continue;
         }
@@ -31,4 +31,4 @@ const studentList = (state = DEFAULT_STUDENT_LIST, action) => {
   }
 };
 
-export default studentList;
+export default teacherList;
