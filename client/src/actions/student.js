@@ -25,3 +25,14 @@ export const addStudent = (value) => async (dispatch) => {
   });
   dispatch({ type: STUDENT_LIST.FETCH_ADD, payload: res.data });
 };
+
+export const deleteStudent = (value) => async (dispatch) => {
+  dispatch({ type: STUDENT_LIST.FETCH });
+  const res = await axios({
+    method: "post",
+    url: "/students/delete",
+    params: { id: value },
+    headers: { "Content-Type": "application/json; charset=UTF-8" },
+  });
+  dispatch({ type: STUDENT_LIST.FETCH_DELETE, payload: res.data });
+};

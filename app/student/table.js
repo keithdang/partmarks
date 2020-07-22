@@ -41,6 +41,19 @@ class StudentTable {
       );
     });
   }
+
+  static deleteStudent(id) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `DELETE FROM students WHERE id = $1 RETURNING *`,
+        [id],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve({ student: response.rows[0] });
+        }
+      );
+    });
+  }
 }
 
 module.exports = StudentTable;

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { MODES } from "../actions/types";
 import { connect } from "react-redux";
 import { addStudent } from "../actions/student";
 import "../App.css";
