@@ -8,6 +8,7 @@ export const fetchCourseList = () => async (dispatch) => {
 };
 
 export const addCourse = (value) => async (dispatch) => {
+  console.log(value);
   dispatch({ type: COURSE_LIST.FETCH });
   const res = await axios({
     method: "post",

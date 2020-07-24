@@ -1,5 +1,8 @@
 const pool = require("../databasePool");
 const BasicCrud = require("../api/basicCRUD");
+function fullCourseId(depeartmentId, courseId) {
+  return parseInt(depeartmentId.toString() + courseId.toString());
+}
 class CourseTable {
   static getCourse({ courseId }) {
     return new Promise((resolve, reject) => {
@@ -34,9 +37,9 @@ class CourseTable {
       pool.query(
         `INSERT INTO course ("courseId","departmentId","displayId","title","credits") VALUES ($1,$2,$3,$4,$5) RETURNING *`,
         [
-          course.courseId,
+          fullCourseId(course.departmentId, course.courseId),
           course.departmentId,
-          course.displayId,
+          course.courseId,
           course.title,
           course.credits,
         ],
@@ -51,7 +54,7 @@ class CourseTable {
   static deleteCourse(id) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `DELETE FROM course WHERE id = $1 RETURNING *`,
+        `DELETE FROM course WHERE "courseId" = $1 RETURNING *`,
         [id],
         (error, response) => {
           if (error) return reject(error);

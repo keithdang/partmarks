@@ -6,6 +6,15 @@ import AddPerson from "./AddPerson";
 import "../App.css";
 
 class Course extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      departmentId: null,
+      courseId: null,
+      credits: null,
+      title: "",
+    };
+  }
   componentDidMount() {
     this.props.fetchCourseList();
   }
@@ -27,12 +36,40 @@ class Course extends Component {
       </div>
     );
   };
+  myChangeHander = (event) => {
+    let nam = event.target.name;
+    let val = event.target.value;
+    this.setState({ [nam]: val });
+  };
+  submitCourse = () => {
+    this.props.addCourse(this.state);
+  };
+  addCourseForm = () => {
+    return (
+      <div>
+        <form>
+          <input
+            type="text"
+            name="departmentId"
+            onChange={this.myChangeHander}
+          />
+          <input type="text" name="courseId" onChange={this.myChangeHander} />
+          <input type="text" name="credits" onChange={this.myChangeHander} />
+          <input type="text" name="title" onChange={this.myChangeHander} />
+        </form>
+        <button onClick={() => this.submitCourse()}>Add</button>
+      </div>
+    );
+  };
   render() {
     const { courseList } = this.props;
     return (
       <div className="App">
         {courseList.list !== undefined ? (
-          this.showList()
+          <div>
+            {this.showList()}
+            {this.addCourseForm()}
+          </div>
         ) : (
           <div>
             <h1>No List :(</h1>
