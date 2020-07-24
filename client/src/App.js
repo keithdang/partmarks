@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Student from "./components/Student";
 import Teacher from "./components/Teacher";
+import Course from "./components/Course";
 class App extends Component {
   render() {
     return (
@@ -17,9 +18,15 @@ class App extends Component {
             <li>
               <Link to="/teachers">Teachers</Link>
             </li>
+            <li>
+              <Link to="/courses">Courses</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
+          <Route path="/courses">
+            <Course />
+          </Route>
           <Route path="/teachers">
             <Teacher />
           </Route>

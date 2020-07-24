@@ -5,7 +5,7 @@ class TeacherTable {
     return new Promise((resolve, reject) => {
       pool.query(
         `SELECT *
-                  FROM teachers
+                  FROM teacher
                   WHERE id = $1`,
         [teacherId],
         (error, response) => {
@@ -21,7 +21,7 @@ class TeacherTable {
 
   static getTeachers() {
     return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM teachers`, (error, response) => {
+      pool.query(`SELECT * FROM teacher`, (error, response) => {
         if (error) return reject(error);
         if (response.rows.length === 0) return reject(new Error("no teachers"));
         resolve({ teacherList: response.rows });
@@ -32,7 +32,7 @@ class TeacherTable {
   static addTeacher(firstName) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO teachers ("firstName") VALUES ($1) RETURNING *`,
+        `INSERT INTO teacher ("firstName") VALUES ($1) RETURNING *`,
         [firstName],
         (error, response) => {
           if (error) return reject(error);
@@ -45,7 +45,7 @@ class TeacherTable {
   static deleteTeacher(id) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `DELETE FROM teachers WHERE id = $1 RETURNING *`,
+        `DELETE FROM teacher WHERE id = $1 RETURNING *`,
         [id],
         (error, response) => {
           if (error) return reject(error);

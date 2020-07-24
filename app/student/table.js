@@ -1,5 +1,5 @@
 const pool = require("../databasePool");
-
+const BasicCrud = require("../api/basicCRUD");
 class StudentTable {
   static getStudent({ studentId }) {
     return new Promise((resolve, reject) => {
