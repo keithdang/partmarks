@@ -19,12 +19,13 @@ class SemesterCourseTable {
     });
   }
 
-  static getsemesterCourses() {
+  static getCourses() {
     return new Promise((resolve, reject) => {
       pool.query(`SELECT * FROM semesterCourse`, (error, response) => {
         if (error) return reject(error);
         if (response.rows.length === 0) return reject(new Error("no courses"));
-        resolve({ semesterCourseList: response.rows });
+        // console.log(response.rows);
+        resolve({ courseList: response.rows });
       });
     });
   }

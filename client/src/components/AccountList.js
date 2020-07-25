@@ -5,16 +5,22 @@ class AccountList extends Component {
   }
 
   showList = () => {
-    const { accountList, title, deleteFunc } = this.props;
+    const { list, title, deleteFunc } = this.props;
     return (
       <div>
         <h1>{title}</h1>
         <ul className="students">
-          {accountList.map((account) => (
-            <li key={account.id}>
-              <div>
-                {account.id}:{account.firstName}
-                <button onClick={() => deleteFunc(account.id)}>-</button>
+          {list.map((account) => (
+            <li key={account.id || account.courseId}>
+              <div className="list">
+                {Object.values(account).map((prop) => (
+                  <div className="list-row">{prop}</div>
+                ))}
+                <button
+                  onClick={() => deleteFunc(account.id || account.courseId)}
+                >
+                  -
+                </button>
               </div>
             </li>
           ))}
@@ -24,10 +30,10 @@ class AccountList extends Component {
   };
 
   render() {
-    const { accountList, fetchList } = this.props;
+    const { list, fetchList } = this.props;
     return (
       <div className="App">
-        {accountList !== undefined ? (
+        {list !== undefined ? (
           this.showList()
         ) : (
           <div>

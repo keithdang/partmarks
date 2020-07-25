@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Student from "./components/Student";
 import Teacher from "./components/Teacher";
 import Course from "./components/Course";
+import SemesterCourse from "./components/SemesterCourse";
+
 class App extends Component {
   render() {
     return (
@@ -21,9 +23,15 @@ class App extends Component {
             <li>
               <Link to="/courses">Courses</Link>
             </li>
+            <li>
+              <Link to="/semesterCourses">Semester Courses</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
+          <Route path="/semesterCourses">
+            <SemesterCourse />
+          </Route>
           <Route path="/courses">
             <Course />
           </Route>

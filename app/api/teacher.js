@@ -17,7 +17,7 @@ router.get("/list", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  TeacherTable.addTeacher(req.query.firstName)
+  TeacherTable.addTeacher(req.query)
     .then(({ teacher }) => res.json({ teacher }))
     .catch((error) => console.error(error));
 });

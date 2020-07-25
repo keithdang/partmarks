@@ -20,7 +20,11 @@ export const addTeacher = (value) => async (dispatch) => {
   const res = await axios({
     method: "post",
     url: "/teacher/add",
-    params: { firstName: value },
+    params: {
+      firstName: value.firstName,
+      middleName: value.middleName,
+      lastName: value.lastName,
+    },
     headers: { "Content-Type": "application/json; charset=UTF-8" },
   });
   dispatch({ type: TEACHER_LIST.FETCH_ADD, payload: res.data });

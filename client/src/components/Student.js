@@ -7,7 +7,7 @@ import {
   deleteStudent,
 } from "../actions/student";
 import AccountList from "./AccountList";
-import AddPerson from "./AddPerson";
+import AddForm from "./AddForm";
 import "../App.css";
 
 class Student extends Component {
@@ -21,12 +21,12 @@ class Student extends Component {
     return (
       <div>
         <AccountList
-          accountList={studentList.list}
+          list={studentList.list}
           title="Students"
           deleteFunc={deleteStudent}
           fetchList={fetchStudentList}
         />
-        <AddPerson add={addStudent} />
+        <AddForm contents={{ firstName: null }} submitFunc={addStudent} />
       </div>
     );
   }

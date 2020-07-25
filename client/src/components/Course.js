@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchCourseList, addCourse, deleteCourse } from "../actions/course";
 import AccountList from "./AccountList";
-import AddPerson from "./AddPerson";
+import AddForm from "./AddForm";
 import "../App.css";
 
 class Course extends Component {
@@ -18,24 +18,6 @@ class Course extends Component {
   componentDidMount() {
     this.props.fetchCourseList();
   }
-  showList = () => {
-    const { courseList, deleteCourse } = this.props;
-    return (
-      <div>
-        <h1>Courses</h1>
-        <ul className="students">
-          {courseList.list.map((course) => (
-            <li key={course.courseId}>
-              <div>
-                {course.courseId}:{course.title}:{course.credits}
-                <button onClick={() => deleteCourse(course.courseId)}>-</button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
   myChangeHander = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
@@ -62,13 +44,26 @@ class Course extends Component {
     );
   };
   render() {
-    const { courseList } = this.props;
+    const { addCourse, courseList, deleteCourse, fetchCourseList } = this.props;
     return (
       <div className="App">
         {courseList.list !== undefined ? (
           <div>
-            {this.showList()}
-            {this.addCourseForm()}
+            <AccountList
+              list={courseList.list}
+              title="Courses"
+              deleteFunc={deleteCourse}
+              fetchList={fetchCourseList}
+            />
+            <AddForm
+              contents={{
+                departmentId: null,
+                courseId: null,
+                credits: null,
+                title: "",
+              }}
+              submitFunc={addCourse}
+            />
           </div>
         ) : (
           <div>
@@ -78,7 +73,6 @@ class Course extends Component {
             </button>
           </div>
         )}
-        {/* <AddPerson add={addTeacher} /> */}
       </div>
     );
   }

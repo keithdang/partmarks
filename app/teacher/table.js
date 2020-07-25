@@ -29,11 +29,11 @@ class TeacherTable {
     });
   }
 
-  static addTeacher(firstName) {
+  static addTeacher(teacher) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO teacher ("firstName") VALUES ($1) RETURNING *`,
-        [firstName],
+        `INSERT INTO teacher ("firstName","middleName","lastName") VALUES ($1,$2,$3) RETURNING *`,
+        [teacher.firstName, teacher.middleName, teacher.lastName],
         (error, response) => {
           if (error) return reject(error);
           resolve({ teacher: response.rows[0] });
