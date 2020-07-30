@@ -1,5 +1,13 @@
 const pool = require("../databasePool");
 const BasicCrud = require("../api/basicCRUD");
+function fullCourseId(semesterCourse) {
+  var num = parseInt(
+    semesterCourse.courseId.toString() +
+      semesterCourse.teacherId.toString() +
+      semesterCourse.semester.toString()
+  );
+  return num;
+}
 class SemesterCourseTable {
   static getCourse({ courseId }) {
     return new Promise((resolve, reject) => {
@@ -31,14 +39,16 @@ class SemesterCourseTable {
   }
 
   static addCourse(semesterCourse) {
+    console.log(semesterCourse);
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO semesterCourse ("courseId","teacherId","semester","nYear") VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+        `INSERT INTO semesterCourse ("id","courseId","teacherId","semester","nYear") VALUES ($1,$2,$3,$4,$5) RETURNING *`,
         [
-          semesterCourse.id,
+          fullCourseId(semesterCourse),
+          semesterCourse.courseId,
           semesterCourse.teacherId,
           semesterCourse.semester,
-          semesterCourse.year,
+          semesterCourse.nYear,
         ],
         (error, response) => {
           if (error) return reject(error);
@@ -51,7 +61,7 @@ class SemesterCourseTable {
   static deleteCourse(id) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `DELETE FROM course WHERE id = $1 RETURNING *`,
+        `DELETE FROM semesterCourse WHERE id = $1 RETURNING *`,
         [id],
         (error, response) => {
           if (error) return reject(error);

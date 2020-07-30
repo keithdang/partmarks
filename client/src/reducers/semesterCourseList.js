@@ -16,7 +16,7 @@ const semesterCourseList = (state = DEFAULT_COURSE_LIST, action) => {
         list: action.payload.courseList,
       };
     case SEMESTER_COURSE_LIST.FETCH_ADD:
-      state.list.push(action.payload.course);
+      state.list.push(action.payload.semesterCourse);
       return { ...state, status: fetchStates.fetching };
     case SEMESTER_COURSE_LIST.FETCH_DELETE:
       for (var i = 0; i < state.list.length; i++) {

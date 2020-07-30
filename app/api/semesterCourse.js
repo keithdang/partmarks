@@ -3,10 +3,8 @@ const SemesterCourseTable = require("../semesterCourse/table");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  //   console.log("list");
   SemesterCourseTable.getCourses()
     .then(({ courseList }) => {
-      //   console.log(courseList);
       res.json({ courseList });
     })
     .catch((error) => console.error(error));
@@ -14,7 +12,7 @@ router.get("/list", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   SemesterCourseTable.addCourse(req.query)
-    .then(({ course }) => res.json({ course }))
+    .then(({ semesterCourse }) => res.json({ semesterCourse }))
     .catch((error) => console.error(error));
 });
 

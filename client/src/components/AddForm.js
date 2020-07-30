@@ -14,6 +14,7 @@ class AddForm extends Component {
     const { submitFunc } = this.props;
     const { contents } = this.state;
     let input;
+    console.log(contents);
     return (
       <div>
         <form>

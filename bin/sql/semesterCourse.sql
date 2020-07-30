@@ -1,5 +1,6 @@
 CREATE TABLE semesterCourse
 (
+    "id" INTEGER PRIMARY KEY,
     "courseId" INTEGER,
     "teacherId" INTEGER,
     "semester" INTEGER,
