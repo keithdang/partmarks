@@ -1,16 +1,45 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchClassroomList } from "../actions/classroom";
+import {
+  fetchClassroomList,
+  addCourse,
+  deleteCourse,
+} from "../actions/classroom";
+import { fetchSemesterCourseList } from "../actions/semesterCourse";
+import { fetchStudentList } from "../actions/student";
 import AccountList from "./AccountList";
 import AddForm from "./AddForm";
+import AddSelectionForm from "./AddSelectionForm";
 import "../App.css";
-
+import semesterCourseList from "../reducers/semesterCourseList";
+import studentList from "../reducers/studentList";
+import { CLASSROOM_LIST } from "../actions/types";
 class Classroom extends Component {
   componentDidMount() {
-    this.props.fetchClassroomList();
+    const {
+      fetchClassroomList,
+      fetchSemesterCourseList,
+      fetchStudentList,
+    } = this.props;
+    fetchClassroomList();
+    fetchSemesterCourseList();
+    fetchStudentList();
+  }
+  componentDidUpdate() {
+    const { classroomList, fetchClassroomList } = this.props;
+    if (classroomList.status == CLASSROOM_LIST.FETCH_ADD) {
+      fetchClassroomList();
+    }
   }
   render() {
-    const { classroomList, fetchClassroomList } = this.props;
+    const {
+      classroomList,
+      fetchClassroomList,
+      semesterCourseList,
+      studentList,
+      addCourse,
+      deleteCourse,
+    } = this.props;
     return (
       <div className="App">
         {classroomList.list !== undefined ? (
@@ -19,16 +48,36 @@ class Classroom extends Component {
               list={classroomList.list}
               title="Classroom"
               fetchList={fetchClassroomList}
+              deleteFunc={deleteCourse}
             />
-            {/* <AddForm
-              contents={{
-                departmentId: null,
-                courseId: null,
-                credits: null,
-                title: "",
-              }}
-              submitFunc={addCourse}
-            /> */}
+            {semesterCourseList.list && studentList.list && (
+              <AddSelectionForm
+                title="Sign Up"
+                contents={{
+                  courseId: null,
+                  studentId: null,
+                }}
+                submitFunc={addCourse}
+                lists={[
+                  {
+                    title: "Courses",
+                    tableId: "courseId",
+                    list: semesterCourseList.list.map((item) => item.id),
+                    displayTitle: semesterCourseList.list.map(
+                      (item) => item.title + ":" + item.lastName
+                    ),
+                  },
+                  {
+                    title: "Students",
+                    tableId: "studentId",
+                    list: studentList.list.map((item) => item.id),
+                    displayTitle: studentList.list.map(
+                      (item) => item.firstName
+                    ),
+                  },
+                ]}
+              />
+            )}
           </div>
         ) : (
           <div>
@@ -43,6 +92,17 @@ class Classroom extends Component {
   }
 }
 
-export default connect(({ classroomList }) => ({ classroomList }), {
-  fetchClassroomList,
-})(Classroom);
+export default connect(
+  ({ classroomList, semesterCourseList, studentList }) => ({
+    classroomList,
+    semesterCourseList,
+    studentList,
+  }),
+  {
+    fetchClassroomList,
+    fetchSemesterCourseList,
+    fetchStudentList,
+    addCourse,
+    deleteCourse,
+  }
+)(Classroom);

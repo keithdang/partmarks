@@ -16,16 +16,19 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
         list: action.payload.classroomList,
       };
     case CLASSROOM_LIST.FETCH_ADD:
-      state.list.push(action.payload.classroom);
+      //   state.list.push(action.payload.classroom);
+      return { ...state, status: CLASSROOM_LIST.FETCH_ADD };
+    case CLASSROOM_LIST.FETCH_DELETE:
+      for (var i = 0; i < state.list.length; i++) {
+        if (
+          state.list[i].courseId === action.payload.course.courseId &&
+          state.list[i].studentId === action.payload.course.studentId
+        ) {
+          state.list.splice(i, 1);
+          continue;
+        }
+      }
       return { ...state, status: fetchStates.fetching };
-    // case CLASSROOM_LIST.FETCH_DELETE:
-    //   for (var i = 0; i < state.list.length; i++) {
-    //     if (state.list[i].courseId === action.payload.classroom.id) {
-    //       state.list.splice(i, 1);
-    //       continue;
-    //     }
-    //   }
-    //   return { ...state, status: fetchStates.fetching };
     default:
       return state;
   }

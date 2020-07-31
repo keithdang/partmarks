@@ -29,12 +29,27 @@ class SemesterCourseTable {
 
   static getCourses() {
     return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM "semesterCourse"`, (error, response) => {
-        if (error) return reject(error);
-        if (response.rows.length === 0) return reject(new Error("no courses"));
-        // console.log(response.rows);
-        resolve({ courseList: response.rows });
-      });
+      pool.query(
+        `SELECT 
+            "semesterCourse".id,
+            course."courseId",
+            course.title,
+            teacher.id as "teacherId",
+            teacher."lastName" 
+        from 
+            "semesterCourse",
+            course,
+            teacher
+        where 
+            "semesterCourse"."courseId"=course."courseId" AND 
+            "semesterCourse"."teacherId"=teacher.id`,
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0)
+            return reject(new Error("no courses"));
+          resolve({ courseList: response.rows });
+        }
+      );
     });
   }
 

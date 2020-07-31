@@ -9,8 +9,10 @@ class ClassroomTable {
         `
       SELECT 
         course.title,
+        classroom."courseId",
         teacher."firstName" as prof,  
-        students."firstName"
+        students."firstName",
+        students.id as "studentId" 
       FROM 
         classroom, 
         students,
@@ -27,44 +29,38 @@ class ClassroomTable {
           if (error) return reject(error);
           if (response.rows.length === 0)
             return reject(new Error("no courses"));
-          console.log(response.rows);
           resolve({ classroomList: response.rows });
         }
       );
     });
   }
 
-  //   static addCourse(course) {
-  //     return new Promise((resolve, reject) => {
-  //       pool.query(
-  //         `INSERT INTO course ("courseId","departmentId","displayId","title","credits") VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-  //         [
-  //           fullCourseId(course.departmentId, course.courseId),
-  //           course.departmentId,
-  //           course.courseId,
-  //           course.title,
-  //           course.credits,
-  //         ],
-  //         (error, response) => {
-  //           if (error) return reject(error);
-  //           resolve({ course: response.rows[0] });
-  //         }
-  //       );
-  //     });
-  //   }
+  static addCourse(signup) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `INSERT INTO classroom ("courseId","studentId") VALUES ($1,$2) RETURNING *`,
+        [signup.courseId, signup.studentId],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve({ classroom: response.rows[0] });
+        }
+      );
+    });
+  }
 
-  //   static deleteCourse(id) {
-  //     return new Promise((resolve, reject) => {
-  //       pool.query(
-  //         `DELETE FROM course WHERE "courseId" = $1 RETURNING *`,
-  //         [id],
-  //         (error, response) => {
-  //           if (error) return reject(error);
-  //           resolve({ course: response.rows[0] });
-  //         }
-  //       );
-  //     });
-  //   }
+  static deleteCourse(classroom) {
+    console.log(classroom);
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `DELETE FROM classroom WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`,
+        [classroom.courseId, classroom.studentId],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve({ course: response.rows[0] });
+        }
+      );
+    });
+  }
 }
 
 module.exports = ClassroomTable;

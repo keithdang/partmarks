@@ -10,15 +10,15 @@ router.get("/list", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
-// router.post("/add", async (req, res) => {
-//   CourseTable.addCourse(req.query)
-//     .then(({ course }) => res.json({ course }))
-//     .catch((error) => console.error(error));
-// });
+router.post("/add", async (req, res) => {
+  ClassroomTable.addCourse(req.query)
+    .then(({ classroom }) => res.json({ classroom }))
+    .catch((error) => console.error(error));
+});
 
-// router.post("/delete", async (req, res) => {
-//   CourseTable.deleteCourse(req.query.id)
-//     .then(({ course }) => res.json({ course }))
-//     .catch((error) => console.error(error));
-// });
+router.post("/delete", async (req, res) => {
+  ClassroomTable.deleteCourse(req.query)
+    .then(({ course }) => res.json({ course }))
+    .catch((error) => console.error(error));
+});
 module.exports = router;
