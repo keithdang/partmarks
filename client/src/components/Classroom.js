@@ -1,27 +1,26 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchCourseList, addCourse, deleteCourse } from "../actions/course";
+import { fetchClassroomList } from "../actions/classroom";
 import AccountList from "./AccountList";
 import AddForm from "./AddForm";
 import "../App.css";
 
-class Course extends Component {
+class Classroom extends Component {
   componentDidMount() {
-    this.props.fetchCourseList();
+    this.props.fetchClassroomList();
   }
   render() {
-    const { addCourse, courseList, deleteCourse, fetchCourseList } = this.props;
+    const { classroomList, fetchClassroomList } = this.props;
     return (
       <div className="App">
-        {courseList.list !== undefined ? (
+        {classroomList.list !== undefined ? (
           <div>
             <AccountList
-              list={courseList.list}
-              title="Courses"
-              deleteFunc={deleteCourse}
-              fetchList={fetchCourseList}
+              list={classroomList.list}
+              title="Classroom"
+              fetchList={fetchClassroomList}
             />
-            <AddForm
+            {/* <AddForm
               contents={{
                 departmentId: null,
                 courseId: null,
@@ -29,12 +28,12 @@ class Course extends Component {
                 title: "",
               }}
               submitFunc={addCourse}
-            />
+            /> */}
           </div>
         ) : (
           <div>
             <h1>No List :(</h1>
-            <button className="more" onClick={() => fetchCourseList()}>
+            <button className="more" onClick={() => fetchClassroomList()}>
               Try Again?
             </button>
           </div>
@@ -44,8 +43,6 @@ class Course extends Component {
   }
 }
 
-export default connect(({ courseList }) => ({ courseList }), {
-  fetchCourseList,
-  addCourse,
-  deleteCourse,
-})(Course);
+export default connect(({ classroomList }) => ({ classroomList }), {
+  fetchClassroomList,
+})(Classroom);
