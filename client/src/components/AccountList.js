@@ -17,6 +17,7 @@ class AccountList extends Component {
                   <div className="list-row">{prop}</div>
                 ))}
                 <button
+                  //need new way to distinguish different ids of each table else it'll be a long list
                   onClick={() => deleteFunc(account.id || account.courseId)}
                 >
                   -

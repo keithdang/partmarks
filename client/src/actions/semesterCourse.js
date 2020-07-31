@@ -1,36 +1,30 @@
-import axios from "axios";
 import { SEMESTER_COURSE_LIST } from "./types";
+import { fetchPost, fetchGet } from "./fetchFunc";
 
-export const fetchSemesterCourseList = () => async (dispatch) => {
-  dispatch({ type: SEMESTER_COURSE_LIST.FETCH });
-  const res = await axios.get("/semesterCourse/list");
-  dispatch({ type: SEMESTER_COURSE_LIST.FETCH_SUCCESS, payload: res.data });
-};
+export const fetchSemesterCourseList = () =>
+  fetchGet({
+    endpoint: "/semesterCourse/list",
+    FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
+    SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_SUCCESS,
+  });
 
-export const addCourse = (value) => async (dispatch) => {
-  console.log(value);
-  dispatch({ type: SEMESTER_COURSE_LIST.FETCH });
-  const res = await axios({
-    method: "post",
-    url: "/semesterCourse/add",
-    params: {
+export const addCourse = (value) =>
+  fetchPost({
+    endpoint: "/semesterCourse/add",
+    param: {
       courseId: value.courseId,
       teacherId: value.teacherId,
       semester: value.semester,
       nYear: value.nYear,
     },
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
+    FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
+    SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_ADD,
   });
-  dispatch({ type: SEMESTER_COURSE_LIST.FETCH_ADD, payload: res.data });
-};
 
-export const deleteCourse = (value) => async (dispatch) => {
-  dispatch({ type: SEMESTER_COURSE_LIST.FETCH });
-  const res = await axios({
-    method: "post",
-    url: "/semesterCourse/delete",
-    params: { id: value },
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
+export const deleteCourse = (value) =>
+  fetchPost({
+    endpoint: "/semesterCourse/delete",
+    param: { id: value },
+    FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
+    SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_DELETE,
   });
-  dispatch({ type: SEMESTER_COURSE_LIST.FETCH_DELETE, payload: res.data });
-};

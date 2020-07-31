@@ -1,4 +1,4 @@
-CREATE TABLE semesterCourse
+CREATE TABLE "semesterCourse"
 (
     "id" INTEGER PRIMARY KEY,
     "courseId" INTEGER,

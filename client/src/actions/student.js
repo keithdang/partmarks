@@ -1,38 +1,34 @@
 import axios from "axios";
 import { STUDENT, STUDENT_LIST } from "./types";
+import { fetchGet, fetchPost } from "./fetchFunc";
 
 export const fetchStudent = (value) => async (dispatch) => {
   dispatch({ type: STUDENT.FETCH });
   const res = await axios.get("/students/one", {
     params: { id: value },
   });
-  dispatch({ type: STUDENT.FETCH_SUCCESS, student: res.data });
+  dispatch({ type: STUDENT.FETCH_SUCCESS, payload: res.data });
 };
 
-export const fetchStudentList = () => async (dispatch) => {
-  dispatch({ type: STUDENT_LIST.FETCH });
-  const res = await axios.get("/students/list");
-  dispatch({ type: STUDENT_LIST.FETCH_SUCCESS, payload: res.data });
-};
-
-export const addStudent = (value) => async (dispatch) => {
-  dispatch({ type: STUDENT_LIST.FETCH });
-  const res = await axios({
-    method: "post",
-    url: "/students/add",
-    params: { firstName: value.firstName },
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
+export const fetchStudentList = () =>
+  fetchGet({
+    endpoint: "/students/list",
+    FETCH_TYPE: STUDENT_LIST.FETCH,
+    SUCCESS_TYPE: STUDENT_LIST.FETCH_SUCCESS,
   });
-  dispatch({ type: STUDENT_LIST.FETCH_ADD, payload: res.data });
-};
 
-export const deleteStudent = (value) => async (dispatch) => {
-  dispatch({ type: STUDENT_LIST.FETCH });
-  const res = await axios({
-    method: "post",
-    url: "/students/delete",
-    params: { id: value },
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
+export const addStudent = (value) =>
+  fetchPost({
+    endpoint: "/students/add",
+    param: { firstName: value.firstName },
+    FETCH_TYPE: STUDENT_LIST.FETCH,
+    SUCCESS_TYPE: STUDENT_LIST.FETCH_ADD,
   });
-  dispatch({ type: STUDENT_LIST.FETCH_DELETE, payload: res.data });
-};
+
+export const deleteStudent = (value) =>
+  fetchPost({
+    endpoint: "/students/delete",
+    param: { id: value },
+    FETCH_TYPE: STUDENT_LIST.FETCH,
+    SUCCESS_TYPE: STUDENT_LIST.FETCH_DELETE,
+  });
