@@ -5,6 +5,8 @@ import Teacher from "./components/Teacher";
 import Course from "./components/Course";
 import SemesterCourse from "./components/SemesterCourse";
 import Classroom from "./components/Classroom";
+import MarksTemplate from "./components/MarksTemplate";
+import Grade from "./components/Grade";
 
 class App extends Component {
   render() {
@@ -30,9 +32,21 @@ class App extends Component {
             <li>
               <Link to="/classroom">Classroom</Link>
             </li>
+            <li>
+              <Link to="/marksTemplate">Marks Template</Link>
+            </li>
+            <li>
+              <Link to="/grade">Grade</Link>
+            </li>
           </ul>
         </nav>
         <Switch>
+          <Route path="/grade">
+            <Grade />
+          </Route>
+          <Route path="/marksTemplate">
+            <MarksTemplate />
+          </Route>
           <Route path="/classroom">
             <Classroom />
           </Route>

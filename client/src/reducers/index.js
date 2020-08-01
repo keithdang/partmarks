@@ -5,6 +5,8 @@ import teacherList from "./teacherList";
 import courseList from "./courseList";
 import semesterCourseList from "./semesterCourseList";
 import classroomList from "./classroomList";
+import marksTemplateList from "./marksTemplate";
+import gradeList from "./gradeList";
 export default combineReducers({
   student,
   studentList,
@@ -12,4 +14,6 @@ export default combineReducers({
   courseList,
   semesterCourseList,
   classroomList,
+  marksTemplateList,
+  gradeList,
 });

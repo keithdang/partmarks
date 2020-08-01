@@ -17,12 +17,24 @@ class AccountList extends Component {
   };
   genKey = (account) => {
     const { title } = this.props;
-
-    if (title == "Classroom") {
-      return account.courseId.toString() + account.studentId.toString();
+    let key;
+    switch (title) {
+      case "Classroom":
+        key = account.courseId.toString() + account.studentId.toString();
+        break;
+      case "Grades":
+        key =
+          account.courseId.toString() +
+          account.studentId.toString() +
+          account.title;
+        break;
+      case "Marks Template":
+        key = account.courseId.toString() + account.title;
+        break;
+      default:
+        key = account.id || account.courseId;
     }
-
-    return account.id || account.courseId;
+    return key;
   };
   showList = () => {
     const { list, title } = this.props;

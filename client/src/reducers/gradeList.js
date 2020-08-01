@@ -1,23 +1,23 @@
-import { CLASSROOM_LIST } from "../actions/types";
+import { GRADE_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_CLASSROOM_LIST = {};
+const DEFAULT_GRADE_LIST = {};
 
-const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
+const gradeList = (state = DEFAULT_GRADE_LIST, action) => {
   switch (action.type) {
-    case CLASSROOM_LIST.FETCH:
+    case GRADE_LIST.FETCH:
       return { ...state, status: fetchStates.fetching };
-    case CLASSROOM_LIST.FETCH_ERROR:
+    case GRADE_LIST.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
-    case CLASSROOM_LIST.FETCH_SUCCESS:
+    case GRADE_LIST.FETCH_SUCCESS:
       return {
         ...state,
         status: fetchStates.success,
-        list: action.payload.classroomList,
+        list: action.payload.gradeList,
       };
-    case CLASSROOM_LIST.FETCH_ADD:
-      return { ...state, status: CLASSROOM_LIST.FETCH_ADD };
-    case CLASSROOM_LIST.FETCH_DELETE:
+    case GRADE_LIST.FETCH_ADD:
+      return { ...state, status: GRADE_LIST.FETCH_ADD };
+    case GRADE_LIST.FETCH_DELETE:
       for (var i = 0; i < state.list.length; i++) {
         if (
           state.list[i].courseId === action.payload.course.courseId &&
@@ -33,4 +33,4 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
   }
 };
 
-export default classroomList;
+export default gradeList;

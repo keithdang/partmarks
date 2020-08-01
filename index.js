@@ -6,6 +6,8 @@ const teacherRouter = require("./app/api/teacher");
 const courseRouter = require("./app/api/course");
 const semesterCourseRouter = require("./app/api/semesterCourse");
 const classroomRouter = require("./app/api/classroom");
+const marksTemplateRouter = require("./app/api/marksTemplate");
+const gradeRouter = require("./app/api/grade");
 const app = express();
 
 app.use(express.static(path.join(__dirname, "client/build")));
@@ -15,6 +17,8 @@ app.use("/teacher", teacherRouter);
 app.use("/course", courseRouter);
 app.use("/semesterCourse", semesterCourseRouter);
 app.use("/classroom", classroomRouter);
+app.use("/marksTemplate", marksTemplateRouter);
+app.use("/grade", gradeRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));

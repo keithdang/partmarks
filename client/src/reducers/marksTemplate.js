@@ -1,27 +1,27 @@
-import { CLASSROOM_LIST } from "../actions/types";
+import { MARKS_TEMPLATE_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_CLASSROOM_LIST = {};
+const DEFAULT_TEMPLATE_LIST = {};
 
-const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
+const marksTemplateList = (state = DEFAULT_TEMPLATE_LIST, action) => {
   switch (action.type) {
-    case CLASSROOM_LIST.FETCH:
+    case MARKS_TEMPLATE_LIST.FETCH:
       return { ...state, status: fetchStates.fetching };
-    case CLASSROOM_LIST.FETCH_ERROR:
+    case MARKS_TEMPLATE_LIST.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
-    case CLASSROOM_LIST.FETCH_SUCCESS:
+    case MARKS_TEMPLATE_LIST.FETCH_SUCCESS:
       return {
         ...state,
         status: fetchStates.success,
-        list: action.payload.classroomList,
+        list: action.payload.templateList,
       };
-    case CLASSROOM_LIST.FETCH_ADD:
-      return { ...state, status: CLASSROOM_LIST.FETCH_ADD };
-    case CLASSROOM_LIST.FETCH_DELETE:
+    case MARKS_TEMPLATE_LIST.FETCH_ADD:
+      return { ...state, status: MARKS_TEMPLATE_LIST.FETCH_ADD };
+    case MARKS_TEMPLATE_LIST.FETCH_DELETE:
       for (var i = 0; i < state.list.length; i++) {
         if (
           state.list[i].courseId === action.payload.course.courseId &&
-          state.list[i].studentId === action.payload.course.studentId
+          state.list[i].title === action.payload.course.title
         ) {
           state.list.splice(i, 1);
           continue;
@@ -33,4 +33,4 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
   }
 };
 
-export default classroomList;
+export default marksTemplateList;
