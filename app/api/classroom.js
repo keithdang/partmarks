@@ -18,7 +18,7 @@ router.post("/add", async (req, res) => {
     .then(({ classroom }) => {
       if (classroom) {
         jsonres = classroom;
-        return GradesTable.addGradeFromTemplate(classroom);
+        return GradesTable.addGradeFromStudentSignUp(classroom);
       } else {
         const error = new Error("could not process classroom");
 

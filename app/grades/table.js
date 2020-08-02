@@ -23,7 +23,36 @@ class GradesTable {
     });
   }
 
-  static addGradeFromTemplate(classroom) {
+  static addGradeFromTemplate(template) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `INSERT INTO 
+            grades
+                ("courseId","studentId",title,total,"weight")
+            SELECT 
+                "marksTemplate"."courseId", 
+                classroom."studentId", 
+                "marksTemplate".title, 
+                "marksTemplate".total, 
+                "marksTemplate"."weight"
+            FROM 
+                "marksTemplate", classroom
+            WHERE 
+                "marksTemplate"."courseId"= $1 AND 
+                "marksTemplate"."title"= $2 AND 
+                "marksTemplate"."courseId"=classroom."courseId"  
+                RETURNING *
+    `,
+        [template.courseId, template.title],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve({ grade: response.rows });
+        }
+      );
+    });
+  }
+
+  static addGradeFromStudentSignUp(classroom) {
     return new Promise((resolve, reject) => {
       pool.query(
         `INSERT INTO 
@@ -46,7 +75,7 @@ class GradesTable {
         [classroom.courseId, classroom.studentId],
         (error, response) => {
           if (error) return reject(error);
-          resolve({ template: response.rows });
+          resolve({ grade: response.rows });
         }
       );
     });
@@ -57,6 +86,19 @@ class GradesTable {
       pool.query(
         `DELETE FROM grades WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`,
         [grade.courseId, grade.studentId],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve({ grade: response.rows });
+        }
+      );
+    });
+  }
+
+  static deleteGradeFromTemplate(template) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `DELETE FROM grades WHERE "courseId" = $1 AND "title" = $2 RETURNING *`,
+        [template.courseId, template.title],
         (error, response) => {
           if (error) return reject(error);
           resolve({ grade: response.rows });

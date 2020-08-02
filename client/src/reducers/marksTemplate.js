@@ -16,12 +16,13 @@ const marksTemplateList = (state = DEFAULT_TEMPLATE_LIST, action) => {
         list: action.payload.templateList,
       };
     case MARKS_TEMPLATE_LIST.FETCH_ADD:
+      state.list.push(action.payload.template);
       return { ...state, status: MARKS_TEMPLATE_LIST.FETCH_ADD };
     case MARKS_TEMPLATE_LIST.FETCH_DELETE:
       for (var i = 0; i < state.list.length; i++) {
         if (
-          state.list[i].courseId === action.payload.course.courseId &&
-          state.list[i].title === action.payload.course.title
+          state.list[i].courseId === action.payload.template.courseId &&
+          state.list[i].title === action.payload.template.title
         ) {
           state.list.splice(i, 1);
           continue;

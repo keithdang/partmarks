@@ -2,17 +2,13 @@ import React, { Component } from "react";
 import "../App.css";
 
 class AddForm extends Component {
-  state = {
-    contents: this.props.contents,
-  };
   myChangeHander = (event) => {
     let nam = event.target.name;
     let val = event.target.value;
     this.setState({ [nam]: val });
   };
   render() {
-    const { submitFunc } = this.props;
-    const { contents } = this.state;
+    const { submitFunc, contents } = this.props;
     let input;
     return (
       <div>

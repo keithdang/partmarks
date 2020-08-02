@@ -5,13 +5,29 @@ class AccountList extends Component {
   }
   submit = (account) => {
     const { deleteFunc, title } = this.props;
-    var params = account.id || account.courseId;
+    let params;
 
-    if (title == "Classroom") {
-      params = {
-        courseId: account.courseId,
-        studentId: account.studentId,
-      };
+    // if (title == "Classroom") {
+    //   params = {
+    //     courseId: account.courseId,
+    //     studentId: account.studentId,
+    //   };
+    // }
+    switch (title) {
+      case "Classroom":
+        params = {
+          courseId: account.courseId,
+          studentId: account.studentId,
+        };
+        break;
+      case "Marks Template":
+        params = {
+          courseId: account.courseId,
+          title: account.title,
+        };
+        break;
+      default:
+        params = account.id || account.courseId;
     }
     deleteFunc(params);
   };
