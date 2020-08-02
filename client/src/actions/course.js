@@ -1,11 +1,19 @@
 import { COURSE_LIST } from "./types";
 import { fetchPost, fetchGet } from "./fetchFunc";
 
-export const fetchCourseList = () =>
+export const fetchCourseList = (value) =>
   fetchGet({
     endpoint: "/course/list",
     FETCH_TYPE: COURSE_LIST.FETCH,
     SUCCESS_TYPE: COURSE_LIST.FETCH_SUCCESS,
+    param: value,
+  });
+
+export const fetchFilter = () =>
+  fetchGet({
+    endpoint: "/course/filter",
+    FETCH_TYPE: COURSE_LIST.FETCH,
+    SUCCESS_TYPE: COURSE_LIST.FETCH_FILTER,
   });
 
 export const addCourse = (value) =>

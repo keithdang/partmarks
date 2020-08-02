@@ -1,10 +1,17 @@
 import axios from "axios";
 
-export const fetchGet = ({ endpoint, FETCH_TYPE, SUCCESS_TYPE }) => async (
-  dispatch
-) => {
+export const fetchGet = ({
+  endpoint,
+  FETCH_TYPE,
+  SUCCESS_TYPE,
+  param,
+}) => async (dispatch) => {
   dispatch({ type: FETCH_TYPE });
-  const res = await axios.get(endpoint);
+  const res = await axios({
+    method: "get",
+    url: endpoint,
+    params: param,
+  });
   dispatch({ type: SUCCESS_TYPE, payload: res.data });
 };
 

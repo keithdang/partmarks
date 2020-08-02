@@ -21,8 +21,35 @@ class CourseTable {
       );
     });
   }
-
-  static getCourses() {
+  static getFilterList() {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT DISTINCT "departmentId"
+                  FROM course`,
+        // [courseId],
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0) return reject(new Error("no list"));
+          resolve({ filterList: response.rows });
+        }
+      );
+    });
+  }
+  static getCourses(filter) {
+    if (filter.departmentId) {
+      return new Promise((resolve, reject) => {
+        pool.query(
+          `SELECT * FROM course where "departmentId" = $1`,
+          [filter.departmentId],
+          (error, response) => {
+            if (error) return reject(error);
+            if (response.rows.length === 0)
+              return reject(new Error("no courses"));
+            resolve({ courseList: response.rows });
+          }
+        );
+      });
+    }
     return new Promise((resolve, reject) => {
       pool.query(`SELECT * FROM course`, (error, response) => {
         if (error) return reject(error);

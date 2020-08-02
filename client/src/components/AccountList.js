@@ -1,18 +1,17 @@
 import React, { Component } from "react";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
 class AccountList extends Component {
   componentDidMount() {
-    this.props.fetchList();
+    const { fetchList, filterFunc } = this.props;
+    fetchList(this.state);
+    if (filterFunc) {
+      filterFunc();
+    }
   }
   submit = (account) => {
     const { deleteFunc, title } = this.props;
     let params;
-
-    // if (title == "Classroom") {
-    //   params = {
-    //     courseId: account.courseId,
-    //     studentId: account.studentId,
-    //   };
-    // }
     switch (title) {
       case "Classroom":
         params = {
@@ -52,11 +51,28 @@ class AccountList extends Component {
     }
     return key;
   };
+  filterDropdown = () => {
+    const { filterList, fetchList } = this.props;
+    return (
+      <DropdownButton id="dropdown-basic-button" title="Filter">
+        {filterList.map((item) => (
+          <Dropdown.Item
+            onClick={() =>
+              fetchList({ [Object.keys(item)[0]]: Object.values(item)[0] })
+            }
+          >
+            {Object.values(item)[0]}
+          </Dropdown.Item>
+        ))}
+      </DropdownButton>
+    );
+  };
   showList = () => {
-    const { list, title } = this.props;
+    const { list, title, filterList } = this.props;
     return (
       <div>
         <h1>{title}</h1>
+        {filterList && this.filterDropdown()}
         <ul className="students">
           {list.map((account) => (
             <li key={this.genKey(account)}>
