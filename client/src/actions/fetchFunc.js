@@ -11,10 +11,12 @@ export const fetchGet = ({ endpoint, FETCH_TYPE, SUCCESS_TYPE }) => async (
 export const fetchPost = ({
   endpoint,
   param,
+  bodyPost,
   FETCH_TYPE,
   SUCCESS_TYPE,
 }) => async (dispatch) => {
   dispatch({ type: FETCH_TYPE });
+  console.log(bodyPost);
   const res = await axios({
     method: "post",
     url: endpoint,

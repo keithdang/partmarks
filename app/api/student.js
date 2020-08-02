@@ -20,9 +20,10 @@ router.post("/add", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
-router.post("/delete", async (req, res) => {
+router.post("/delete", (req, res) => {
   StudentTable.deleteStudent(req.query.id)
     .then(({ student }) => res.json({ student }))
     .catch((error) => console.error(error));
 });
+
 module.exports = router;

@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const ClassroomTable = require("../classroom/table");
+const GradesTable = require("../grades/table");
+
 const router = new Router();
 
 router.get("/list", async (req, res) => {
@@ -11,8 +13,23 @@ router.get("/list", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
+  let jsonres;
   ClassroomTable.addCourse(req.query)
-    .then(({ classroom }) => res.json({ classroom }))
+    .then(({ classroom }) => {
+      if (classroom) {
+        jsonres = classroom;
+        return GradesTable.addGradeFromTemplate(classroom);
+      } else {
+        const error = new Error("could not process classroom");
+
+        error.statusCode = 409;
+
+        throw error;
+      }
+    })
+    .then(() => {
+      res.json({ classroom: jsonres });
+    })
     .catch((error) => console.error(error));
 });
 

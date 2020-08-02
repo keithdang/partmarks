@@ -23,14 +23,43 @@ class GradesTable {
     });
   }
 
+  static addGradeFromTemplate(classroom) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `INSERT INTO 
+            grades
+                ("courseId","studentId",title,total,"weight")
+            SELECT 
+                "marksTemplate"."courseId", 
+                classroom."studentId", 
+                "marksTemplate".title, 
+                "marksTemplate".total, 
+                "marksTemplate"."weight"
+            FROM 
+                "marksTemplate", classroom
+            WHERE 
+                classroom."courseId"= ($1) AND 
+                classroom."studentId"= ($2) AND 
+                "marksTemplate"."courseId"=classroom."courseId"  
+                RETURNING *
+    `,
+        [classroom.courseId, classroom.studentId],
+        (error, response) => {
+          if (error) return reject(error);
+          resolve({ template: response.rows });
+        }
+      );
+    });
+  }
+
   static deleteGrade(grade) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `DELETE FROM grades WHERE "courseId" = $1 AND "title" = $2 RETURNING *`,
-        [grade.courseId, grade.title],
+        `DELETE FROM grades WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`,
+        [grade.courseId, grade.studentId],
         (error, response) => {
           if (error) return reject(error);
-          resolve({ course: response.rows[0] });
+          resolve({ grade: response.rows });
         }
       );
     });
