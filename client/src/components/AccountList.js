@@ -3,10 +3,10 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 class AccountList extends Component {
   componentDidMount() {
-    const { fetchList, filterFunc } = this.props;
+    const { fetchList, filter } = this.props;
     fetchList(this.state);
-    if (filterFunc) {
-      filterFunc();
+    if (filter && filter.func) {
+      filter.func();
     }
   }
   submit = (account) => {
@@ -52,27 +52,26 @@ class AccountList extends Component {
     return key;
   };
   filterDropdown = () => {
-    const { filterList, fetchList } = this.props;
+    const { fetchList, filter } = this.props;
     return (
       <DropdownButton id="dropdown-basic-button" title="Filter">
-        {filterList.map((item) => (
+        <Dropdown.Item onClick={() => fetchList()}>All</Dropdown.Item>
+        {filter.list.map((item) => (
           <Dropdown.Item
-            onClick={() =>
-              fetchList({ [Object.keys(item)[0]]: Object.values(item)[0] })
-            }
+            onClick={() => fetchList({ [filter.submit]: item[filter.submit] })}
           >
-            {Object.values(item)[0]}
+            {item[filter.display]}
           </Dropdown.Item>
         ))}
       </DropdownButton>
     );
   };
   showList = () => {
-    const { list, title, filterList } = this.props;
+    const { list, title, filter } = this.props;
     return (
       <div>
         <h1>{title}</h1>
-        {filterList && this.filterDropdown()}
+        {filter && filter.list && this.filterDropdown()}
         <ul className="students">
           {list.map((account) => (
             <li key={this.genKey(account)}>

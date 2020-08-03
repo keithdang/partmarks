@@ -1,11 +1,19 @@
 import { CLASSROOM_LIST } from "./types";
 import { fetchPost, fetchGet } from "./fetchFunc";
 
-export const fetchClassroomList = () =>
+export const fetchClassroomList = (value) =>
   fetchGet({
     endpoint: "/classroom/list",
     FETCH_TYPE: CLASSROOM_LIST.FETCH,
     SUCCESS_TYPE: CLASSROOM_LIST.FETCH_SUCCESS,
+    param: value,
+  });
+
+export const fetchFilter = () =>
+  fetchGet({
+    endpoint: "/classroom/filter",
+    FETCH_TYPE: CLASSROOM_LIST.FETCH,
+    SUCCESS_TYPE: CLASSROOM_LIST.FETCH_FILTER,
   });
 
 export const addCourse = (value) =>

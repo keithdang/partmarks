@@ -4,15 +4,13 @@ import {
   fetchClassroomList,
   addCourse,
   deleteCourse,
+  fetchFilter,
 } from "../actions/classroom";
 import { fetchSemesterCourseList } from "../actions/semesterCourse";
 import { fetchStudentList } from "../actions/student";
 import AccountList from "./AccountList";
-import AddForm from "./AddForm";
 import AddSelectionForm from "./AddSelectionForm";
 import "../App.css";
-import semesterCourseList from "../reducers/semesterCourseList";
-import studentList from "../reducers/studentList";
 import { CLASSROOM_LIST } from "../actions/types";
 class Classroom extends Component {
   componentDidMount() {
@@ -27,7 +25,7 @@ class Classroom extends Component {
   }
   componentDidUpdate() {
     const { classroomList, fetchClassroomList } = this.props;
-    if (classroomList.status == CLASSROOM_LIST.FETCH_ADD) {
+    if (classroomList.status === CLASSROOM_LIST.FETCH_ADD) {
       fetchClassroomList();
     }
   }
@@ -35,6 +33,7 @@ class Classroom extends Component {
     const {
       classroomList,
       fetchClassroomList,
+      fetchFilter,
       semesterCourseList,
       studentList,
       addCourse,
@@ -42,50 +41,44 @@ class Classroom extends Component {
     } = this.props;
     return (
       <div className="App">
-        {classroomList.list !== undefined ? (
-          <div>
-            <AccountList
-              list={classroomList.list}
-              title="Classroom"
-              fetchList={fetchClassroomList}
-              deleteFunc={deleteCourse}
-            />
-            {semesterCourseList.list && studentList.list && (
-              <AddSelectionForm
-                title="Sign Up"
-                contents={{
-                  courseId: null,
-                  studentId: null,
-                }}
-                submitFunc={addCourse}
-                lists={[
-                  {
-                    title: "Courses",
-                    tableId: "courseId",
-                    list: semesterCourseList.list.map((item) => item.id),
-                    displayTitle: semesterCourseList.list.map(
-                      (item) => item.title + ":" + item.lastName
-                    ),
-                  },
-                  {
-                    title: "Students",
-                    tableId: "studentId",
-                    list: studentList.list.map((item) => item.id),
-                    displayTitle: studentList.list.map(
-                      (item) => item.firstName
-                    ),
-                  },
-                ]}
-              />
-            )}
-          </div>
-        ) : (
-          <div>
-            <h1>No List :(</h1>
-            <button className="more" onClick={() => fetchClassroomList()}>
-              Try Again?
-            </button>
-          </div>
+        <AccountList
+          list={classroomList.list}
+          title="Classroom"
+          fetchList={fetchClassroomList}
+          deleteFunc={deleteCourse}
+          filter={{
+            display: "title",
+            submit: "courseId",
+            func: fetchFilter,
+            list: classroomList.filterList,
+          }}
+        />
+        {semesterCourseList.list && studentList.list && (
+          <AddSelectionForm
+            title="Sign Up"
+            contents={{
+              courseId: null,
+              studentId: null,
+            }}
+            submitFunc={addCourse}
+            fetchList={fetchClassroomList}
+            lists={[
+              {
+                title: "Courses",
+                tableId: "courseId",
+                list: semesterCourseList.list.map((item) => item.id),
+                displayTitle: semesterCourseList.list.map(
+                  (item) => item.title + ":" + item.lastName
+                ),
+              },
+              {
+                title: "Students",
+                tableId: "studentId",
+                list: studentList.list.map((item) => item.id),
+                displayTitle: studentList.list.map((item) => item.firstName),
+              },
+            ]}
+          />
         )}
       </div>
     );
@@ -102,6 +95,7 @@ export default connect(
     fetchClassroomList,
     fetchSemesterCourseList,
     fetchStudentList,
+    fetchFilter,
     addCourse,
     deleteCourse,
   }

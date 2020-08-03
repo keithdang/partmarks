@@ -29,8 +29,12 @@ class Course extends Component {
           title="Courses"
           deleteFunc={deleteCourse}
           fetchList={fetchCourseList}
-          filterList={courseList.filterList}
-          filterFunc={fetchFilter}
+          filter={{
+            display: "departmentId",
+            submit: "departmentId",
+            func: fetchFilter,
+            list: courseList.filterList,
+          }}
         />
         <AddForm
           contents={{

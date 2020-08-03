@@ -21,6 +21,7 @@ class CourseTable {
       );
     });
   }
+
   static getFilterList() {
     return new Promise((resolve, reject) => {
       pool.query(
@@ -35,6 +36,7 @@ class CourseTable {
       );
     });
   }
+
   static getCourses(filter) {
     if (filter.departmentId) {
       return new Promise((resolve, reject) => {

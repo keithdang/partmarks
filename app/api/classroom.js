@@ -5,10 +5,16 @@ const GradesTable = require("../grades/table");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  ClassroomTable.getClassList()
+  ClassroomTable.getClassList(req.query)
     .then(({ classroomList }) => {
       res.json({ classroomList });
     })
+    .catch((error) => console.error(error));
+});
+
+router.get("/filter", async (req, res) => {
+  ClassroomTable.getFilterList()
+    .then(({ filterList }) => res.json({ filterList }))
     .catch((error) => console.error(error));
 });
 

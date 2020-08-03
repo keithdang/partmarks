@@ -28,6 +28,12 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
         }
       }
       return { ...state, status: fetchStates.fetching };
+    case CLASSROOM_LIST.FETCH_FILTER:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        filterList: action.payload.filterList,
+      };
     default:
       return state;
   }

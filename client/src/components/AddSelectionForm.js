@@ -11,13 +11,13 @@ class AddSelectionForm extends Component {
   };
 
   render() {
-    const { lists, title, submitFunc } = this.props;
+    const { lists, title, submitFunc, fetchList } = this.props;
 
     return (
       <div>
         <h2>{title}</h2>
         <div className="list">
-          {lists &&
+          {lists ? (
             lists.map((list) => (
               <div>
                 <DropdownButton
@@ -37,7 +37,15 @@ class AddSelectionForm extends Component {
                     ))}
                 </DropdownButton>
               </div>
-            ))}
+            ))
+          ) : (
+            <div>
+              <h1>No List :(</h1>
+              <button className="more" onClick={() => fetchList()}>
+                Try Again?
+              </button>
+            </div>
+          )}
           <Button onClick={() => submitFunc(this.state)}>Add</Button>
         </div>
       </div>
