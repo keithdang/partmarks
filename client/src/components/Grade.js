@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchGradeList } from "../actions/grade";
+import { fetchGradeList, fetchFilter, fetchSubFilter } from "../actions/grade";
 import AccountList from "./AccountList";
 import "../App.css";
 class Grade extends Component {
@@ -10,25 +10,31 @@ class Grade extends Component {
   }
 
   render() {
-    const { gradeList, fetchGradeList } = this.props;
+    const {
+      gradeList,
+      fetchGradeList,
+      fetchFilter,
+      fetchSubFilter,
+    } = this.props;
     return (
       <div className="App">
-        {gradeList.list !== undefined ? (
-          <div>
-            <AccountList
-              list={gradeList.list}
-              title="Grades"
-              fetchList={fetchGradeList}
-            />
-          </div>
-        ) : (
-          <div>
-            <h1>No List :(</h1>
-            <button className="more" onClick={() => fetchGradeList()}>
-              Try Again?
-            </button>
-          </div>
-        )}
+        <AccountList
+          list={gradeList.list}
+          title="Grades"
+          fetchList={fetchGradeList}
+          filter={{
+            display: "title",
+            submit: "courseId",
+            subFilter: {
+              display: "title",
+              submit: "title",
+              func: fetchSubFilter,
+              list: gradeList.subFilterList,
+            },
+            func: fetchFilter,
+            list: gradeList.filterList,
+          }}
+        />
       </div>
     );
   }
@@ -40,5 +46,7 @@ export default connect(
   }),
   {
     fetchGradeList,
+    fetchFilter,
+    fetchSubFilter,
   }
 )(Grade);

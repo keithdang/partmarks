@@ -11,9 +11,6 @@ import AddForm from "./AddForm";
 import "../App.css";
 
 class Course extends Component {
-  componentDidMount() {
-    this.props.fetchCourseList();
-  }
   render() {
     const {
       addCourse,

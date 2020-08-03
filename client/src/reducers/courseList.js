@@ -27,7 +27,6 @@ const courseList = (state = DEFAULT_COURSE_LIST, action) => {
       }
       return { ...state, status: fetchStates.fetching };
     case COURSE_LIST.FETCH_FILTER:
-      //   state.filterList.push(action.payload.filterList);
       return {
         ...state,
         status: fetchStates.fetching,

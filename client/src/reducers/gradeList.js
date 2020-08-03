@@ -28,6 +28,18 @@ const gradeList = (state = DEFAULT_GRADE_LIST, action) => {
         }
       }
       return { ...state, status: fetchStates.fetching };
+    case GRADE_LIST.FETCH_FILTER:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        filterList: action.payload.filterList,
+      };
+    case GRADE_LIST.FETCH_SUB_FILTER:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        subFilterList: action.payload.filterList,
+      };
     default:
       return state;
   }

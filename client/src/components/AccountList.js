@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 class AccountList extends Component {
   componentDidMount() {
     const { fetchList, filter } = this.props;
@@ -9,6 +10,7 @@ class AccountList extends Component {
       filter.func();
     }
   }
+
   submit = (account) => {
     const { deleteFunc, title } = this.props;
     let params;
@@ -30,6 +32,7 @@ class AccountList extends Component {
     }
     deleteFunc(params);
   };
+
   genKey = (account) => {
     const { title } = this.props;
     let key;
@@ -51,21 +54,57 @@ class AccountList extends Component {
     }
     return key;
   };
+  clickFilter = (item, filter) => {
+    const { fetchList } = this.props;
+    this.setState({ [filter.submit]: item[filter.submit] });
+    fetchList({ [filter.submit]: item[filter.submit] });
+    if (filter.subFilter && filter.subFilter.func) {
+      filter.subFilter.func({ [filter.submit]: item[filter.submit] });
+    }
+  };
+  clickSubFilter = (item, filter) => {
+    const { fetchList } = this.props;
+    this.setState({ [filter.submit]: item[filter.submit] }, () => {
+      fetchList(this.state);
+    });
+  };
   filterDropdown = () => {
     const { fetchList, filter } = this.props;
     return (
-      <DropdownButton id="dropdown-basic-button" title="Filter">
-        <Dropdown.Item onClick={() => fetchList()}>All</Dropdown.Item>
-        {filter.list.map((item) => (
-          <Dropdown.Item
-            onClick={() => fetchList({ [filter.submit]: item[filter.submit] })}
+      <div>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title="Filter"
+          as={ButtonGroup}
+        >
+          <Dropdown.Item onClick={() => fetchList()}>All</Dropdown.Item>
+          {filter.list.map((item) => (
+            <Dropdown.Item onClick={() => this.clickFilter(item, filter)}>
+              {item[filter.display]}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+        {filter.subFilter && (
+          <DropdownButton
+            id="dropdown-basic-button"
+            title="Filter"
+            as={ButtonGroup}
           >
-            {item[filter.display]}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
+            <Dropdown.Item onClick={() => fetchList()}>All</Dropdown.Item>
+            {filter.subFilter.list &&
+              filter.subFilter.list.map((item) => (
+                <Dropdown.Item
+                  onClick={() => this.clickSubFilter(item, filter.subFilter)}
+                >
+                  {item[filter.display]}
+                </Dropdown.Item>
+              ))}
+          </DropdownButton>
+        )}
+      </div>
     );
   };
+
   showList = () => {
     const { list, title, filter } = this.props;
     return (

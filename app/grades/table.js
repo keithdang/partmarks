@@ -1,12 +1,74 @@
 const pool = require("../databasePool");
 class GradesTable {
-  static getGrades() {
+  static getGrades(filter) {
+    if (filter.courseId) {
+      var gradeQuery = `SELECT * FROM grades where "courseId"= $1`;
+      var criteria = [filter.courseId];
+      if (filter.title) {
+        gradeQuery = `SELECT * FROM grades where "courseId"= $1 AND "title" = $2`;
+        criteria.push(filter.title);
+      }
+      return new Promise((resolve, reject) => {
+        pool.query(gradeQuery, criteria, (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0)
+            return reject(new Error("no courses"));
+          resolve({ gradeList: response.rows });
+        });
+      });
+    }
+
     return new Promise((resolve, reject) => {
       pool.query(`SELECT * FROM grades`, (error, response) => {
         if (error) return reject(error);
         if (response.rows.length === 0) return reject(new Error("no courses"));
         resolve({ gradeList: response.rows });
       });
+    });
+  }
+
+  static getFilterList() {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT DISTINCT
+        course.title,
+        grades."courseId"
+      FROM 
+      grades, 
+        course, 
+        "semesterCourse" 
+      WHERE 
+        "semesterCourse"."id"=grades."courseId" AND 
+        course."courseId"="semesterCourse"."courseId"`,
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0) return reject(new Error("no list"));
+          resolve({ filterList: response.rows });
+        }
+      );
+    });
+  }
+
+  static getSubFilterList(filter) {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        `SELECT DISTINCT
+        grades.title
+      FROM 
+      grades, 
+        course, 
+        "semesterCourse" 
+      WHERE 
+        "semesterCourse"."id"=grades."courseId" AND 
+        course."courseId"="semesterCourse"."courseId" AND
+        grades."courseId" = $1`,
+        [filter.courseId],
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0) return reject(new Error("no list"));
+          resolve({ filterList: response.rows });
+        }
+      );
     });
   }
 
