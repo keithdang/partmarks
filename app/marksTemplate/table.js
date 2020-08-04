@@ -1,12 +1,54 @@
 const pool = require("../databasePool");
+const { response } = require("express");
 class MarksTemplateTable {
-  static getTemplates() {
-    return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM "marksTemplate"`, (error, response) => {
-        if (error) return reject(error);
-        if (response.rows.length === 0) return reject(new Error("no courses"));
-        resolve({ templateList: response.rows });
+  static getTemplates(filter) {
+    var query = `SELECT * FROM "marksTemplate"`;
+    if (filter.courseId) {
+      query += ` WHERE "courseId" = $1`;
+      return new Promise((resolve, reject) => {
+        pool.query(query, [filter.courseId], (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0)
+            return reject(new Error("no courses"));
+          resolve({ templateList: response.rows });
+        });
       });
+    }
+    return new Promise((resolve, reject) => {
+      pool.query(
+        //   `SELECT * FROM "marksTemplate"`
+        query,
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0)
+            return reject(new Error("no courses"));
+          resolve({ templateList: response.rows });
+        }
+      );
+    });
+  }
+
+  static getFilterList() {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        ` 
+      SELECT DISTINCT
+        course.title,
+        "marksTemplate"."courseId"
+      FROM 
+      "marksTemplate", 
+        course, 
+        "semesterCourse" 
+      WHERE 
+        "semesterCourse"."id"="marksTemplate"."courseId" AND 
+        course."courseId"="semesterCourse"."courseId"
+        `,
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0) return reject(new Error("no list"));
+          resolve({ filterList: response.rows });
+        }
+      );
     });
   }
 

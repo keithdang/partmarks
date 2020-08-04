@@ -27,27 +27,57 @@ class SemesterCourseTable {
     });
   }
 
-  static getCourses() {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT 
-            "semesterCourse".id,
-            course."courseId",
-            course.title,
-            teacher.id as "teacherId",
-            teacher."lastName" 
-        from 
-            "semesterCourse",
-            course,
-            teacher
-        where 
-            "semesterCourse"."courseId"=course."courseId" AND 
-            "semesterCourse"."teacherId"=teacher.id`,
-        (error, response) => {
+  static getCourses(filter) {
+    var query = `SELECT 
+      "semesterCourse".id,
+      course."courseId",
+      course.title,
+      teacher.id as "teacherId",
+      teacher."lastName" 
+  from 
+      "semesterCourse",
+      course,
+      teacher
+  where 
+      "semesterCourse"."courseId"=course."courseId" AND 
+      "semesterCourse"."teacherId"=teacher.id`;
+    if (filter.courseId) {
+      query += ` AND "semesterCourse"."courseId"= $1`;
+      return new Promise((resolve, reject) => {
+        pool.query(query, [filter.courseId], (error, response) => {
           if (error) return reject(error);
           if (response.rows.length === 0)
             return reject(new Error("no courses"));
           resolve({ courseList: response.rows });
+        });
+      });
+    }
+    return new Promise((resolve, reject) => {
+      pool.query(query, (error, response) => {
+        if (error) return reject(error);
+        if (response.rows.length === 0) return reject(new Error("no courses"));
+        resolve({ courseList: response.rows });
+      });
+    });
+  }
+
+  static getFilterList() {
+    return new Promise((resolve, reject) => {
+      pool.query(
+        ` 
+      SELECT DISTINCT
+        course.title,
+        "semesterCourse"."courseId"
+      FROM 
+        course, 
+        "semesterCourse" 
+      WHERE 
+        course."courseId"="semesterCourse"."courseId"
+        `,
+        (error, response) => {
+          if (error) return reject(error);
+          if (response.rows.length === 0) return reject(new Error("no list"));
+          resolve({ filterList: response.rows });
         }
       );
     });

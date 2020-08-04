@@ -4,10 +4,16 @@ const GradesTable = require("../grades/table");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  MarksTemplateTable.getTemplates()
+  MarksTemplateTable.getTemplates(req.query)
     .then(({ templateList }) => {
       res.json({ templateList });
     })
+    .catch((error) => console.error(error));
+});
+
+router.get("/filter", async (req, res) => {
+  MarksTemplateTable.getFilterList()
+    .then(({ filterList }) => res.json({ filterList }))
     .catch((error) => console.error(error));
 });
 

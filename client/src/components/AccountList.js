@@ -112,6 +112,11 @@ class AccountList extends Component {
         <h1>{title}</h1>
         {filter && filter.list && this.filterDropdown()}
         <ul className="students">
+          <div className="list">
+            {Object.keys(list[0]).map((prop) => (
+              <div className="list-row">{prop}</div>
+            ))}
+          </div>
           {list.map((account) => (
             <li key={this.genKey(account)}>
               <div className="list">

@@ -27,7 +27,6 @@ class CourseTable {
       pool.query(
         `SELECT DISTINCT "departmentId"
                   FROM course`,
-        // [courseId],
         (error, response) => {
           if (error) return reject(error);
           if (response.rows.length === 0) return reject(new Error("no list"));

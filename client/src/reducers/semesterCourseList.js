@@ -26,6 +26,12 @@ const semesterCourseList = (state = DEFAULT_COURSE_LIST, action) => {
         }
       }
       return { ...state, status: fetchStates.fetching };
+    case SEMESTER_COURSE_LIST.FETCH_FILTER:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        filterList: action.payload.filterList,
+      };
     default:
       return state;
   }

@@ -3,10 +3,16 @@ const SemesterCourseTable = require("../semesterCourse/table");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  SemesterCourseTable.getCourses()
+  SemesterCourseTable.getCourses(req.query)
     .then(({ courseList }) => {
       res.json({ courseList });
     })
+    .catch((error) => console.error(error));
+});
+
+router.get("/filter", async (req, res) => {
+  SemesterCourseTable.getFilterList()
+    .then(({ filterList }) => res.json({ filterList }))
     .catch((error) => console.error(error));
 });
 

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   fetchSemesterCourseList,
+  fetchFilter,
   addCourse,
   deleteCourse,
 } from "../actions/semesterCourse";
@@ -30,6 +31,7 @@ class SemesterCourse extends Component {
       deleteCourse,
       fetchSemesterCourseList,
       teacherList,
+      fetchFilter,
     } = this.props;
 
     return (
@@ -39,6 +41,12 @@ class SemesterCourse extends Component {
           title="Semester Courses"
           deleteFunc={deleteCourse}
           fetchList={fetchSemesterCourseList}
+          filter={{
+            display: "title",
+            submit: "courseId",
+            func: fetchFilter,
+            list: semesterCourseList.filterList,
+          }}
         />
         {courseList.list && teacherList.list && (
           <AddSelectionForm
@@ -97,5 +105,6 @@ export default connect(
     deleteCourse,
     fetchCourseList,
     fetchTeacherList,
+    fetchFilter,
   }
 )(SemesterCourse);

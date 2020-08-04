@@ -29,6 +29,12 @@ const marksTemplateList = (state = DEFAULT_TEMPLATE_LIST, action) => {
         }
       }
       return { ...state, status: fetchStates.fetching };
+    case MARKS_TEMPLATE_LIST.FETCH_FILTER:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        filterList: action.payload.filterList,
+      };
     default:
       return state;
   }

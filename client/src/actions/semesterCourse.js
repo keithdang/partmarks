@@ -1,16 +1,17 @@
 import { SEMESTER_COURSE_LIST } from "./types";
 import { fetchPost, fetchGet } from "./fetchFunc";
-
-export const fetchSemesterCourseList = () =>
+var address = "/semesterCourse";
+export const fetchSemesterCourseList = (value) =>
   fetchGet({
-    endpoint: "/semesterCourse/list",
+    endpoint: address + "/list",
     FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
     SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_SUCCESS,
+    param: value,
   });
 
 export const addCourse = (value) =>
   fetchPost({
-    endpoint: "/semesterCourse/add",
+    endpoint: address + "/add",
     param: {
       courseId: value.courseId,
       teacherId: value.teacherId,
@@ -20,10 +21,15 @@ export const addCourse = (value) =>
     FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
     SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_ADD,
   });
-
+export const fetchFilter = () =>
+  fetchGet({
+    endpoint: address + "/filter",
+    FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
+    SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_FILTER,
+  });
 export const deleteCourse = (value) =>
   fetchPost({
-    endpoint: "/semesterCourse/delete",
+    endpoint: address + "/delete",
     param: { id: value },
     FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
     SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_DELETE,

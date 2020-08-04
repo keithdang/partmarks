@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   fetchTemplatesList,
+  fetchFilter,
   addTemplate,
   deleteTemplate,
 } from "../actions/marksTemplate";
@@ -25,6 +26,7 @@ class MarksTemplate extends Component {
       addTemplate,
       semesterCourseList,
       deleteTemplate,
+      fetchFilter,
     } = this.props;
     return (
       <div className="App">
@@ -36,6 +38,12 @@ class MarksTemplate extends Component {
                 title="Marks Template"
                 fetchList={fetchTemplatesList}
                 deleteFunc={deleteTemplate}
+                filter={{
+                  display: "title",
+                  submit: "courseId",
+                  func: fetchFilter,
+                  list: marksTemplateList.filterList,
+                }}
               />
             </div>
           ) : (
@@ -85,5 +93,6 @@ export default connect(
     addTemplate,
     fetchSemesterCourseList,
     deleteTemplate,
+    fetchFilter,
   }
 )(MarksTemplate);
