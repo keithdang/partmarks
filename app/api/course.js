@@ -15,13 +15,13 @@ router.get("/filter", async (req, res) => {
     .catch((error) => console.error(error));
 });
 router.post("/add", async (req, res) => {
-  CourseTable.addCourse(req.query)
+  CourseTable.addCourse(req.body)
     .then(({ course }) => res.json({ course }))
     .catch((error) => console.error(error));
 });
 
 router.post("/delete", async (req, res) => {
-  CourseTable.deleteCourse(req.query.id)
+  CourseTable.deleteCourse(req.body.id)
     .then(({ course }) => res.json({ course }))
     .catch((error) => console.error(error));
 });

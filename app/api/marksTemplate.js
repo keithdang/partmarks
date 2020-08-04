@@ -19,7 +19,7 @@ router.get("/filter", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   let jsonres;
-  MarksTemplateTable.addTemplate(req.query)
+  MarksTemplateTable.addTemplate(req.body)
     .then(({ template }) => {
       if (template) {
         jsonres = template;
@@ -40,7 +40,7 @@ router.post("/add", async (req, res) => {
 
 router.post("/delete", async (req, res) => {
   let jsonres;
-  MarksTemplateTable.deleteTemplate(req.query)
+  MarksTemplateTable.deleteTemplate(req.body)
     .then(({ template }) => {
       if (template) {
         jsonres = template;

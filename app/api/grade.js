@@ -11,7 +11,7 @@ router.get("/list", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  GradesTable.addGrade(req.query)
+  GradesTable.addGrade(req.body)
     .then(({ grade }) => res.json({ grade }))
     .catch((error) => console.error(error));
 });
@@ -29,13 +29,13 @@ router.get("/subfilter", async (req, res) => {
 });
 
 router.post("/delete", async (req, res) => {
-  GradesTable.deleteGrade(req.query)
+  GradesTable.deleteGrade(req.body)
     .then(({ grade }) => res.json({ grade }))
     .catch((error) => console.error(error));
 });
 
 router.post("/deleteFromTemplate", async (req, res) => {
-  GradesTable.deleteGradeFromTemplate(req.query)
+  GradesTable.deleteGradeFromTemplate(req.body)
     .then(({ grade }) => res.json({ grade }))
     .catch((error) => console.error(error));
 });

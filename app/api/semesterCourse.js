@@ -17,13 +17,13 @@ router.get("/filter", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  SemesterCourseTable.addCourse(req.query)
+  SemesterCourseTable.addCourse(req.body)
     .then(({ semesterCourse }) => res.json({ semesterCourse }))
     .catch((error) => console.error(error));
 });
 
 router.post("/delete", async (req, res) => {
-  SemesterCourseTable.deleteCourse(req.query.id)
+  SemesterCourseTable.deleteCourse(req.body.id)
     .then(({ course }) => res.json({ course }))
     .catch((error) => console.error(error));
 });

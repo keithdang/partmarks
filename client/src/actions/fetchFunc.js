@@ -28,6 +28,7 @@ export const fetchPost = ({
     method: "post",
     url: endpoint,
     params: param,
+    data: JSON.stringify(param),
     headers: { "Content-Type": "application/json; charset=UTF-8" },
   });
   dispatch({ type: SUCCESS_TYPE, payload: res.data });

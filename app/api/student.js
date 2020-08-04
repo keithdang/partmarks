@@ -15,13 +15,13 @@ router.get("/list", async (req, res) => {
 });
 
 router.post("/add", async (req, res) => {
-  StudentTable.addStudent(req.query.firstName)
+  StudentTable.addStudent(req.body.firstName)
     .then(({ student }) => res.json({ student }))
     .catch((error) => console.error(error));
 });
 
 router.post("/delete", (req, res) => {
-  StudentTable.deleteStudent(req.query.id)
+  StudentTable.deleteStudent(req.body.id)
     .then(({ student }) => res.json({ student }))
     .catch((error) => console.error(error));
 });

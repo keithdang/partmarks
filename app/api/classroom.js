@@ -5,6 +5,8 @@ const GradesTable = require("../grades/table");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
+  console.log(req.query);
+  console.log(req.body);
   ClassroomTable.getClassList(req.query)
     .then(({ classroomList }) => {
       res.json({ classroomList });
