@@ -1,7 +1,6 @@
 const pool = require("../databasePool");
-// function fullCourseId(depeartmentId, courseId) {
-//   return parseInt(depeartmentId.toString() + courseId.toString());
-// }
+const { poolQuery } = require("../api/helper");
+
 class ClassroomTable {
   static getClassList(filter) {
     if (filter.courseId) {
@@ -69,54 +68,31 @@ class ClassroomTable {
   }
 
   static getFilterList() {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        ` 
-      SELECT DISTINCT
-        course.title,
-        classroom."courseId"
-      FROM 
-        classroom, 
-        course, 
-        "semesterCourse" 
-      WHERE 
-        "semesterCourse"."id"=classroom."courseId" AND 
-        course."courseId"="semesterCourse"."courseId"
-        `,
-        (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0) return reject(new Error("no list"));
-          resolve({ filterList: response.rows });
-        }
-      );
-    });
+    var query = `
+    SELECT DISTINCT
+      course.title,
+      classroom."courseId"
+    FROM
+      classroom,
+      course,
+      "semesterCourse"
+    WHERE
+      "semesterCourse"."id"=classroom."courseId" AND
+      course."courseId"="semesterCourse"."courseId"
+      `;
+    return poolQuery({ query }, "filterList");
   }
 
   static addCourse(signup) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `INSERT INTO classroom ("courseId","studentId") VALUES ($1,$2) RETURNING *`,
-        [signup.courseId, signup.studentId],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ classroom: response.rows[0] });
-        }
-      );
-    });
+    var query = `INSERT INTO classroom ("courseId","studentId") VALUES ($1,$2) RETURNING *`;
+    var params = [signup.courseId, signup.studentId];
+    return poolQuery({ query, params }, "classroom", false);
   }
 
   static deleteCourse(classroom) {
-    console.log(classroom);
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `DELETE FROM classroom WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`,
-        [classroom.courseId, classroom.studentId],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ course: response.rows[0] });
-        }
-      );
-    });
+    var query = `DELETE FROM classroom WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`;
+    var params = [classroom.courseId, classroom.studentId];
+    return poolQuery({ query, params }, "course", false);
   }
 }
 

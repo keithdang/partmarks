@@ -1,5 +1,6 @@
 const pool = require("../databasePool");
-const BasicCrud = require("../api/basicCRUD");
+const { poolQuery } = require("../api/helper");
+
 function fullCourseId(semesterCourse) {
   var num = parseInt(
     semesterCourse.courseId.toString() +
@@ -43,77 +44,41 @@ class SemesterCourseTable {
       "semesterCourse"."teacherId"=teacher.id`;
     if (filter.courseId) {
       query += ` AND "semesterCourse"."courseId"= $1`;
-      return new Promise((resolve, reject) => {
-        pool.query(query, [filter.courseId], (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0)
-            return reject(new Error("no courses"));
-          resolve({ courseList: response.rows });
-        });
-      });
     }
-    return new Promise((resolve, reject) => {
-      pool.query(query, (error, response) => {
-        if (error) return reject(error);
-        if (response.rows.length === 0) return reject(new Error("no courses"));
-        resolve({ courseList: response.rows });
-      });
-    });
+    var params = [filter.courseId];
+    return poolQuery({ query, params }, "courseList");
   }
 
   static getFilterList() {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        ` 
-      SELECT DISTINCT
-        course.title,
-        "semesterCourse"."courseId"
-      FROM 
-        course, 
-        "semesterCourse" 
-      WHERE 
-        course."courseId"="semesterCourse"."courseId"
-        `,
-        (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0) return reject(new Error("no list"));
-          resolve({ filterList: response.rows });
-        }
-      );
-    });
+    var query = ` 
+    SELECT DISTINCT
+      course.title,
+      "semesterCourse"."courseId"
+    FROM 
+      course, 
+      "semesterCourse" 
+    WHERE 
+      course."courseId"="semesterCourse"."courseId"
+      `;
+    return poolQuery({ query }, "filterList");
   }
 
   static addCourse(semesterCourse) {
-    console.log(semesterCourse);
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `INSERT INTO "semesterCourse" ("id","courseId","teacherId","semester","nYear") VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-        [
-          fullCourseId(semesterCourse),
-          semesterCourse.courseId,
-          semesterCourse.teacherId,
-          semesterCourse.semester,
-          semesterCourse.nYear,
-        ],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ semesterCourse: response.rows[0] });
-        }
-      );
-    });
+    var query = `INSERT INTO "semesterCourse" ("id","courseId","teacherId","semester","nYear") VALUES ($1,$2,$3,$4,$5) RETURNING *`;
+    var params = [
+      fullCourseId(semesterCourse),
+      semesterCourse.courseId,
+      semesterCourse.teacherId,
+      semesterCourse.semester,
+      semesterCourse.nYear,
+    ];
+    return poolQuery({ query, params }, "semesterCourse", false);
   }
 
   static deleteCourse(id) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `DELETE FROM "semesterCourse" WHERE id = $1 RETURNING *`,
-        [id],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ course: response.rows[0] });
-        }
-      );
-    });
+    var query = `DELETE FROM "semesterCourse" WHERE id = $1 RETURNING *`;
+    var params = [id];
+    return poolQuery({ query, params }, "course", false);
   }
 }
 

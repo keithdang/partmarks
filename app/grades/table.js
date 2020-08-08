@@ -1,172 +1,114 @@
 const pool = require("../databasePool");
+const { poolQuery } = require("../api/helper");
+
 class GradesTable {
   static getGrades(filter) {
+    var query = `SELECT * FROM grades`;
+    var params = [];
     if (filter.courseId) {
-      var gradeQuery = `SELECT * FROM grades where "courseId"= $1`;
-      var criteria = [filter.courseId];
+      query += ` where "courseId"= $1`;
+      params.push(filter.courseId);
       if (filter.title) {
-        gradeQuery = `SELECT * FROM grades where "courseId"= $1 AND "title" = $2`;
-        criteria.push(filter.title);
+        query += ` AND "title"= $2`;
+        params.push(filter.title);
       }
-      return new Promise((resolve, reject) => {
-        pool.query(gradeQuery, criteria, (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0)
-            return reject(new Error("no courses"));
-          resolve({ gradeList: response.rows });
-        });
-      });
     }
-
-    return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM grades`, (error, response) => {
-        if (error) return reject(error);
-        if (response.rows.length === 0) return reject(new Error("no courses"));
-        resolve({ gradeList: response.rows });
-      });
-    });
+    return poolQuery({ query, params }, "gradeList");
   }
 
   static getFilterList() {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT DISTINCT
-        course.title,
-        grades."courseId"
-      FROM 
-      grades, 
+    var query = `
+    SELECT DISTINCT
+            course.title,
+            grades."courseId"
+    FROM 
+    grades, 
         course, 
         "semesterCourse" 
-      WHERE 
+    WHERE 
         "semesterCourse"."id"=grades."courseId" AND 
-        course."courseId"="semesterCourse"."courseId"`,
-        (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0) return reject(new Error("no list"));
-          resolve({ filterList: response.rows });
-        }
-      );
-    });
+        course."courseId"="semesterCourse"."courseId"`;
+    return poolQuery({ query }, "filterList");
   }
 
   static getSubFilterList(filter) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT DISTINCT
+    var query = `
+    SELECT DISTINCT
         grades.title
-      FROM 
-      grades, 
+    FROM 
+        grades, 
         course, 
         "semesterCourse" 
-      WHERE 
+    WHERE 
         "semesterCourse"."id"=grades."courseId" AND 
         course."courseId"="semesterCourse"."courseId" AND
-        grades."courseId" = $1`,
-        [filter.courseId],
-        (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0) return reject(new Error("no list"));
-          resolve({ filterList: response.rows });
-        }
-      );
-    });
+        grades."courseId" = $1`;
+    var params = [filter.courseId];
+    return poolQuery({ query, params }, "filterList");
   }
 
   static addGrade(grade) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `INSERT INTO grades ("courseId","title","total","weight") VALUES ($1,$2,$3,$4) RETURNING *`,
-        [grade.courseId, grade.title, grade.total, grade.weight],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ template: response.rows[0] });
-        }
-      );
-    });
+    var query = `INSERT INTO grades ("courseId","title","total","weight") VALUES ($1,$2,$3,$4) RETURNING *`;
+    var params = [grade.courseId, grade.title, grade.total, grade.weight];
+    return poolQuery({ query, params }, "template", false);
   }
 
   static addGradeFromTemplate(template) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `INSERT INTO 
-            grades
-                ("courseId","studentId",title,total,"weight")
-            SELECT 
-                "marksTemplate"."courseId", 
-                classroom."studentId", 
-                "marksTemplate".title, 
-                "marksTemplate".total, 
-                "marksTemplate"."weight"
-            FROM 
-                "marksTemplate", classroom
-            WHERE 
-                "marksTemplate"."courseId"= $1 AND 
-                "marksTemplate"."title"= $2 AND 
-                "marksTemplate"."courseId"=classroom."courseId"  
-                RETURNING *
-    `,
-        [template.courseId, template.title],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ grade: response.rows });
-        }
-      );
-    });
+    var query = `
+    INSERT INTO 
+        grades
+        ("courseId","studentId",title,total,"weight")
+    SELECT 
+        "marksTemplate"."courseId", 
+        classroom."studentId", 
+        "marksTemplate".title, 
+        "marksTemplate".total, 
+        "marksTemplate"."weight"
+    FROM 
+        "marksTemplate", classroom
+    WHERE 
+        "marksTemplate"."courseId"= $1 AND 
+        "marksTemplate"."title"= $2 AND 
+        "marksTemplate"."courseId"=classroom."courseId"  
+        RETURNING *
+    `;
+    var params = [template.courseId, template.title];
+    return poolQuery({ query, params }, "grade");
   }
 
   static addGradeFromStudentSignUp(classroom) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `INSERT INTO 
-            grades
-                ("courseId","studentId",title,total,"weight")
-            SELECT 
-                "marksTemplate"."courseId", 
-                classroom."studentId", 
-                "marksTemplate".title, 
-                "marksTemplate".total, 
-                "marksTemplate"."weight"
-            FROM 
-                "marksTemplate", classroom
-            WHERE 
-                classroom."courseId"= ($1) AND 
-                classroom."studentId"= ($2) AND 
-                "marksTemplate"."courseId"=classroom."courseId"  
-                RETURNING *
-    `,
-        [classroom.courseId, classroom.studentId],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ grade: response.rows });
-        }
-      );
-    });
+    var query = `
+    INSERT INTO 
+        grades
+            ("courseId","studentId",title,total,"weight")
+        SELECT 
+            "marksTemplate"."courseId", 
+            classroom."studentId", 
+            "marksTemplate".title, 
+            "marksTemplate".total, 
+            "marksTemplate"."weight"
+        FROM 
+            "marksTemplate", classroom
+        WHERE 
+            classroom."courseId"= ($1) AND 
+            classroom."studentId"= ($2) AND 
+            "marksTemplate"."courseId"=classroom."courseId"  
+            RETURNING *
+    `;
+    var params = [classroom.courseId, classroom.studentId];
+    return poolQuery({ query, params }, "grade");
   }
 
   static deleteGrade(grade) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `DELETE FROM grades WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`,
-        [grade.courseId, grade.studentId],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ grade: response.rows });
-        }
-      );
-    });
+    var query = `DELETE FROM grades WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`;
+    var params = [grade.courseId, grade.studentId];
+    return poolQuery({ query, params }, "grade");
   }
 
   static deleteGradeFromTemplate(template) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `DELETE FROM grades WHERE "courseId" = $1 AND "title" = $2 RETURNING *`,
-        [template.courseId, template.title],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ grade: response.rows });
-        }
-      );
-    });
+    var query = `DELETE FROM grades WHERE "courseId" = $1 AND "title" = $2 RETURNING *`;
+    var params = [template.courseId, template.title];
+    return poolQuery({ query, params }, "grade");
   }
 }
 

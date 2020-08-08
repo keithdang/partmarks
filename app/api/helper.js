@@ -1,32 +1,37 @@
 const Session = require("../account/session");
 const AccountTable = require("../account/table");
+const pool = require("../databasePool");
 const { hash } = require("../account/helper");
 
-// const setSession = ({ username, res, sessionId }) => {
-//   return new Promise((resolve, reject) => {
-//     let session, sessionString;
-//     if (sessionId) {
-//       sessionString = Session.sessionString({ username, id: sessionId });
+const getRow = (rows, bAll) => {
+  if (bAll) {
+    return rows;
+  } else {
+    return rows[0];
+  }
+};
 
-//       setSessionCookie({ sessionString, res });
+const poolQuery = (input, output, bAll = true) => {
+  return new Promise((resolve, reject) => {
+    if (input.params && input.params[0] !== undefined) {
+      pool.query(input.query, input.params, (error, response) => {
+        if (error) return reject(error);
 
-//       resolve({ message: "session restored" });
-//     } else {
-//       session = new Session({ username });
-//       sessionString = session.toString();
-//       AccountTable.updateSessionId({
-//         sessionId: session.id,
-//         usernameHash: hash(username),
-//       })
-//         .then(() => {
-//           setSessionCookie({ sessionString, res });
+        if (response.rows.length === 0)
+          return reject(new Error("Could not get query"));
+        resolve({ [output]: getRow(response.rows, bAll) });
+      });
+    } else {
+      pool.query(input.query, (error, response) => {
+        if (error) return reject(error);
 
-//           resolve({ message: "session created" });
-//         })
-//         .catch((error) => reject(error));
-//     }
-//   });
-// };
+        if (response.rows.length === 0)
+          return reject(new Error("Could not get query"));
+        resolve({ [output]: getRow(response.rows, bAll) });
+      });
+    }
+  });
+};
 
 const setSession = ({ username, res, sessionId }) => {
   return new Promise((resolve, reject) => {
@@ -83,4 +88,4 @@ const authenticatedAccount = ({ sessionString }) => {
     }
   });
 };
-module.exports = { setSession, authenticatedAccount };
+module.exports = { setSession, authenticatedAccount, poolQuery };

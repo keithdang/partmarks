@@ -1,5 +1,5 @@
 const pool = require("../databasePool");
-const BasicCrud = require("../api/basicCRUD");
+const { poolQuery } = require("../api/helper");
 class StudentTable {
   static getStudent({ studentId }) {
     return new Promise((resolve, reject) => {
@@ -20,39 +20,20 @@ class StudentTable {
   }
 
   static getStudents() {
-    return new Promise((resolve, reject) => {
-      pool.query(`SELECT * FROM students`, (error, response) => {
-        if (error) return reject(error);
-        if (response.rows.length === 0) return reject(new Error("no students"));
-        resolve({ studentList: response.rows });
-      });
-    });
+    var query = `SELECT * FROM students`;
+    return poolQuery({ query }, "studentList");
   }
 
   static addStudent(firstName) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `INSERT INTO students ("firstName") VALUES ($1) RETURNING *`,
-        [firstName],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ student: response.rows[0] });
-        }
-      );
-    });
+    var query = `INSERT INTO students ("firstName") VALUES ($1) RETURNING *`;
+    var params = [firstName];
+    return poolQuery({ query, params }, "student", false);
   }
 
   static deleteStudent(id) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `DELETE FROM students WHERE id = $1 RETURNING *`,
-        [id],
-        (error, response) => {
-          if (error) return reject(error);
-          resolve({ student: response.rows[0] });
-        }
-      );
-    });
+    var query = `DELETE FROM students WHERE id = $1 RETURNING *`;
+    var params = [id];
+    return poolQuery({ query, params }, "student", false);
   }
 }
 
