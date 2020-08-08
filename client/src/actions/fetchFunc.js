@@ -20,16 +20,39 @@ export const fetchPost = ({
   param,
   bodyPost,
   FETCH_TYPE,
+  ERROR_TYPE,
   SUCCESS_TYPE,
 }) => async (dispatch) => {
   dispatch({ type: FETCH_TYPE });
-  console.log(bodyPost);
-  const res = await axios({
-    method: "post",
-    url: endpoint,
-    params: param,
-    data: JSON.stringify(param),
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
-  });
-  dispatch({ type: SUCCESS_TYPE, payload: res.data });
+  //   await axios({
+  //     method: "post",
+  //     url: endpoint,
+  //     params: param,
+  //     data: JSON.stringify(param),
+  //     headers: { "Content-Type": "application/json; charset=UTF-8" },
+  //     credentials: "include",
+  //   })
+  //     .then(({ res }) => {
+  //       console.log(res);
+  //       dispatch({ type: SUCCESS_TYPE, payload: res.data });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       console.log(JSON.stringify(error));
+  //       dispatch({ type: ERROR_TYPE, message: error.message });
+  //     });
+  // };
+  try {
+    const res = await axios({
+      method: "post",
+      url: endpoint,
+      params: param,
+      data: JSON.stringify(param),
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      credentials: "include",
+    });
+    dispatch({ type: SUCCESS_TYPE, payload: res.data });
+  } catch (error) {
+    dispatch({ type: ERROR_TYPE, message: error.message });
+  }
 };

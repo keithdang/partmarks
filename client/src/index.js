@@ -8,9 +8,11 @@ import "./index.css";
 import App from "./App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as serviceWorker from "./serviceWorker";
+import { fetchAuthenticated } from "./actions/account";
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
+// store.dispatch(fetchAuthenticated()).then(() => {
 ReactDOM.render(
   <Provider store={store}>
     <App />
@@ -19,3 +21,4 @@ ReactDOM.render(
 );
 
 serviceWorker.unregister();
+// });

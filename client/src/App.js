@@ -7,6 +7,7 @@ import SemesterCourse from "./components/SemesterCourse";
 import Classroom from "./components/Classroom";
 import MarksTemplate from "./components/MarksTemplate";
 import Grade from "./components/Grade";
+import AuthForm from "./components/AuthForm";
 
 class App extends Component {
   render() {
@@ -16,6 +17,9 @@ class App extends Component {
           <ul>
             <li>
               <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/auth">Sign In/Up</Link>
             </li>
             <li>
               <Link to="/students">Students</Link>
@@ -61,6 +65,9 @@ class App extends Component {
           </Route>
           <Route path="/students">
             <Student />
+          </Route>
+          <Route path="/auth">
+            <AuthForm />
           </Route>
           <Route path="/">
             <h2>Home</h2>

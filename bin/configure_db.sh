@@ -18,11 +18,6 @@ password="${passwordArr[1]:1:(${#passwordArr[1]}-3)}"
 export PGPASSWORD="$password"
 
 # psql -h $host -d $database -U $user < ./bin/sql/teacher.sql
-# psql -h $host -d $database -U $user < ./bin/sql/semesterCourse.sql
-# psql -h $host -d $database -U $user < ./bin/sql/classroom.sql
-# psql -h $host -d $database -U $user < ./bin/sql/marksTemplate.sql
-# psql -h $host -d $database -U $user < ./bin/sql/grades.sql
-# psql -h $host -d $database -U $user < ./bin/sql/insert/marksTemplate.sql
-psql -h $host -d $database -U $user < ./bin/sql/insert/grades.sql
+psql -h $host -d $database -U $user < ./bin/sql/create/account.sql
 
 echo "Bye MOM"
