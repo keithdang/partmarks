@@ -1,15 +1,16 @@
 const pool = require("../databasePool");
 
 class AccountTable {
-  static storeAccount({ usernameHash, passwordHash }) {
+  static storeAccount({ usernameHash, passwordHash, bTeacher }) {
+    var role = bTeacher ? "teacher" : "student";
     return new Promise((resolve, reject) => {
       pool.query(
-        `INSERT INTO account("usernameHash", "passwordHash") VALUES($1, $2)`,
-        [usernameHash, passwordHash],
+        `INSERT INTO account("usernameHash", "passwordHash", "role") VALUES($1, $2, $3) RETURNING id`,
+        [usernameHash, passwordHash, role],
         (error, response) => {
           if (error) return error;
-
-          resolve();
+          console.log(response.rows[0]);
+          resolve({ id: response.rows[0] });
         }
       );
     });
@@ -18,7 +19,7 @@ class AccountTable {
   static getAccount({ usernameHash }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT id, "passwordHash","sessionId" FROM account 
+        `SELECT id, "passwordHash","sessionId",role FROM account 
               WHERE "usernameHash" = $1`,
         [usernameHash],
         (error, response) => {

@@ -25,7 +25,7 @@ class AuthForm extends Component {
   signup = () => {
     this.setState({ buttonClicked: true });
     const { username, password } = this.state;
-    this.props.signup({ username, password });
+    this.props.signup(this.state);
   };
   login = () => {
     this.setState({ buttonClicked: true });
@@ -33,8 +33,8 @@ class AuthForm extends Component {
     this.props.login({ username, password });
   };
 
-  clickSignUpInfo = () => {
-    this.setState({ bSignUp: !this.state.bSignUp });
+  clickSignUpInfo = (value) => {
+    this.setState({ bSignUp: value });
   };
 
   toggleIsTeacher = () => {
@@ -67,6 +67,7 @@ class AuthForm extends Component {
       </form>
     );
   };
+
   signUpAdditional = () => {
     const { bTeacher } = this.state;
     return (
@@ -83,6 +84,50 @@ class AuthForm extends Component {
       </div>
     );
   };
+
+  accountDisplay = () => {
+    return (
+      <div>
+        <FormGroup>
+          <FormControl
+            type="text"
+            value={this.state.username}
+            placeholder="username"
+            onChange={this.updateUsername}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControl
+            type="password"
+            value={this.state.password}
+            placeholder="password"
+            onChange={this.updatePassword}
+          />
+        </FormGroup>
+      </div>
+    );
+  };
+
+  loginDisplay = () => {
+    return (
+      <div>
+        <h4>Login</h4>
+        {this.accountDisplay()}
+        <Button onClick={this.login}>Log In</Button>
+      </div>
+    );
+  };
+
+  signUpDisplay = () => {
+    return (
+      <div>
+        <h4>SignUp</h4>
+        {this.accountDisplay()}
+        {this.signUpAdditional()}
+        <Button onClick={this.signup}>Sign Up</Button>
+      </div>
+    );
+  };
   //   get Error() {
   //     if (
   //       this.state.buttonClicked &&
@@ -93,57 +138,30 @@ class AuthForm extends Component {
   //   }
 
   render() {
+    const { bSignUp } = this.state;
+    const { account } = this.props;
     return (
       <div className="App">
-        <Button onClick={() => this.props.fetchAuthenticated()}>
-          Authentication
-        </Button>
         {!this.props.account.loggedIn ? (
           <div>
             <h2>Auth Form</h2>
-            <FormGroup>
-              <FormControl
-                type="text"
-                value={this.state.username}
-                placeholder="username"
-                onChange={this.updateUsername}
-              />
-            </FormGroup>
-            <FormGroup>
-              <FormControl
-                type="password"
-                value={this.state.password}
-                placeholder="password"
-                onChange={this.updatePassword}
-              />
-            </FormGroup>
-
-            <div>
-              <Button onClick={this.login}>Log In</Button>
-              <span> or </span>
-              <Button onClick={this.signup}>Sign Up</Button>
-              {/* <FormGroup controlId="formBasicCheckbox">
-                <FormCheck
-                  type="switch"
-                  label={this.state.bTeacher ? "Teacher" : "Student"}
-                  onClick={this.toggleIsTeacher}
-                />
-              </FormGroup> */}
-              <div>
-                <FormGroup controlId="formBasicCheckbox">
-                  <FormCheck
-                    type="checkbox"
-                    label="Sign Up Pre-Req"
-                    onClick={this.clickSignUpInfo}
-                  />
-                </FormGroup>
-              </div>
-              {this.state.bSignUp && this.signUpAdditional()}
-            </div>
-            <br />
+            <Button onClick={() => this.clickSignUpInfo(true)}>
+              Sign Up Form
+            </Button>
+            <Button onClick={() => this.clickSignUpInfo(false)}>
+              Login Form
+            </Button>
+            {bSignUp ? this.signUpDisplay() : this.loginDisplay()}
           </div>
         ) : (
-          <Button onClick={() => this.props.logout()}>Log Out</Button>
+          <div>
+            {account.role === "teacher" ? (
+              <h4>Welcome to Teacher Dashboard</h4>
+            ) : (
+              <h4>Welcome to Student Dashboard</h4>
+            )}
+            <Button onClick={() => this.props.logout()}>Log Out</Button>
+          </div>
         )}
       </div>
     );

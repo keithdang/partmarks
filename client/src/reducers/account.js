@@ -10,10 +10,12 @@ const account = (state = DEFAULT_ACCOUNT, action) => {
     case ACCOUNT.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
     case ACCOUNT.FETCH_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         status: fetchStates.success,
         message: action.payload.message,
+        role: action.payload.role,
         loggedIn: true,
       };
     case ACCOUNT.FETCH_LOGOUT_SUCCESS:
@@ -29,6 +31,7 @@ const account = (state = DEFAULT_ACCOUNT, action) => {
         ...state,
         status: fetchStates.success,
         message: action.payload.message,
+        role: action.payload.role,
         loggedIn: action.payload.authenticated,
       };
     default:

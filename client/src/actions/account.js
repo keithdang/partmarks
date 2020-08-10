@@ -8,6 +8,10 @@ export const signup = (value) =>
     param: {
       username: value.username,
       password: value.password,
+      firstName: value.firstName,
+      middleName: value.middleName,
+      lastName: value.lastName,
+      bTeacher: value.bTeacher,
     },
     FETCH_TYPE: ACCOUNT.FETCH,
     ERROR_TYPE: ACCOUNT.FETCH_ERROR,

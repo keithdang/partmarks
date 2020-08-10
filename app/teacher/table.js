@@ -25,35 +25,20 @@ class TeacherTable {
   }
 
   static addTeacher(teacher) {
-    var query = `INSERT INTO teacher ("firstName","middleName","lastName") VALUES ($1,$2,$3) RETURNING *`;
-    var params = [teacher.firstName, teacher.middleName, teacher.lastName];
+    var query = `INSERT INTO teacher (id,"firstName","middleName","lastName") VALUES ($1,$2,$3,$4) RETURNING *`;
+    var params = [
+      teacher.id,
+      teacher.firstName,
+      teacher.middleName,
+      teacher.lastName,
+    ];
     return poolQuery({ query, params }, "teacher", false);
-    // return new Promise((resolve, reject) => {
-    //   pool.query(
-    //     `INSERT INTO teacher ("firstName","middleName","lastName") VALUES ($1,$2,$3) RETURNING *`,
-    //     [teacher.firstName, teacher.middleName, teacher.lastName],
-    //     (error, response) => {
-    //       if (error) return reject(error);
-    //       resolve({ teacher: response.rows[0] });
-    //     }
-    //   );
-    // });
   }
 
   static deleteTeacher(id) {
     var query = `DELETE FROM teacher WHERE id = $1 RETURNING *`;
     var params = [id];
     return poolQuery({ query, params }, "teacher", false);
-    // return new Promise((resolve, reject) => {
-    //   pool.query(
-    //     `DELETE FROM teacher WHERE id = $1 RETURNING *`,
-    //     [id],
-    //     (error, response) => {
-    //       if (error) return reject(error);
-    //       resolve({ teacher: response.rows[0] });
-    //     }
-    //   );
-    // });
   }
 }
 

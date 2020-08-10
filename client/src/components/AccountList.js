@@ -110,7 +110,7 @@ class AccountList extends Component {
     return (
       <div>
         <h1>{title}</h1>
-        {filter && filter.list && this.filterDropdown()}
+        {filter && filter.list && list && list[0] && this.filterDropdown()}
         <ul className="students">
           <div className="list">
             {Object.keys(list[0]).map((prop) => (
