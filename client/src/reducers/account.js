@@ -10,7 +10,6 @@ const account = (state = DEFAULT_ACCOUNT, action) => {
     case ACCOUNT.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
     case ACCOUNT.FETCH_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         status: fetchStates.success,

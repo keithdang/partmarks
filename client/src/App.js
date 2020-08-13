@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 import Student from "./components/Student";
 import Teacher from "./components/Teacher";
 import Course from "./components/Course";
@@ -9,11 +15,25 @@ import Classroom from "./components/Classroom";
 import MarksTemplate from "./components/MarksTemplate";
 import Grade from "./components/Grade";
 import AuthForm from "./components/AuthForm";
+import { fetchAuthenticated } from "./actions/account";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchAuthenticated();
+  }
+  AuthRoute = (props) => {
+    if (
+      !this.props.account.loggedIn &&
+      this.props.account.status === "success"
+    ) {
+      return <Redirect to={{ pathname: "/" }} />;
+    }
+    const { component, path } = props;
+    return <Route path={path} component={component} />;
+  };
+
   render() {
     const { account } = this.props;
-    console.log("account", account);
     return (
       <Router>
         <nav>
@@ -56,27 +76,13 @@ class App extends Component {
           </ul>
         </nav>
         <Switch>
-          <Route path="/grade">
-            <Grade />
-          </Route>
-          <Route path="/marksTemplate">
-            <MarksTemplate />
-          </Route>
-          <Route path="/classroom">
-            <Classroom />
-          </Route>
-          <Route path="/semesterCourses">
-            <SemesterCourse />
-          </Route>
-          <Route path="/courses">
-            <Course />
-          </Route>
-          <Route path="/teachers">
-            <Teacher />
-          </Route>
-          <Route path="/students">
-            <Student />
-          </Route>
+          <this.AuthRoute path="/students" component={Student} />
+          <this.AuthRoute path="/teachers" component={Teacher} />
+          <this.AuthRoute path="/courses" component={Course} />
+          <this.AuthRoute path="/semesterCourses" component={SemesterCourse} />
+          <this.AuthRoute path="/classroom" component={Classroom} />
+          <this.AuthRoute path="/marksTemplate" component={MarksTemplate} />
+          <this.AuthRoute path="/grade" component={Grade} />
           <Route path="/auth">
             <AuthForm />
           </Route>
@@ -85,18 +91,10 @@ class App extends Component {
           </Route>
         </Switch>
       </Router>
-      // <div>
-      //   <Student />
-      //   <Teacher />
-      // </div>
     );
   }
 }
 
-// export default App;
 export default connect(({ account }) => ({ account }), {
-  // signup,
-  // login,
-  // logout,
-  // fetchAuthenticated,
+  fetchAuthenticated,
 })(App);

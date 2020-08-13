@@ -5,17 +5,14 @@ const { authenticatedAccount } = require("./helper");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  console.log("grade list");
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {
-      console.log("grade account id", account.id);
       var filter = req.query;
       if (account.role === "teacher") {
         filter["teacherId"] = account.id;
       } else {
         filter["studentId"] = account.id;
       }
-      console.log("filter", filter);
       return GradesTable.getGrades(filter);
     })
     .then(({ gradeList }) => {
@@ -31,10 +28,8 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/filter", async (req, res) => {
-  console.log("filter");
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {
-      console.log("grade account id", account.id);
       var filter = {};
       if (account.role === "teacher") {
         filter["teacherId"] = account.id;

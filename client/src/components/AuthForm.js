@@ -11,9 +11,9 @@ class AuthForm extends Component {
     bTeacher: true,
     buttonClicked: false,
   };
-  componentDidMount() {
-    this.props.fetchAuthenticated();
-  }
+  //   componentDidMount() {
+  //     this.props.fetchAuthenticated();
+  //   }
   updateUsername = (event) => {
     this.setState({ username: event.target.value });
   };
