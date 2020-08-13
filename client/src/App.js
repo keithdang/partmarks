@@ -7,6 +7,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
+import { Navbar, NavbarBrand, NavDropdown, NavItem } from "react-bootstrap";
 import Student from "./components/Student";
 import Teacher from "./components/Teacher";
 import Course from "./components/Course";
@@ -36,22 +37,55 @@ class App extends Component {
     const { account } = this.props;
     return (
       <Router>
-        <nav>
+        <Navbar>
+          <NavbarBrand>
+            <Link to="/">Home</Link>
+          </NavbarBrand>
+          <NavbarBrand>
+            <Link to="/auth">Sign In/Up</Link>
+          </NavbarBrand>
+          {account.loggedIn && (
+            <div style={{ display: "flex" }}>
+              <div>
+                <NavDropdown title="Accounts">
+                  <NavbarBrand>
+                    <Link to="/students">Students</Link>
+                  </NavbarBrand>
+                  <NavbarBrand>
+                    <Link to="/teachers">Teachers</Link>
+                  </NavbarBrand>
+                </NavDropdown>
+              </div>
+              <div>
+                <NavDropdown title="Course">
+                  <NavbarBrand>
+                    <Link to="/courses">Courses</Link>
+                  </NavbarBrand>
+                  <NavbarBrand>
+                    <Link to="/semesterCourses">Semester Courses</Link>
+                  </NavbarBrand>
+                  <NavbarBrand>
+                    <Link to="/classroom">Classroom</Link>
+                  </NavbarBrand>
+                  <NavbarBrand>
+                    <Link to="/grade">Grade</Link>
+                  </NavbarBrand>
+                  {account.role === "teacher" && (
+                    <div>
+                      <NavbarBrand>
+                        <Link to="/marksTemplate">Marks Template</Link>
+                      </NavbarBrand>
+                    </div>
+                  )}
+                </NavDropdown>
+              </div>
+            </div>
+          )}
+        </Navbar>
+        {/* <nav>
           <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/auth">Sign In/Up</Link>
-            </li>
             {account.loggedIn && (
               <div>
-                <li>
-                  <Link to="/students">Students</Link>
-                </li>
-                <li>
-                  <Link to="/teachers">Teachers</Link>
-                </li>
                 <li>
                   <Link to="/courses">Courses</Link>
                 </li>
@@ -74,7 +108,7 @@ class App extends Component {
               </div>
             )}
           </ul>
-        </nav>
+        </nav> */}
         <Switch>
           <this.AuthRoute path="/students" component={Student} />
           <this.AuthRoute path="/teachers" component={Teacher} />

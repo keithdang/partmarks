@@ -25,7 +25,6 @@ const account = (state = DEFAULT_ACCOUNT, action) => {
         loggedIn: false,
       };
     case ACCOUNT.FETCH_AUTHENTICATED_SUCCESS:
-      console.log(action);
       return {
         ...state,
         status: fetchStates.success,
