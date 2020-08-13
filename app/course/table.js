@@ -38,6 +38,7 @@ class CourseTable {
   }
 
   static addCourse(course) {
+    console.log(course);
     var query = `INSERT INTO course ("courseId","departmentId","displayId","title","credits") VALUES ($1,$2,$3,$4,$5) RETURNING *`;
     var params = [
       fullCourseId(course.departmentId, course.courseId),

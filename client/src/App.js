@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Student from "./components/Student";
 import Teacher from "./components/Teacher";
@@ -11,6 +12,8 @@ import AuthForm from "./components/AuthForm";
 
 class App extends Component {
   render() {
+    const { account } = this.props;
+    console.log("account", account);
     return (
       <Router>
         <nav>
@@ -21,27 +24,35 @@ class App extends Component {
             <li>
               <Link to="/auth">Sign In/Up</Link>
             </li>
-            <li>
-              <Link to="/students">Students</Link>
-            </li>
-            <li>
-              <Link to="/teachers">Teachers</Link>
-            </li>
-            <li>
-              <Link to="/courses">Courses</Link>
-            </li>
-            <li>
-              <Link to="/semesterCourses">Semester Courses</Link>
-            </li>
-            <li>
-              <Link to="/classroom">Classroom</Link>
-            </li>
-            <li>
-              <Link to="/marksTemplate">Marks Template</Link>
-            </li>
-            <li>
-              <Link to="/grade">Grade</Link>
-            </li>
+            {account.loggedIn && (
+              <div>
+                <li>
+                  <Link to="/students">Students</Link>
+                </li>
+                <li>
+                  <Link to="/teachers">Teachers</Link>
+                </li>
+                <li>
+                  <Link to="/courses">Courses</Link>
+                </li>
+                <li>
+                  <Link to="/semesterCourses">Semester Courses</Link>
+                </li>
+                <li>
+                  <Link to="/classroom">Classroom</Link>
+                </li>
+                <li>
+                  <Link to="/grade">Grade</Link>
+                </li>
+                {account.role === "teacher" && (
+                  <div>
+                    <li>
+                      <Link to="/marksTemplate">Marks Template</Link>
+                    </li>
+                  </div>
+                )}
+              </div>
+            )}
           </ul>
         </nav>
         <Switch>
@@ -82,4 +93,10 @@ class App extends Component {
   }
 }
 
-export default App;
+// export default App;
+export default connect(({ account }) => ({ account }), {
+  // signup,
+  // login,
+  // logout,
+  // fetchAuthenticated,
+})(App);

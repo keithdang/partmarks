@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   fetchSemesterCourseList,
+  fetchTeacherSemesterCourseList,
   fetchFilter,
   addCourse,
   deleteCourse,
@@ -17,19 +18,26 @@ class SemesterCourse extends Component {
     const {
       fetchCourseList,
       fetchSemesterCourseList,
+      fetchTeacherSemesterCourseList,
       fetchTeacherList,
+      account,
     } = this.props;
-    fetchSemesterCourseList();
+    // fetchSemesterCourseList();
+    account.role === "teacher"
+      ? fetchSemesterCourseList()
+      : fetchTeacherSemesterCourseList();
     fetchCourseList();
     fetchTeacherList();
   }
   render() {
     const {
+      account,
       addCourse,
       semesterCourseList,
       courseList,
       deleteCourse,
       fetchSemesterCourseList,
+      fetchTeacherSemesterCourseList,
       teacherList,
       fetchFilter,
     } = this.props;
@@ -40,7 +48,12 @@ class SemesterCourse extends Component {
           list={semesterCourseList.list}
           title="Semester Courses"
           deleteFunc={deleteCourse}
-          fetchList={fetchSemesterCourseList}
+          //   fetchList={fetchSemesterCourseList}
+          fetchList={
+            account.role === "teacher"
+              ? fetchTeacherSemesterCourseList
+              : fetchSemesterCourseList
+          }
           filter={{
             display: "title",
             submit: "courseId",
@@ -94,13 +107,15 @@ class SemesterCourse extends Component {
 }
 
 export default connect(
-  ({ semesterCourseList, courseList, teacherList }) => ({
+  ({ semesterCourseList, courseList, teacherList, account }) => ({
     semesterCourseList,
     courseList,
     teacherList,
+    account,
   }),
   {
     fetchSemesterCourseList,
+    fetchTeacherSemesterCourseList,
     addCourse,
     deleteCourse,
     fetchCourseList,

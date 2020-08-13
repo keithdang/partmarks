@@ -9,6 +9,13 @@ export const fetchSemesterCourseList = (value) =>
     param: value,
   });
 
+export const fetchTeacherSemesterCourseList = (value) =>
+  fetchGet({
+    endpoint: address + "/yourlist",
+    FETCH_TYPE: SEMESTER_COURSE_LIST.FETCH,
+    SUCCESS_TYPE: SEMESTER_COURSE_LIST.FETCH_SUCCESS,
+    param: value,
+  });
 export const addCourse = (value) =>
   fetchPost({
     endpoint: address + "/add",

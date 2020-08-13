@@ -1,13 +1,21 @@
 const { Router } = require("express");
 const ClassroomTable = require("../classroom/table");
 const GradesTable = require("../grades/table");
+const { authenticatedAccount } = require("./helper");
 
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  console.log(req.query);
-  console.log(req.body);
-  ClassroomTable.getClassList(req.query)
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account }) => {
+      var filter = { courseId: req.query.courseId };
+      if (account.role === "teacher") {
+        filter["teacherId"] = account.id;
+      } else {
+        filter["studentId"] = account.id;
+      }
+      return ClassroomTable.getClassList(filter);
+    })
     .then(({ classroomList }) => {
       res.json({ classroomList });
     })
@@ -15,7 +23,16 @@ router.get("/list", async (req, res) => {
 });
 
 router.get("/filter", async (req, res) => {
-  ClassroomTable.getFilterList()
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account }) => {
+      var filter = {};
+      if (account.role === "teacher") {
+        filter["teacherId"] = account.id;
+      } else {
+        filter["studentId"] = account.id;
+      }
+      return ClassroomTable.getFilterList(filter);
+    })
     .then(({ filterList }) => res.json({ filterList }))
     .catch((error) => console.error(error));
 });
@@ -26,7 +43,17 @@ router.post("/add", async (req, res) => {
     .then(({ classroom }) => {
       if (classroom) {
         jsonres = classroom;
-        return GradesTable.addGradeFromStudentSignUp(classroom);
+        GradesTable.addGradeFromStudentSignUp(classroom).catch((error) => {
+          if (error.message === "No rows found") {
+            console.error("No Marks Template");
+          } else {
+            const error = new Error("could not process grades");
+
+            error.statusCode = 409;
+
+            throw error;
+          }
+        });
       } else {
         const error = new Error("could not process classroom");
 
@@ -38,7 +65,9 @@ router.post("/add", async (req, res) => {
     .then(() => {
       res.json({ classroom: jsonres });
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error("classroom add error", error);
+    });
 });
 
 router.post("/delete", async (req, res) => {

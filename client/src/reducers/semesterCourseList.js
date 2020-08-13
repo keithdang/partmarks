@@ -10,6 +10,7 @@ const semesterCourseList = (state = DEFAULT_COURSE_LIST, action) => {
     case SEMESTER_COURSE_LIST.FETCH_ERROR:
       return { ...state, status: fetchStates.error, message: action.message };
     case SEMESTER_COURSE_LIST.FETCH_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         status: fetchStates.success,

@@ -42,14 +42,19 @@ class SemesterCourseTable {
   where 
       "semesterCourse"."courseId"=course."courseId" AND 
       "semesterCourse"."teacherId"=teacher.id`;
+    var params = [];
     if (filter.courseId) {
       query += ` AND "semesterCourse"."courseId"= $1`;
+      params.push(filter.courseId);
+    } else if (filter.teacherId) {
+      query += ` AND "semesterCourse"."teacherId"= $1`;
+      params.push(filter.teacherId);
     }
-    var params = [filter.courseId];
+
     return poolQuery({ query, params }, "courseList");
   }
 
-  static getFilterList() {
+  static getFilterList(filter) {
     var query = ` 
     SELECT DISTINCT
       course.title,
@@ -60,7 +65,13 @@ class SemesterCourseTable {
     WHERE 
       course."courseId"="semesterCourse"."courseId"
       `;
-    return poolQuery({ query }, "filterList");
+    var params = [];
+
+    if (filter.teacherId) {
+      params.push(filter.teacherId);
+      query += ` AND "semesterCourse"."teacherId" = $1`;
+    }
+    return poolQuery({ query, params }, "filterList");
   }
 
   static addCourse(semesterCourse) {

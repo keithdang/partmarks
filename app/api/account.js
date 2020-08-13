@@ -96,7 +96,6 @@ router.get("/logout", (req, res, next) => {
 });
 
 router.get("/authenticated", (req, res, next) => {
-  console.log("kdawg authenticating....");
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ authenticated, account }) => {
       console.log("kdawg authenticated");

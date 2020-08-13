@@ -20,6 +20,14 @@ export PGPASSWORD="$password"
 # psql -h $host -d $database -U $user < ./bin/sql/teacher.sql
 # psql -h $host -d $database -U $user < ./bin/sql/create/grades.sql
 
+# psql -h $host -d $database -U $user < ./bin/sql/create/account.sql
+# psql -h $host -d $database -U $user < ./bin/sql/create/student.sql
+# psql -h $host -d $database -U $user < ./bin/sql/create/teacher.sql
+
+
+psql -h $host -d $database -U $user < ./bin/sql/delete/dropAll.sql
+
+
 psql -h $host -d $database -U $user < ./bin/sql/create/account.sql
 psql -h $host -d $database -U $user < ./bin/sql/create/student.sql
 psql -h $host -d $database -U $user < ./bin/sql/create/teacher.sql
@@ -28,6 +36,4 @@ psql -h $host -d $database -U $user < ./bin/sql/create/semesterCourse.sql
 psql -h $host -d $database -U $user < ./bin/sql/create/classroom.sql
 psql -h $host -d $database -U $user < ./bin/sql/create/marksTemplate.sql
 psql -h $host -d $database -U $user < ./bin/sql/create/grades.sql
-
-# psql -h $host -d $database -U $user < ./bin/sql/delete/dropAll.sql
 echo "Bye MOM"

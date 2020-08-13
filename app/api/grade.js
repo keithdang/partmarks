@@ -1,9 +1,23 @@
 const { Router } = require("express");
 const GradesTable = require("../grades/table");
+const { authenticatedAccount } = require("./helper");
+
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  GradesTable.getGrades(req.query)
+  console.log("grade list");
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account }) => {
+      console.log("grade account id", account.id);
+      var filter = req.query;
+      if (account.role === "teacher") {
+        filter["teacherId"] = account.id;
+      } else {
+        filter["studentId"] = account.id;
+      }
+      console.log("filter", filter);
+      return GradesTable.getGrades(filter);
+    })
     .then(({ gradeList }) => {
       res.json({ gradeList });
     })
@@ -17,8 +31,22 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/filter", async (req, res) => {
-  GradesTable.getFilterList()
-    .then(({ filterList }) => res.json({ filterList }))
+  console.log("filter");
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account }) => {
+      console.log("grade account id", account.id);
+      var filter = {};
+      if (account.role === "teacher") {
+        filter["teacherId"] = account.id;
+      } else {
+        filter["studentId"] = account.id;
+      }
+      return GradesTable.getFilterList(filter);
+    })
+    .then(({ filterList }) => {
+      console.log("filterList:", filterList);
+      res.json({ filterList });
+    })
     .catch((error) => console.error(error));
 });
 

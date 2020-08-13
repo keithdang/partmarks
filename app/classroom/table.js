@@ -3,42 +3,7 @@ const { poolQuery } = require("../api/helper");
 
 class ClassroomTable {
   static getClassList(filter) {
-    if (filter.courseId) {
-      return new Promise((resolve, reject) => {
-        pool.query(
-          `
-            SELECT 
-              course.title,
-              classroom."courseId",
-              teacher."firstName" as prof,  
-              students."firstName",
-              students.id as "studentId" 
-            FROM 
-              classroom, 
-              students,
-              teacher,
-              course, 
-              "semesterCourse" 
-            WHERE 
-              classroom."studentId"=students.id AND 
-              "semesterCourse"."id"=classroom."courseId" AND 
-              course."courseId"="semesterCourse"."courseId" AND 
-              teacher.id="semesterCourse"."teacherId" AND
-              classroom."courseId" = $1;
-            `,
-          [filter.courseId],
-          (error, response) => {
-            if (error) return reject(error);
-            if (response.rows.length === 0)
-              return reject(new Error("no courses"));
-            resolve({ classroomList: response.rows });
-          }
-        );
-      });
-    }
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `
+    var query = `
       SELECT 
         course.title,
         classroom."courseId",
@@ -55,19 +20,25 @@ class ClassroomTable {
         classroom."studentId"=students.id AND 
         "semesterCourse"."id"=classroom."courseId" AND 
         course."courseId"="semesterCourse"."courseId" AND 
-        teacher.id="semesterCourse"."teacherId";
-      `,
-        (error, response) => {
-          if (error) return reject(error);
-          if (response.rows.length === 0)
-            return reject(new Error("no courses"));
-          resolve({ classroomList: response.rows });
-        }
-      );
-    });
+        teacher.id="semesterCourse"."teacherId"`;
+    var params = [];
+    var count = `$1`;
+    if (filter.courseId) {
+      params.push(filter.courseId);
+      query += ` AND classroom."courseId" = $1`;
+      count = `$2`;
+    }
+    if (filter.studentId) {
+      params.push(filter.studentId);
+      query += ` AND students.id = ${count}`;
+    } else if (filter.teacherId) {
+      params.push(filter.teacherId);
+      query += ` AND teacher.id = ${count}`;
+    }
+    return poolQuery({ query, params }, "classroomList");
   }
 
-  static getFilterList() {
+  static getFilterList(filter) {
     var query = `
     SELECT DISTINCT
       course.title,
@@ -78,9 +49,18 @@ class ClassroomTable {
       "semesterCourse"
     WHERE
       "semesterCourse"."id"=classroom."courseId" AND
-      course."courseId"="semesterCourse"."courseId"
-      `;
-    return poolQuery({ query }, "filterList");
+      course."courseId"="semesterCourse"."courseId"`;
+    var params = [];
+
+    if (filter.studentId) {
+      params.push(filter.studentId);
+      query += ` AND classroom."studentsId" = $1`;
+    } else if (filter.teacherId) {
+      params.push(filter.teacherId);
+      query += ` AND "semesterCourse"."teacherId" = $1`;
+    }
+
+    return poolQuery({ query, params }, "filterList");
   }
 
   static addCourse(signup) {

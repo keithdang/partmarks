@@ -35,6 +35,7 @@ export const fetchPost = ({
     });
     dispatch({ type: SUCCESS_TYPE, payload: res.data });
   } catch (error) {
+    console.log("fetchPost err");
     dispatch({ type: ERROR_TYPE, message: error.message });
   }
 };

@@ -12,13 +12,15 @@ const getRow = (rows, bAll) => {
 };
 
 const poolQuery = (input, output, bAll = true) => {
+  //   console.log("poolquery query", input.query);
+  //   console.log("poolquery params", input.params);
   return new Promise((resolve, reject) => {
     if (input.params && input.params[0] !== undefined) {
       pool.query(input.query, input.params, (error, response) => {
         if (error) return reject(error);
 
         if (response.rows.length === 0)
-          return reject(new Error("Could not get query"));
+          return reject(new Error("No rows found"));
         resolve({ [output]: getRow(response.rows, bAll) });
       });
     } else {
@@ -26,7 +28,7 @@ const poolQuery = (input, output, bAll = true) => {
         if (error) return reject(error);
 
         if (response.rows.length === 0)
-          return reject(new Error("Could not get query"));
+          return reject(new Error("No rows found"));
         resolve({ [output]: getRow(response.rows, bAll) });
       });
     }
@@ -68,7 +70,8 @@ const setSessionCookie = ({ sessionString, res }) => {
 };
 
 const authenticatedAccount = ({ sessionString }) => {
-  console.log(sessionString);
+  console.log("kdawg authenticating....");
+  //   console.log(sessionString);
   return new Promise((resolve, reject) => {
     if (!sessionString || !Session.verify(sessionString)) {
       const error = new Error("Invalid session");
@@ -81,7 +84,7 @@ const authenticatedAccount = ({ sessionString }) => {
       AccountTable.getAccount({ usernameHash: hash(username) })
         .then(({ account }) => {
           const authenticated = account.sessionId === id;
-          console.log(account);
+          console.log("got accounnt", account);
           resolve({ account, authenticated });
         })
         .catch((error) => reject(error));
