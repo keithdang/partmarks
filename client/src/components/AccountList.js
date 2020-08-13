@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Table from "react-bootstrap/Table";
+
 class AccountList extends Component {
   componentDidMount() {
     const { fetchList, filter } = this.props;
@@ -106,28 +108,30 @@ class AccountList extends Component {
   };
 
   showList = () => {
-    const { list, title, filter } = this.props;
+    const { list, title, filter, deleteFunc } = this.props;
     return (
       <div>
         <h1>{title}</h1>
         {filter && filter.list && list && list[0] && this.filterDropdown()}
-        <ul className="students">
-          <div className="list">
+        <Table>
+          <thead>
             {Object.keys(list[0]).map((prop) => (
-              <div className="list-row">{prop}</div>
+              <th>{prop}</th>
             ))}
-          </div>
-          {list.map((account) => (
-            <li key={this.genKey(account)}>
-              <div className="list">
+          </thead>
+          <tbody>
+            {list.map((account) => (
+              <tr>
                 {Object.values(account).map((prop) => (
-                  <div className="list-row">{prop}</div>
+                  <td>{prop}</td>
                 ))}
-                <button onClick={() => this.submit(account)}>-</button>
-              </div>
-            </li>
-          ))}
-        </ul>
+                {deleteFunc && (
+                  <button onClick={() => this.submit(account)}>-</button>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     );
   };

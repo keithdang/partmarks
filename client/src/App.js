@@ -7,7 +7,7 @@ import {
   Link,
   Redirect,
 } from "react-router-dom";
-import { Navbar, NavbarBrand, NavDropdown, NavItem } from "react-bootstrap";
+import { Navbar, NavbarBrand, NavDropdown, Nav, Button } from "react-bootstrap";
 import Student from "./components/Student";
 import Teacher from "./components/Teacher";
 import Course from "./components/Course";
@@ -16,7 +16,7 @@ import Classroom from "./components/Classroom";
 import MarksTemplate from "./components/MarksTemplate";
 import Grade from "./components/Grade";
 import AuthForm from "./components/AuthForm";
-import { fetchAuthenticated } from "./actions/account";
+import { fetchAuthenticated, logout } from "./actions/account";
 
 class App extends Component {
   componentDidMount() {
@@ -37,12 +37,9 @@ class App extends Component {
     const { account } = this.props;
     return (
       <Router>
-        <Navbar>
+        <Navbar bg="dark" variant="dark">
           <NavbarBrand>
             <Link to="/">Home</Link>
-          </NavbarBrand>
-          <NavbarBrand>
-            <Link to="/auth">Sign In/Up</Link>
           </NavbarBrand>
           {account.loggedIn && (
             <div style={{ display: "flex" }}>
@@ -81,34 +78,14 @@ class App extends Component {
               </div>
             </div>
           )}
-        </Navbar>
-        {/* <nav>
-          <ul>
-            {account.loggedIn && (
-              <div>
-                <li>
-                  <Link to="/courses">Courses</Link>
-                </li>
-                <li>
-                  <Link to="/semesterCourses">Semester Courses</Link>
-                </li>
-                <li>
-                  <Link to="/classroom">Classroom</Link>
-                </li>
-                <li>
-                  <Link to="/grade">Grade</Link>
-                </li>
-                {account.role === "teacher" && (
-                  <div>
-                    <li>
-                      <Link to="/marksTemplate">Marks Template</Link>
-                    </li>
-                  </div>
-                )}
-              </div>
+          <Nav className="ml-auto">
+            {account.loggedIn ? (
+              <Button onClick={() => this.props.logout()}>Log Out</Button>
+            ) : (
+              <Link to="/auth">Sign In/Up</Link>
             )}
-          </ul>
-        </nav> */}
+          </Nav>
+        </Navbar>
         <Switch>
           <this.AuthRoute path="/students" component={Student} />
           <this.AuthRoute path="/teachers" component={Teacher} />
@@ -131,4 +108,5 @@ class App extends Component {
 
 export default connect(({ account }) => ({ account }), {
   fetchAuthenticated,
+  logout,
 })(App);

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, FormGroup, FormControl, FormCheck } from "react-bootstrap";
-import { signup, login, logout, fetchAuthenticated } from "../actions/account";
+import { signup, login, fetchAuthenticated } from "../actions/account";
 
 class AuthForm extends Component {
   state = {
@@ -11,9 +11,7 @@ class AuthForm extends Component {
     bTeacher: true,
     buttonClicked: false,
   };
-  //   componentDidMount() {
-  //     this.props.fetchAuthenticated();
-  //   }
+
   updateUsername = (event) => {
     this.setState({ username: event.target.value });
   };
@@ -160,7 +158,6 @@ class AuthForm extends Component {
             ) : (
               <h4>Welcome to Student Dashboard</h4>
             )}
-            <Button onClick={() => this.props.logout()}>Log Out</Button>
           </div>
         )}
       </div>
@@ -171,6 +168,5 @@ class AuthForm extends Component {
 export default connect(({ account }) => ({ account }), {
   signup,
   login,
-  logout,
   fetchAuthenticated,
 })(AuthForm);

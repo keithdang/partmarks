@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Form, Row, Col, Button } from "react-bootstrap";
 import "../App.css";
 
 class AddForm extends Component {
@@ -9,15 +10,25 @@ class AddForm extends Component {
   };
   render() {
     const { submitFunc, contents } = this.props;
-    let input;
     return (
-      <div>
-        <form>
-          {Object.keys(contents).map((prop) => (
-            <input type="text" name={prop} onChange={this.myChangeHander} />
-          ))}
-        </form>
-        <button onClick={() => submitFunc(this.state)}>Add</button>
+      <div className="list">
+        <div>
+          <Form>
+            <Row>
+              {Object.keys(contents).map((prop) => (
+                <Col>
+                  <Form.Control
+                    type="text"
+                    placeholder={prop}
+                    name={prop}
+                    onChange={this.myChangeHander}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Form>
+          <Button onClick={() => submitFunc(this.state)}>Add</Button>
+        </div>
       </div>
     );
   }

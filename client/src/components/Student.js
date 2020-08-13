@@ -16,14 +16,14 @@ class Student extends Component {
       fetchStudentList,
       studentList,
       addStudent,
-      deleteStudent,
+      // deleteStudent,
     } = this.props;
     return (
-      <div>
+      <div className="App">
         <AccountList
           list={studentList.list}
           title="Students"
-          deleteFunc={deleteStudent}
+          // deleteFunc={deleteStudent}
           fetchList={fetchStudentList}
         />
         <AddForm contents={{ firstName: null }} submitFunc={addStudent} />

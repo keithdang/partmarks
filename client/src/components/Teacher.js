@@ -15,15 +15,15 @@ class Teacher extends Component {
     const {
       fetchTeacherList,
       teacherList,
-      deleteTeacher,
+      //   deleteTeacher,
       addTeacher,
     } = this.props;
     return (
-      <div>
+      <div className="App">
         <AccountList
           list={teacherList.list}
           title="Teachers"
-          deleteFunc={deleteTeacher}
+          //   deleteFunc={deleteTeacher}
           fetchList={fetchTeacherList}
         />
         <AddForm

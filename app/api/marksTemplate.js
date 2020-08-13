@@ -1,20 +1,37 @@
 const { Router } = require("express");
 const MarksTemplateTable = require("../marksTemplate/table");
 const GradesTable = require("../grades/table");
+const { authenticatedAccount } = require("./helper");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
-  MarksTemplateTable.getTemplates(req.query)
-    .then(({ templateList }) => {
-      res.json({ templateList });
-    })
-    .catch((error) => console.error(error));
+  authenticatedAccount({ sessionString: req.cookies.sessionString }).then(
+    ({ account }) => {
+      //   console.log("id", account.id);
+      console.log("mtlist", req.query);
+      var teacherId = account.id;
+      var courseId = req.query.courseId;
+      MarksTemplateTable.getTemplates({ teacherId, courseId })
+        .then(({ templateList }) => {
+          res.json({ templateList });
+        })
+        .catch((error) => console.error(error));
+    }
+  );
 });
 
 router.get("/filter", async (req, res) => {
-  MarksTemplateTable.getFilterList()
-    .then(({ filterList }) => res.json({ filterList }))
-    .catch((error) => console.error(error));
+  authenticatedAccount({ sessionString: req.cookies.sessionString }).then(
+    ({ account }) => {
+      //   console.log("id", account.id);
+      //   console.log(req.query);
+      var teacherId = account.id;
+      //   var courseId = req.query.courseId;
+      MarksTemplateTable.getFilterList({ teacherId })
+        .then(({ filterList }) => res.json({ filterList }))
+        .catch((error) => console.error(error));
+    }
+  );
 });
 
 router.post("/add", async (req, res) => {

@@ -24,6 +24,10 @@
   color: white;
 }
 
+.row-item {
+  min-width: 140px;
+}
+
 .App-link {
   color: #61dafb;
 }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Form, Row, Col } from "react-bootstrap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
@@ -42,11 +43,20 @@ class AddSelectionForm extends Component {
                 </DropdownButton>
               </div>
             ))}
-          <form>
-            {Object.keys(contents).map((prop) => (
-              <input type="text" name={prop} onChange={this.myChangeHander} />
-            ))}
-          </form>
+          <Form>
+            <Row>
+              {Object.keys(contents).map((prop) => (
+                <Col>
+                  <Form.Control
+                    type="text"
+                    placeholder={prop}
+                    name={prop}
+                    onChange={this.myChangeHander}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Form>
           <Button onClick={() => submitFunc(this.state)}>Add</Button>
         </div>
       </div>
