@@ -20,6 +20,14 @@ class Grade extends Component {
       <div className="App">
         <AccountList
           list={gradeList.list}
+          displayList={[
+            "Course Id",
+            "Student Id",
+            "Title",
+            "Score",
+            "Out Of",
+            "Weight",
+          ]}
           title="Grades"
           fetchList={fetchGradeList}
           filter={{

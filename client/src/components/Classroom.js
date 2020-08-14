@@ -43,6 +43,13 @@ class Classroom extends Component {
       <div className="App">
         <AccountList
           list={classroomList.list}
+          displayList={[
+            "Course",
+            "Course Id",
+            "Prof",
+            "First Name",
+            "Student Id",
+          ]}
           title="Classroom"
           fetchList={fetchClassroomList}
           deleteFunc={deleteCourse}

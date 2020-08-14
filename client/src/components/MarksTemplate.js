@@ -35,6 +35,7 @@ class MarksTemplate extends Component {
             <div>
               <AccountList
                 list={marksTemplateList.list}
+                displayList={["Course Id", "Title", "Total", "Weight"]}
                 title="Marks Template"
                 fetchList={fetchTemplatesList}
                 deleteFunc={deleteTemplate}
@@ -60,9 +61,9 @@ class MarksTemplate extends Component {
             <AddHybridForm
               title="Add Template"
               contents={{
-                title: null,
-                total: null,
-                weight: null,
+                title: "Title",
+                total: "Total",
+                weight: "Weight",
               }}
               submitFunc={addTemplate}
               lists={[

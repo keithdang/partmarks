@@ -23,6 +23,13 @@ class Course extends Component {
       <div className="App">
         <AccountList
           list={courseList.list}
+          displayList={[
+            "Course Id",
+            "Department Id",
+            "Display Id",
+            "Title",
+            "Credits",
+          ]}
           title="Courses"
           deleteFunc={deleteCourse}
           fetchList={fetchCourseList}
@@ -35,10 +42,10 @@ class Course extends Component {
         />
         <AddForm
           contents={{
-            departmentId: null,
-            courseId: null,
-            credits: null,
-            title: "",
+            departmentId: "Department Id",
+            courseId: "Course Id",
+            credits: "Credits",
+            title: "Title",
           }}
           submitFunc={addCourse}
         />

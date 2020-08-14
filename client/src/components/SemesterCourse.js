@@ -46,6 +46,7 @@ class SemesterCourse extends Component {
       <div className="App">
         <AccountList
           list={semesterCourseList.list}
+          displayList={["Id", "Course Id", "Title", "Teacher Id", "Prof"]}
           title="Semester Courses"
           deleteFunc={deleteCourse}
           //   fetchList={fetchSemesterCourseList}

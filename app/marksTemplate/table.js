@@ -6,12 +6,15 @@ class MarksTemplateTable {
   static getTemplates(filter) {
     var query = `
     SELECT 
-        * 
+        *
     FROM 
         "marksTemplate"`;
     var queryTeacher = `
     SELECT 
-        * 
+        "marksTemplate"."courseId",
+        "marksTemplate".title,
+        "marksTemplate".total,
+        "marksTemplate".weight
     FROM 
         "marksTemplate",
         "semesterCourse" 

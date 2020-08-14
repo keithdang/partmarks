@@ -4,7 +4,9 @@ class StudentTable {
   static getStudent({ studentId }) {
     return new Promise((resolve, reject) => {
       pool.query(
-        `SELECT *
+        `
+        SELECT 
+          *
                   FROM students
                   WHERE id = $1`,
         [studentId],
@@ -20,7 +22,11 @@ class StudentTable {
   }
 
   static getStudents() {
-    var query = `SELECT * FROM students`;
+    var query = `
+    SELECT 
+      *
+    FROM 
+      students`;
     return poolQuery({ query }, "studentList");
   }
 

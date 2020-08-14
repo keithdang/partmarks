@@ -22,12 +22,17 @@ class Teacher extends Component {
       <div className="App">
         <AccountList
           list={teacherList.list}
+          displayList={["Id", "First Name", "Middle Name", "Last Name"]}
           title="Teachers"
           //   deleteFunc={deleteTeacher}
           fetchList={fetchTeacherList}
         />
         <AddForm
-          contents={{ firstName: null, middleName: null, lastName: null }}
+          contents={{
+            firstName: "First Name",
+            middleName: "Middle Name",
+            lastName: "Last Name",
+          }}
           submitFunc={addTeacher}
         />
       </div>

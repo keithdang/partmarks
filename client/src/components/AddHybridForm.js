@@ -49,7 +49,7 @@ class AddSelectionForm extends Component {
                 <Col>
                   <Form.Control
                     type="text"
-                    placeholder={prop}
+                    placeholder={contents[prop] ? contents[prop] : prop}
                     name={prop}
                     onChange={this.myChangeHander}
                   />

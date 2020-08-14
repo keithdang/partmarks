@@ -22,11 +22,15 @@ class Student extends Component {
       <div className="App">
         <AccountList
           list={studentList.list}
+          displayList={["Id", "First Name"]}
           title="Students"
           // deleteFunc={deleteStudent}
           fetchList={fetchStudentList}
         />
-        <AddForm contents={{ firstName: null }} submitFunc={addStudent} />
+        <AddForm
+          contents={{ firstName: "First Name" }}
+          submitFunc={addStudent}
+        />
       </div>
     );
   }

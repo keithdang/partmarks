@@ -7,8 +7,6 @@ const router = new Router();
 router.get("/list", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString }).then(
     ({ account }) => {
-      //   console.log("id", account.id);
-      console.log("mtlist", req.query);
       var teacherId = account.id;
       var courseId = req.query.courseId;
       MarksTemplateTable.getTemplates({ teacherId, courseId })
@@ -23,10 +21,7 @@ router.get("/list", async (req, res) => {
 router.get("/filter", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString }).then(
     ({ account }) => {
-      //   console.log("id", account.id);
-      //   console.log(req.query);
       var teacherId = account.id;
-      //   var courseId = req.query.courseId;
       MarksTemplateTable.getFilterList({ teacherId })
         .then(({ filterList }) => res.json({ filterList }))
         .catch((error) => console.error(error));

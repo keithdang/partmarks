@@ -108,16 +108,19 @@ class AccountList extends Component {
   };
 
   showList = () => {
-    const { list, title, filter, deleteFunc } = this.props;
+    const { list, title, filter, deleteFunc, displayList } = this.props;
+    console.log(list);
+    console.log(displayList);
+
     return (
       <div>
         <h1>{title}</h1>
         {filter && filter.list && list && list[0] && this.filterDropdown()}
         <Table>
           <thead>
-            {Object.keys(list[0]).map((prop) => (
-              <th>{prop}</th>
-            ))}
+            {displayList
+              ? displayList.map((element) => <th>{element}</th>)
+              : Object.keys(list[0]).map((prop) => <th>{prop}</th>)}
           </thead>
           <tbody>
             {list.map((account) => (
