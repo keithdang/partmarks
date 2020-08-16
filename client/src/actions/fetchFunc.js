@@ -23,7 +23,7 @@ export const fetchPost = ({
   SUCCESS_TYPE,
 }) => async (dispatch) => {
   dispatch({ type: FETCH_TYPE });
-  console.log(param);
+  //   console.log(param);
   try {
     const res = await axios({
       method: "post",

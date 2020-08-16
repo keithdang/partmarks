@@ -14,8 +14,6 @@ router.get("/list", async (req, res) => {
 router.get("/yourlist", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString }).then(
     ({ account }) => {
-      console.log("id", account.id);
-      console.log(req.query);
       var teacherId = account.id;
       var courseId = req.query.courseId;
       SemesterCourseTable.getCourses({ teacherId, courseId })

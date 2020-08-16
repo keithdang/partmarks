@@ -35,7 +35,6 @@ const gradeList = (state = DEFAULT_GRADE_LIST, action) => {
         filterList: action.payload.filterList,
       };
     case GRADE_LIST.FETCH_UPDATE_SCORE:
-      console.log("UPDATE SCORE", action.payload);
       return {
         ...state,
         status: GRADE_LIST.FETCH_UPDATE_SCORE,
