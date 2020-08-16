@@ -29,14 +29,18 @@ const gradeList = (state = DEFAULT_GRADE_LIST, action) => {
       }
       return { ...state, status: fetchStates.fetching };
     case GRADE_LIST.FETCH_FILTER:
-      console.log("filter", action.payload);
       return {
         ...state,
         status: fetchStates.fetching,
         filterList: action.payload.filterList,
       };
+    case GRADE_LIST.FETCH_UPDATE_SCORE:
+      console.log("UPDATE SCORE", action.payload);
+      return {
+        ...state,
+        status: GRADE_LIST.FETCH_UPDATE_SCORE,
+      };
     case GRADE_LIST.FETCH_SUB_FILTER:
-      console.log("subfilter:", action.payload);
       return {
         ...state,
         status: fetchStates.fetching,

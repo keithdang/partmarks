@@ -8,6 +8,7 @@ class GradesTable {
     if (filter.teacherId) {
       query = `
         SELECT 
+            grades."id",
             grades."courseId",
             grades."studentId",
             grades."title",
@@ -126,6 +127,22 @@ class GradesTable {
             RETURNING *
     `;
     var params = [classroom.courseId, classroom.studentId];
+    return poolQuery({ query, params }, "grade");
+  }
+
+  static updateScore(input) {
+    var query = `
+    UPDATE
+        grades
+    SET
+        score = ($1)
+    WHERE
+        id = ($2)
+        RETURNING *
+    `;
+
+    var params = [input.score, input.id];
+
     return poolQuery({ query, params }, "grade");
   }
 

@@ -2,9 +2,16 @@ import React, { Component } from "react";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import Form from "react-bootstrap/Form";
 
 class AccountList extends Component {
+  state = {
+    editMode: false,
+    editSubmissions: {},
+    editList: [],
+  };
   componentDidMount() {
     const { fetchList, filter } = this.props;
     fetchList(this.state);
@@ -107,10 +114,35 @@ class AccountList extends Component {
     );
   };
 
+  changeEditSubmission = (event) => {
+    const { edit } = this.props;
+    const { editList } = this.state;
+    let nam = event.target.name;
+    let val = event.target.value;
+
+    var doesNotExist = true;
+    var newEditList = editList;
+    var num = 0;
+    newEditList.map((element, index) => {
+      if (element[edit.contents] === nam) {
+        num = index;
+        doesNotExist = false;
+      }
+    });
+
+    var editEl = { id: nam, [edit.columns]: val };
+    if (doesNotExist) {
+      newEditList.push(editEl);
+      this.setState({ editList: newEditList });
+    } else {
+      newEditList[num] = editEl;
+      this.setState({ editList: newEditList });
+    }
+  };
+
   showList = () => {
-    const { list, title, filter, deleteFunc, displayList } = this.props;
-    console.log(list);
-    console.log(displayList);
+    const { list, title, filter, deleteFunc, displayList, edit } = this.props;
+    const { editMode } = this.state;
 
     return (
       <div>
@@ -125,8 +157,19 @@ class AccountList extends Component {
           <tbody>
             {list.map((account) => (
               <tr>
-                {Object.values(account).map((prop) => (
-                  <td>{prop}</td>
+                {Object.keys(account).map((value) => (
+                  <td>
+                    {editMode && edit.columns === value ? (
+                      <Form.Control
+                        type="text"
+                        placeholder={account[value]}
+                        onChange={this.changeEditSubmission.bind(this)}
+                        name={account[edit.contents]}
+                      />
+                    ) : (
+                      account[value]
+                    )}
+                  </td>
                 ))}
                 {deleteFunc && (
                   <button onClick={() => this.submit(account)}>-</button>
@@ -139,12 +182,37 @@ class AccountList extends Component {
     );
   };
 
+  submitEdittedRow = () => {
+    this.state.editList.map((element) => {
+      this.props.edit.func(element);
+    });
+    this.setState({ editMode: false });
+  };
+
+  editPanel = () => {
+    const { edit } = this.props;
+    const { editMode } = this.state;
+    return (
+      <div>
+        <Button onClick={() => this.setState({ editMode: !editMode })}>
+          Edit
+        </Button>
+        {editMode && (
+          <Button onClick={() => this.submitEdittedRow()}>Save</Button>
+        )}
+      </div>
+    );
+  };
+
   render() {
-    const { list, fetchList } = this.props;
+    const { list, fetchList, edit } = this.props;
     return (
       <div className="App">
         {list !== undefined ? (
-          this.showList()
+          <div>
+            {this.showList()}
+            {edit && this.editPanel()}
+          </div>
         ) : (
           <div>
             <h1>No List :(</h1>

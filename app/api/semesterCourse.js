@@ -43,7 +43,9 @@ router.get("/filter", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   SemesterCourseTable.addCourse(req.body)
-    .then(({ semesterCourse }) => res.json({ semesterCourse }))
+    .then(({ semesterCourse }) => {
+      res.json({ semesterCourse });
+    })
     .catch((error) => console.error(error));
 });
 

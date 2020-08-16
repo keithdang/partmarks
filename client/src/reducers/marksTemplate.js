@@ -1,7 +1,7 @@
 import { MARKS_TEMPLATE_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_TEMPLATE_LIST = {};
+const DEFAULT_TEMPLATE_LIST = { list: [] };
 
 const marksTemplateList = (state = DEFAULT_TEMPLATE_LIST, action) => {
   switch (action.type) {

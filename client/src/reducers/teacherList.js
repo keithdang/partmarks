@@ -1,7 +1,7 @@
 import { TEACHER_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_TEACHER_LIST = {};
+const DEFAULT_TEACHER_LIST = { list: [] };
 
 const teacherList = (state = DEFAULT_TEACHER_LIST, action) => {
   switch (action.type) {

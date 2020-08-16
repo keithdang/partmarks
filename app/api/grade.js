@@ -27,6 +27,12 @@ router.post("/add", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
+router.post("/update", async (req, res) => {
+  GradesTable.updateScore(req.body)
+    .then(({ grade }) => res.json({ grade }))
+    .catch((error) => console.error(error));
+});
+
 router.get("/filter", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {

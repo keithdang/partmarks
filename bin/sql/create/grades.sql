@@ -1,5 +1,6 @@
 CREATE TABLE grades
 (
+    id SERIAL PRIMARY KEY,
     "courseId" INTEGER,
     "studentId" INTEGER,
     "title" VARCHAR(64),

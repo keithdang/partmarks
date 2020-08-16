@@ -1,7 +1,7 @@
 import { CLASSROOM_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_CLASSROOM_LIST = {};
+const DEFAULT_CLASSROOM_LIST = { list: [] };
 
 const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
   switch (action.type) {
@@ -16,6 +16,7 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
         list: action.payload.classroomList,
       };
     case CLASSROOM_LIST.FETCH_ADD:
+      state.list.push(action.payload.classroom);
       return { ...state, status: CLASSROOM_LIST.FETCH_ADD };
     case CLASSROOM_LIST.FETCH_DELETE:
       for (var i = 0; i < state.list.length; i++) {

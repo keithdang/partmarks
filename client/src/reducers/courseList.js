@@ -1,7 +1,7 @@
 import { COURSE_LIST } from "../actions/types";
 import fetchStates from "./fetchStates";
 
-const DEFAULT_COURSE_LIST = { filterList: [] };
+const DEFAULT_COURSE_LIST = { list: [], filterList: [] };
 
 const courseList = (state = DEFAULT_COURSE_LIST, action) => {
   switch (action.type) {

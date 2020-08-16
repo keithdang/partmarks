@@ -1,26 +1,40 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchGradeList, fetchFilter, fetchSubFilter } from "../actions/grade";
+import { Button } from "react-bootstrap";
+import {
+  fetchGradeList,
+  fetchFilter,
+  fetchSubFilter,
+  updateScore,
+} from "../actions/grade";
 import AccountList from "./AccountList";
+import { GRADE_LIST } from "../actions/types";
 import "../App.css";
 class Grade extends Component {
   componentDidMount() {
     const { fetchGradeList } = this.props;
     fetchGradeList();
   }
-
+  componentDidUpdate() {
+    const { gradeList, fetchGradeList } = this.props;
+    if (gradeList.status === GRADE_LIST.FETCH_UPDATE_SCORE) {
+      fetchGradeList();
+    }
+  }
   render() {
     const {
       gradeList,
       fetchGradeList,
       fetchFilter,
       fetchSubFilter,
+      updateScore,
     } = this.props;
     return (
       <div className="App">
         <AccountList
           list={gradeList.list}
           displayList={[
+            "Id",
             "Course Id",
             "Student Id",
             "Title",
@@ -30,6 +44,11 @@ class Grade extends Component {
           ]}
           title="Grades"
           fetchList={fetchGradeList}
+          edit={{
+            func: updateScore,
+            columns: "score",
+            contents: "id",
+          }}
           filter={{
             display: "title",
             submit: "courseId",
@@ -56,5 +75,6 @@ export default connect(
     fetchGradeList,
     fetchFilter,
     fetchSubFilter,
+    updateScore,
   }
 )(Grade);

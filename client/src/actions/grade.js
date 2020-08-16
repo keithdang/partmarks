@@ -39,6 +39,18 @@ export const addGrade = (value) =>
     SUCCESS_TYPE: GRADE_LIST.FETCH_ADD,
   });
 
+export const updateScore = (value) =>
+  fetchPost({
+    endpoint: address + "/update",
+    param: {
+      //   editList: value.editList,
+      id: value.id,
+      score: value.score,
+    },
+    FETCH_TYPE: GRADE_LIST.FETCH,
+    SUCCESS_TYPE: GRADE_LIST.FETCH_UPDATE_SCORE,
+  });
+
 export const deleteCourse = (value) =>
   fetchPost({
     endpoint: address + "/delete",
