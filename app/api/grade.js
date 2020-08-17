@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const GradesTable = require("../grades/table");
+const ClassroomTable = require("../classroom/table");
 const { authenticatedAccount } = require("./helper");
 
 const router = new Router();
@@ -28,8 +29,13 @@ router.post("/add", async (req, res) => {
 });
 
 router.post("/update", async (req, res) => {
+  let gradeJson;
   GradesTable.updateScore(req.body)
-    .then(({ grade }) => res.json({ grade }))
+    .then(({ grade }) => {
+      gradeJson = grade;
+      return ClassroomTable.updateGrade(req.body);
+    })
+    .then(() => res.json({ gradeJson }))
     .catch((error) => console.error(error));
 });
 

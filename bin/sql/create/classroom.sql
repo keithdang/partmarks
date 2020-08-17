@@ -2,7 +2,7 @@ CREATE TABLE classroom
 (
     "courseId" INTEGER,
     "studentId" INTEGER,
-    "grade" INTEGER,
+    "grade" FLOAT,
     FOREIGN KEY ("courseId") REFERENCES "semesterCourse"("id"),
     FOREIGN KEY ("studentId") REFERENCES "students"("id")
 );

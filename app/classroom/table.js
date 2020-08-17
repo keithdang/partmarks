@@ -9,7 +9,8 @@ class ClassroomTable {
         classroom."courseId",
         teacher."firstName" as prof,  
         students."firstName",
-        students.id as "studentId" 
+        students.id as "studentId", 
+        classroom."grade" as grade
       FROM 
         classroom, 
         students,
@@ -73,6 +74,27 @@ class ClassroomTable {
     var query = `DELETE FROM classroom WHERE "courseId" = $1 AND "studentId" = $2 RETURNING *`;
     var params = [classroom.courseId, classroom.studentId];
     return poolQuery({ query, params }, "course", false);
+  }
+
+  static updateGrade(input) {
+    var query = `
+      UPDATE 
+      classroom 
+    SET
+        grade = (
+      SELECT ROUND((
+        (SUM(score/total*weight)/SUM(weight))*100)::numeric,2)
+      FROM grades
+        WHERE
+        "courseId" = (SELECT "courseId" from grades WHERE id=($1)) AND
+        "studentId" = (SELECT "studentId" from grades WHERE id=($1)))
+        WHERE
+        "courseId" = (SELECT "courseId" from grades WHERE id=($1)) AND
+        "studentId" =(SELECT "studentId" from grades WHERE id=($1))
+        RETURNING *
+        `;
+    var params = [input.id];
+    return poolQuery({ query, params }, "classroom", false);
   }
 }
 

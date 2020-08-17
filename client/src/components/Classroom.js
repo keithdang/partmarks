@@ -49,6 +49,7 @@ class Classroom extends Component {
             "Prof",
             "First Name",
             "Student Id",
+            "Grade",
           ]}
           title="Classroom"
           fetchList={fetchClassroomList}
