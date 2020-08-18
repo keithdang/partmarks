@@ -29,6 +29,29 @@ class Classroom extends Component {
       fetchClassroomList();
     }
   }
+  randomRbga = () => {
+    var o = Math.round,
+      r = Math.random,
+      s = 255;
+    return (
+      "rgba(" +
+      o(r() * s) +
+      "," +
+      o(r() * s) +
+      "," +
+      o(r() * s) +
+      "," +
+      r().toFixed(1) +
+      ")"
+    );
+  };
+  colorArr = (num) => {
+    var arr = [];
+    for (var i = 0; i < num; i++) {
+      arr.push(this.randomRbga());
+    }
+    return arr;
+  };
   render() {
     const {
       classroomList,
@@ -59,6 +82,24 @@ class Classroom extends Component {
             submit: "courseId",
             func: fetchFilter,
             list: classroomList.filterList,
+          }}
+          graph={{
+            data: "grade",
+            labelArr: [
+              "0-10%",
+              "11-20%",
+              "21-30%",
+              "31-40%",
+              "41-50%",
+              "51-60%",
+              "61-70%",
+              "71-80%",
+              "81-90%",
+              "91-100%",
+            ],
+            barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            colorArr: this.colorArr(10),
           }}
         />
         {semesterCourseList.list && studentList.list && (

@@ -14,6 +14,7 @@ class GradesTable {
             grades."title",
             grades."score",
             grades."total",
+            grades."percent",
             grades."weight"
         FROM 
             grades, 
@@ -135,7 +136,8 @@ class GradesTable {
     UPDATE
         grades
     SET
-        score = ($1)
+        score = $1,
+        percent = ROUND(CAST (($1/total)*100 as numeric),2)
     WHERE
         id = ($2)
         RETURNING *
