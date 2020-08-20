@@ -20,12 +20,13 @@ class Course extends Component {
       fetchFilter,
       account,
     } = this.props;
+    var isTeacher = account.role === "teacher";
     return (
       <div className="App">
         <h1>Courses</h1>
         <AccountList
           list={courseList.list}
-          edit={{ view: account.role === "teacher" }}
+          edit={{ view: isTeacher }}
           displayList={[
             "Course Id",
             "Department Id",
@@ -43,15 +44,17 @@ class Course extends Component {
             list: courseList.filterList,
           }}
         />
-        <AddForm
-          contents={{
-            departmentId: "Department Id",
-            courseId: "Course Id",
-            credits: "Credits",
-            title: "Title",
-          }}
-          submitFunc={addCourse}
-        />
+        {isTeacher && (
+          <AddForm
+            contents={{
+              departmentId: "Department Id",
+              courseId: "Course Id",
+              credits: "Credits",
+              title: "Title",
+            }}
+            submitFunc={addCourse}
+          />
+        )}
       </div>
     );
   }

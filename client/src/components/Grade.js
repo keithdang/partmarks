@@ -51,7 +51,9 @@ class Grade extends Component {
       fetchFilter,
       fetchSubFilter,
       updateScore,
+      account,
     } = this.props;
+    var isTeacher = account.role === "teacher";
     return (
       <div className="App">
         <h1>Grade</h1>
@@ -69,15 +71,17 @@ class Grade extends Component {
           ]}
           title="Grades"
           fetchList={fetchGradeList}
-          edit={{
-            func: updateScore,
-            columns: "score",
-            contents: "id",
-          }}
+          edit={
+            isTeacher && {
+              func: updateScore,
+              columns: "score",
+              contents: "id",
+            }
+          }
           filter={{
             display: "title",
             submit: "courseId",
-            subFilter: {
+            subFilter: isTeacher && {
               display: "title",
               submit: "title",
               func: fetchSubFilter,
@@ -111,8 +115,9 @@ class Grade extends Component {
 }
 
 export default connect(
-  ({ gradeList }) => ({
+  ({ gradeList, account }) => ({
     gradeList,
+    account,
   }),
   {
     fetchGradeList,

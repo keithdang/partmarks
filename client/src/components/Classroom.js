@@ -63,12 +63,13 @@ class Classroom extends Component {
       deleteCourse,
       account,
     } = this.props;
+    var isTeacher = account.role === "teacher";
     return (
       <div className="App">
         <h1>Classroom</h1>
         <AccountList
           list={classroomList.list}
-          edit={{ view: account.role === "teacher" }}
+          edit={{ view: isTeacher }}
           displayList={[
             "Course",
             "Course Id",
@@ -86,24 +87,26 @@ class Classroom extends Component {
             func: fetchFilter,
             list: classroomList.filterList,
           }}
-          graph={{
-            data: "percent",
-            labelArr: [
-              "0-10%",
-              "11-20%",
-              "21-30%",
-              "31-40%",
-              "41-50%",
-              "51-60%",
-              "61-70%",
-              "71-80%",
-              "81-90%",
-              "91-100%",
-            ],
-            barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-            dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            colorArr: this.colorArr(10),
-          }}
+          graph={
+            isTeacher && {
+              data: "percent",
+              labelArr: [
+                "0-10%",
+                "11-20%",
+                "21-30%",
+                "31-40%",
+                "41-50%",
+                "51-60%",
+                "61-70%",
+                "71-80%",
+                "81-90%",
+                "91-100%",
+              ],
+              barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+              dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              colorArr: this.colorArr(10),
+            }
+          }
         />
         {semesterCourseList.list && studentList.list && (
           <AddSelectionForm

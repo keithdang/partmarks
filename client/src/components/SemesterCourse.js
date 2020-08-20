@@ -45,24 +45,28 @@ class SemesterCourse extends Component {
       teacherList,
       fetchFilter,
     } = this.props;
-
+    var isTeacher = account.role === "teacher";
     return (
       <div className="App">
         <h1>Semester Courses</h1>
-        <Button onClick={() => this.setState({ viewMode: false })}>
-          View All
-        </Button>
-        <Button onClick={() => this.setState({ viewMode: true })}>
-          View/Edit Yours
-        </Button>
+        {isTeacher && (
+          <div>
+            <Button onClick={() => this.setState({ viewMode: false })}>
+              View All
+            </Button>
+            <Button onClick={() => this.setState({ viewMode: true })}>
+              View/Edit Yours
+            </Button>
+          </div>
+        )}
         <AccountList
           list={semesterCourseList.list}
-          edit={{ view: this.state.viewMode }}
+          edit={{ view: isTeacher && this.state.viewMode }}
           displayList={["Id", "Course Id", "Title", "Teacher Id", "Prof"]}
           title="Semester Courses"
           deleteFunc={deleteCourse}
           fetchList={
-            account.role === "teacher" && this.state.viewMode
+            isTeacher && this.state.viewMode
               ? fetchTeacherSemesterCourseList
               : fetchSemesterCourseList
           }
@@ -73,7 +77,7 @@ class SemesterCourse extends Component {
             list: semesterCourseList.filterList,
           }}
         />
-        {courseList.list && teacherList.list && (
+        {isTeacher && courseList.list && teacherList.list && (
           <AddSelectionForm
             title="Add Semester Course"
             contents={{
