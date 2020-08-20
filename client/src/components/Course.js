@@ -18,11 +18,14 @@ class Course extends Component {
       deleteCourse,
       fetchCourseList,
       fetchFilter,
+      account,
     } = this.props;
     return (
       <div className="App">
+        <h1>Courses</h1>
         <AccountList
           list={courseList.list}
+          edit={{ view: account.role === "teacher" }}
           displayList={[
             "Course Id",
             "Department Id",
@@ -54,7 +57,7 @@ class Course extends Component {
   }
 }
 
-export default connect(({ courseList }) => ({ courseList }), {
+export default connect(({ courseList, account }) => ({ courseList, account }), {
   fetchCourseList,
   addCourse,
   deleteCourse,

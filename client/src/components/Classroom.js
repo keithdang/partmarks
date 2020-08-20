@@ -61,11 +61,14 @@ class Classroom extends Component {
       studentList,
       addCourse,
       deleteCourse,
+      account,
     } = this.props;
     return (
       <div className="App">
+        <h1>Classroom</h1>
         <AccountList
           list={classroomList.list}
+          edit={{ view: account.role === "teacher" }}
           displayList={[
             "Course",
             "Course Id",
@@ -84,7 +87,7 @@ class Classroom extends Component {
             list: classroomList.filterList,
           }}
           graph={{
-            data: "grade",
+            data: "percent",
             labelArr: [
               "0-10%",
               "11-20%",
@@ -135,10 +138,11 @@ class Classroom extends Component {
 }
 
 export default connect(
-  ({ classroomList, semesterCourseList, studentList }) => ({
+  ({ classroomList, semesterCourseList, studentList, account }) => ({
     classroomList,
     semesterCourseList,
     studentList,
+    account,
   }),
   {
     fetchClassroomList,

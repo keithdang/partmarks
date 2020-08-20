@@ -30,11 +30,13 @@ class MarksTemplate extends Component {
     } = this.props;
     return (
       <div className="App">
+        <h1>Marks Template</h1>
         <div>
           {marksTemplateList.list !== undefined ? (
             <div>
               <AccountList
                 list={marksTemplateList.list}
+                edit={{ view: true }}
                 displayList={["Course Id", "Title", "Total", "Weight"]}
                 title="Marks Template"
                 fetchList={fetchTemplatesList}

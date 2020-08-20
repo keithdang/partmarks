@@ -9,11 +9,15 @@ import {
 } from "../actions/semesterCourse";
 import { fetchCourseList } from "../actions/course";
 import { fetchTeacherList } from "../actions/teacher";
+import Button from "react-bootstrap/Button";
 import AccountList from "./AccountList";
 import AddSelectionForm from "./AddSelectionForm";
 import "../App.css";
 
 class SemesterCourse extends Component {
+  state = {
+    viewMode: true,
+  };
   componentDidMount() {
     const {
       fetchCourseList,
@@ -22,13 +26,13 @@ class SemesterCourse extends Component {
       fetchTeacherList,
       account,
     } = this.props;
-    // fetchSemesterCourseList();
     account.role === "teacher"
       ? fetchSemesterCourseList()
       : fetchTeacherSemesterCourseList();
     fetchCourseList();
     fetchTeacherList();
   }
+
   render() {
     const {
       account,
@@ -44,14 +48,21 @@ class SemesterCourse extends Component {
 
     return (
       <div className="App">
+        <h1>Semester Courses</h1>
+        <Button onClick={() => this.setState({ viewMode: false })}>
+          View All
+        </Button>
+        <Button onClick={() => this.setState({ viewMode: true })}>
+          View/Edit Yours
+        </Button>
         <AccountList
           list={semesterCourseList.list}
+          edit={{ view: this.state.viewMode }}
           displayList={["Id", "Course Id", "Title", "Teacher Id", "Prof"]}
           title="Semester Courses"
           deleteFunc={deleteCourse}
-          //   fetchList={fetchSemesterCourseList}
           fetchList={
-            account.role === "teacher"
+            account.role === "teacher" && this.state.viewMode
               ? fetchTeacherSemesterCourseList
               : fetchSemesterCourseList
           }

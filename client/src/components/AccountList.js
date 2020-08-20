@@ -27,6 +27,12 @@ class AccountList extends Component {
       filter.func();
     }
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.fetchList !== this.props.fetchList) {
+      console.log("update");
+      this.props.fetchList();
+    }
+  }
 
   submit = (account) => {
     const { deleteFunc, title } = this.props;
@@ -212,7 +218,6 @@ class AccountList extends Component {
 
     return (
       <div>
-        <h1>{title}</h1>
         <div className="list">
           {filter && filter.list && list && list[0] && this.filterDropdown()}
           {graph && this.graph()}
@@ -255,7 +260,7 @@ class AccountList extends Component {
                       )}
                     </td>
                   ))}
-                  {deleteFunc && (
+                  {deleteFunc && edit.view && (
                     <button onClick={() => this.submit(account)}>-</button>
                   )}
                 </tr>
@@ -296,7 +301,7 @@ class AccountList extends Component {
         {list !== undefined ? (
           <div>
             {this.showList()}
-            {edit && this.editPanel()}
+            {edit && edit.func && this.editPanel()}
           </div>
         ) : (
           <div>

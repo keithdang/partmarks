@@ -54,6 +54,7 @@ class Grade extends Component {
     } = this.props;
     return (
       <div className="App">
+        <h1>Grade</h1>
         <AccountList
           list={gradeList.list}
           displayList={[

@@ -1,35 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  fetchStudent,
-  fetchStudentList,
-  addStudent,
-  deleteStudent,
-} from "../actions/student";
+import { fetchStudent, fetchStudentList, addStudent } from "../actions/student";
 import AccountList from "./AccountList";
-import AddForm from "./AddForm";
 import "../App.css";
 
 class Student extends Component {
   render() {
-    const {
-      fetchStudentList,
-      studentList,
-      addStudent,
-      // deleteStudent,
-    } = this.props;
+    const { fetchStudentList, studentList } = this.props;
     return (
       <div className="App">
+        <h1>Students</h1>
         <AccountList
           list={studentList.list}
           displayList={["Id", "First Name"]}
           title="Students"
-          // deleteFunc={deleteStudent}
           fetchList={fetchStudentList}
-        />
-        <AddForm
-          contents={{ firstName: "First Name" }}
-          submitFunc={addStudent}
         />
       </div>
     );
@@ -38,5 +23,5 @@ class Student extends Component {
 
 export default connect(
   ({ student, studentList }) => ({ student, studentList }),
-  { fetchStudent, fetchStudentList, addStudent, deleteStudent }
+  { fetchStudent, fetchStudentList, addStudent }
 )(Student);
