@@ -43,12 +43,19 @@ export const updateScore = (value) =>
   fetchPost({
     endpoint: address + "/update",
     param: {
-      //   editList: value.editList,
       id: value.id,
       score: value.score,
     },
     FETCH_TYPE: GRADE_LIST.FETCH,
     SUCCESS_TYPE: GRADE_LIST.FETCH_UPDATE_SCORE,
+  });
+
+export const fetchAverage = (value) =>
+  fetchGet({
+    endpoint: address + "/average",
+    FETCH_TYPE: GRADE_LIST.FETCH,
+    SUCCESS_TYPE: GRADE_LIST.FETCH_AVERAGE,
+    param: { courseId: value.courseId, title: value.title },
   });
 
 export const deleteCourse = (value) =>

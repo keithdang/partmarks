@@ -45,6 +45,12 @@ const gradeList = (state = DEFAULT_GRADE_LIST, action) => {
         status: fetchStates.fetching,
         subFilterList: action.payload.filterList,
       };
+    case GRADE_LIST.FETCH_AVERAGE:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        average: action.payload.average[0].round,
+      };
     default:
       return state;
   }

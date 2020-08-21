@@ -131,6 +131,20 @@ class GradesTable {
     return poolQuery({ query, params }, "grade");
   }
 
+  static getGradeAverage(filter) {
+    var query = `
+        SELECT 
+          ROUND(CAST (AVG(percent) as numeric),2)
+        FROM
+          grades
+        WHERE
+          "courseId" = $1 AND
+          title = $2`;
+    var params = [filter.courseId, filter.title];
+
+    return poolQuery({ query, params }, "average");
+  }
+
   static updateScore(input) {
     var query = `
     UPDATE

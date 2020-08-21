@@ -5,6 +5,7 @@ import {
   addCourse,
   deleteCourse,
   fetchFilter,
+  fetchAverage,
 } from "../actions/classroom";
 import { fetchSemesterCourseList } from "../actions/semesterCourse";
 import { fetchStudentList } from "../actions/student";
@@ -57,6 +58,7 @@ class Classroom extends Component {
       classroomList,
       fetchClassroomList,
       fetchFilter,
+      fetchAverage,
       semesterCourseList,
       studentList,
       addCourse,
@@ -80,33 +82,38 @@ class Classroom extends Component {
           ]}
           title="Classroom"
           fetchList={fetchClassroomList}
+          average={{
+            id: "courseId",
+            func: fetchAverage,
+            value: classroomList.average,
+          }}
           deleteFunc={deleteCourse}
           filter={{
             display: "title",
             submit: "courseId",
             func: fetchFilter,
             list: classroomList.filterList,
+            properties: new Set(["firstName", "studentId", "grade"]),
+            displayProps: new Set(["First Name", "Student Id", "Grade"]),
           }}
-          graph={
-            isTeacher && {
-              data: "percent",
-              labelArr: [
-                "0-10%",
-                "11-20%",
-                "21-30%",
-                "31-40%",
-                "41-50%",
-                "51-60%",
-                "61-70%",
-                "71-80%",
-                "81-90%",
-                "91-100%",
-              ],
-              barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-              dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              colorArr: this.colorArr(10),
-            }
-          }
+          graph={{
+            data: "grade",
+            labelArr: [
+              "0-10%",
+              "11-20%",
+              "21-30%",
+              "31-40%",
+              "41-50%",
+              "51-60%",
+              "61-70%",
+              "71-80%",
+              "81-90%",
+              "91-100%",
+            ],
+            barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            colorArr: this.colorArr(10),
+          }}
         />
         {semesterCourseList.list && studentList.list && (
           <AddSelectionForm
@@ -152,6 +159,7 @@ export default connect(
     fetchSemesterCourseList,
     fetchStudentList,
     fetchFilter,
+    fetchAverage,
     addCourse,
     deleteCourse,
   }

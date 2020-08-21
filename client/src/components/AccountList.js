@@ -18,6 +18,7 @@ class AccountList extends Component {
       this.props.graph && this.props.graph.dataArr
         ? this.props.graph.dataArr
         : [],
+    filteredTitle: "",
   };
 
   componentDidMount() {
@@ -78,28 +79,34 @@ class AccountList extends Component {
     return key;
   };
 
-  clickFilter = (item, filter) => {
-    const { fetchList } = this.props;
-    const { enableGraph } = this.state;
-
-    this.setState({ [filter.submit]: item[filter.submit] });
+  clickFilter = (item, filter, display) => {
+    const { fetchList, average } = this.props;
+    this.setState({
+      [filter.submit]: item[filter.submit],
+    });
 
     fetchList({ [filter.submit]: item[filter.submit] });
     if (filter.subFilter && filter.subFilter.func) {
       filter.subFilter.func({ [filter.submit]: item[filter.submit] });
     } else {
-      this.setState({ enableGraph: true });
+      this.setState({ filteredTitle: display, enableGraph: true });
+      average.func({ courseId: item[filter.submit] });
     }
   };
 
-  clickSubFilter = (item, filter) => {
-    const { fetchList } = this.props;
-    const { enableGraph } = this.state;
+  clickSubFilter = (item, filter, display) => {
+    const { fetchList, average } = this.props;
 
     this.setState(
-      { [filter.submit]: item[filter.submit], enableGraph: true },
+      {
+        [filter.submit]: item[filter.submit],
+        filteredTitle: display,
+        enableGraph: true,
+      },
       () => {
+        // console.log(this.state);
         fetchList(this.state);
+        average.func(this.state);
       }
     );
   };
@@ -120,7 +127,11 @@ class AccountList extends Component {
         >
           <Dropdown.Item onClick={() => this.clickAll()}>All</Dropdown.Item>
           {filter.list.map((item) => (
-            <Dropdown.Item onClick={() => this.clickFilter(item, filter)}>
+            <Dropdown.Item
+              onClick={() =>
+                this.clickFilter(item, filter, item[filter.display])
+              }
+            >
               {item[filter.display]}
             </Dropdown.Item>
           ))}
@@ -135,7 +146,13 @@ class AccountList extends Component {
             {filter.subFilter.list &&
               filter.subFilter.list.map((item) => (
                 <Dropdown.Item
-                  onClick={() => this.clickSubFilter(item, filter.subFilter)}
+                  onClick={() =>
+                    this.clickSubFilter(
+                      item,
+                      filter.subFilter,
+                      item[filter.display]
+                    )
+                  }
                 >
                   {item[filter.display]}
                 </Dropdown.Item>
@@ -213,8 +230,15 @@ class AccountList extends Component {
       displayList,
       edit,
       graph,
+      average,
     } = this.props;
-    const { editMode, displayGraph, dataArr } = this.state;
+    const {
+      editMode,
+      enableGraph,
+      displayGraph,
+      dataArr,
+      filteredTitle,
+    } = this.state;
 
     return (
       <div>
@@ -222,6 +246,12 @@ class AccountList extends Component {
           {filter && filter.list && list && list[0] && this.filterDropdown()}
           {graph && this.graph()}
         </div>
+        {enableGraph && (
+          <div>
+            <h4>{filteredTitle}</h4>
+            <h5>Average: {average.value}</h5>
+          </div>
+        )}
         {displayGraph ? (
           <Chart
             chartData={{
@@ -240,26 +270,34 @@ class AccountList extends Component {
           <Table>
             <thead>
               {displayList
-                ? displayList.map((element) => <th>{element}</th>)
+                ? displayList.map(
+                    (element) =>
+                      ((enableGraph && filter.displayProps.has(element)) ||
+                        !enableGraph) && <th>{element}</th>
+                  )
                 : Object.keys(list[0]).map((prop) => <th>{prop}</th>)}
             </thead>
             <tbody>
               {list.map((account) => (
                 <tr>
-                  {Object.keys(account).map((value) => (
-                    <td>
-                      {editMode && edit.columns === value ? (
-                        <Form.Control
-                          type="text"
-                          placeholder={account[value]}
-                          onChange={this.changeEditSubmission.bind(this)}
-                          name={account[edit.contents]}
-                        />
-                      ) : (
-                        account[value]
-                      )}
-                    </td>
-                  ))}
+                  {Object.keys(account).map(
+                    (value) =>
+                      ((enableGraph && filter.properties.has(value)) ||
+                        !enableGraph) && (
+                        <td>
+                          {editMode && edit.columns === value ? (
+                            <Form.Control
+                              type="text"
+                              placeholder={account[value]}
+                              onChange={this.changeEditSubmission.bind(this)}
+                              name={account[edit.contents]}
+                            />
+                          ) : (
+                            account[value]
+                          )}
+                        </td>
+                      )
+                  )}
                   {deleteFunc && edit.view && (
                     <button onClick={() => this.submit(account)}>-</button>
                   )}

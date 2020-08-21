@@ -6,6 +6,7 @@ import {
   fetchFilter,
   fetchSubFilter,
   updateScore,
+  fetchAverage,
 } from "../actions/grade";
 import AccountList from "./AccountList";
 import { GRADE_LIST } from "../actions/types";
@@ -50,6 +51,7 @@ class Grade extends Component {
       fetchGradeList,
       fetchFilter,
       fetchSubFilter,
+      fetchAverage,
       updateScore,
       account,
     } = this.props;
@@ -78,6 +80,11 @@ class Grade extends Component {
               contents: "id",
             }
           }
+          average={{
+            id: "courseId",
+            func: fetchAverage,
+            value: gradeList.average,
+          }}
           filter={{
             display: "title",
             submit: "courseId",
@@ -89,6 +96,20 @@ class Grade extends Component {
             },
             func: fetchFilter,
             list: gradeList.filterList,
+            properties: new Set([
+              "studentId",
+              "score",
+              "total",
+              "percent",
+              "weight",
+            ]),
+            displayProps: new Set([
+              "Student Id",
+              "Score",
+              "Out Of",
+              "Percent",
+              "Weight",
+            ]),
           }}
           graph={{
             data: "percent",
@@ -123,6 +144,7 @@ export default connect(
     fetchGradeList,
     fetchFilter,
     fetchSubFilter,
+    fetchAverage,
     updateScore,
   }
 )(Grade);

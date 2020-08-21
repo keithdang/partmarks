@@ -39,6 +39,19 @@ class ClassroomTable {
     return poolQuery({ query, params }, "classroomList");
   }
 
+  static getClassAverage(filter) {
+    var query = `
+        SELECT 
+          ROUND(CAST (AVG(classroom.grade) as numeric),2)
+        FROM
+          classroom
+        WHERE
+          classroom."courseId" = $1`;
+    var params = [filter.courseId];
+
+    return poolQuery({ query, params }, "average");
+  }
+
   static getFilterList(filter) {
     var query = `
     SELECT DISTINCT

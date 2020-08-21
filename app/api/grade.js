@@ -63,6 +63,14 @@ router.get("/subfilter", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
+router.get("/average", async (req, res) => {
+  GradesTable.getGradeAverage(req.query)
+    .then(({ average }) => {
+      res.json({ average });
+    })
+    .catch((error) => console.error(error));
+});
+
 router.post("/delete", async (req, res) => {
   GradesTable.deleteGrade(req.body)
     .then(({ grade }) => res.json({ grade }))

@@ -35,6 +35,12 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
         status: fetchStates.fetching,
         filterList: action.payload.filterList,
       };
+    case CLASSROOM_LIST.FETCH_AVERAGE:
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        average: action.payload.average[0].round,
+      };
     default:
       return state;
   }
