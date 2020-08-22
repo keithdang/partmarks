@@ -40,6 +40,13 @@ class GradesTable {
     return poolQuery({ query, params }, "gradeList");
   }
 
+  static getSpecificPercent(filter) {
+    var query = `SELECT percent FROM grades WHERE "courseId"= $1 AND title = $2`;
+    var params = [filter.courseId, filter.title];
+
+    return poolQuery({ query, params }, "percentages");
+  }
+
   static getFilterList(filter) {
     var query = `
     SELECT DISTINCT

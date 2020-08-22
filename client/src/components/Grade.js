@@ -7,6 +7,7 @@ import {
   fetchSubFilter,
   updateScore,
   fetchAverage,
+  fetchPercentages,
 } from "../actions/grade";
 import AccountList from "./AccountList";
 import { GRADE_LIST } from "../actions/types";
@@ -52,6 +53,7 @@ class Grade extends Component {
       fetchFilter,
       fetchSubFilter,
       fetchAverage,
+      fetchPercentages,
       updateScore,
       account,
     } = this.props;
@@ -111,26 +113,26 @@ class Grade extends Component {
               "Weight",
             ]),
           }}
-          graph={
-            isTeacher && {
-              data: "percent",
-              labelArr: [
-                "0-10%",
-                "11-20%",
-                "21-30%",
-                "31-40%",
-                "41-50%",
-                "51-60%",
-                "61-70%",
-                "71-80%",
-                "81-90%",
-                "91-100%",
-              ],
-              barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-              dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-              colorArr: this.colorArr(10),
-            }
-          }
+          graph={{
+            func: fetchPercentages,
+            dataFetched: gradeList.percentages,
+            data: "percent",
+            labelArr: [
+              "0-10%",
+              "11-20%",
+              "21-30%",
+              "31-40%",
+              "41-50%",
+              "51-60%",
+              "61-70%",
+              "71-80%",
+              "81-90%",
+              "91-100%",
+            ],
+            barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+            dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            colorArr: this.colorArr(10),
+          }}
         />
       </div>
     );
@@ -147,6 +149,7 @@ export default connect(
     fetchFilter,
     fetchSubFilter,
     fetchAverage,
+    fetchPercentages,
     updateScore,
   }
 )(Grade);

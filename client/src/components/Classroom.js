@@ -6,6 +6,7 @@ import {
   deleteCourse,
   fetchFilter,
   fetchAverage,
+  fetchGrade,
 } from "../actions/classroom";
 import { fetchSemesterCourseList } from "../actions/semesterCourse";
 import { fetchStudentList } from "../actions/student";
@@ -59,6 +60,7 @@ class Classroom extends Component {
       fetchClassroomList,
       fetchFilter,
       fetchAverage,
+      fetchGrade,
       semesterCourseList,
       studentList,
       addCourse,
@@ -97,6 +99,8 @@ class Classroom extends Component {
             displayProps: new Set(["First Name", "Student Id", "Grade"]),
           }}
           graph={{
+            func: fetchGrade,
+            dataFetched: classroomList.grades,
             data: "grade",
             labelArr: [
               "0-10%",
@@ -160,6 +164,7 @@ export default connect(
     fetchStudentList,
     fetchFilter,
     fetchAverage,
+    fetchGrade,
     addCourse,
     deleteCourse,
   }

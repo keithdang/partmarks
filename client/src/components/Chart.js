@@ -26,11 +26,12 @@ export default (props) => {
             // responsive: false,
             maintainAspectRatio: false,
             legend: {
-              position: "right",
-              labels: {
-                boxWidth: 50,
-                fontSize: 20,
-              },
+              display: false,
+              //   position: "right",
+              //   labels: {
+              //     boxWidth: 50,
+              //     fontSize: 20,
+              //   },
             },
           }}
           width={500}

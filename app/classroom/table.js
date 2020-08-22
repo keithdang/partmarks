@@ -39,6 +39,19 @@ class ClassroomTable {
     return poolQuery({ query, params }, "classroomList");
   }
 
+  static getGrades(filter) {
+    var query = `
+      SELECT 
+        grade
+      FROM 
+        classroom
+      WHERE 
+        "courseId" = $1
+        `;
+    var params = [filter.courseId];
+    return poolQuery({ query, params }, "grades");
+  }
+
   static getClassAverage(filter) {
     var query = `
         SELECT 
@@ -68,7 +81,7 @@ class ClassroomTable {
 
     if (filter.studentId) {
       params.push(filter.studentId);
-      query += ` AND classroom."studentsId" = $1`;
+      query += ` AND classroom."studentId" = $1`;
     } else if (filter.teacherId) {
       params.push(filter.teacherId);
       query += ` AND "semesterCourse"."teacherId" = $1`;

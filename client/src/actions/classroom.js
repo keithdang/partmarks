@@ -24,6 +24,14 @@ export const fetchAverage = (value) =>
     param: { courseId: value.courseId },
   });
 
+export const fetchGrade = (value) =>
+  fetchGet({
+    endpoint: address + "/grades",
+    FETCH_TYPE: CLASSROOM_LIST.FETCH,
+    SUCCESS_TYPE: CLASSROOM_LIST.FETCH_GRADES,
+    param: { courseId: value.courseId },
+  });
+
 export const addCourse = (value) =>
   fetchPost({
     endpoint: address + "/add",

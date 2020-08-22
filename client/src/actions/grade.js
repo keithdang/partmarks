@@ -58,6 +58,13 @@ export const fetchAverage = (value) =>
     param: { courseId: value.courseId, title: value.title },
   });
 
+export const fetchPercentages = (value) =>
+  fetchGet({
+    endpoint: address + "/percentages",
+    FETCH_TYPE: GRADE_LIST.FETCH,
+    SUCCESS_TYPE: GRADE_LIST.FETCH_PERCENTAGES,
+    param: { courseId: value.courseId, title: value.title },
+  });
 export const deleteCourse = (value) =>
   fetchPost({
     endpoint: address + "/delete",

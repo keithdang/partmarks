@@ -41,6 +41,18 @@ const classroomList = (state = DEFAULT_CLASSROOM_LIST, action) => {
         status: fetchStates.fetching,
         average: action.payload.average[0].round,
       };
+    case CLASSROOM_LIST.FETCH_GRADES:
+      var arr = [];
+      action.payload.grades.map((el) => {
+        if (el.grade !== null) {
+          arr.push(el.grade);
+        }
+      });
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        grades: arr,
+      };
     default:
       return state;
   }

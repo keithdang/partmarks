@@ -45,6 +45,15 @@ router.get("/average", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
+router.get("/grades", async (req, res) => {
+  console.log("grades");
+  ClassroomTable.getGrades(req.query)
+    .then(({ grades }) => {
+      res.json({ grades });
+    })
+    .catch((error) => console.error(error));
+});
+
 router.post("/add", async (req, res) => {
   let jsonres;
   ClassroomTable.addCourse(req.query)

@@ -51,6 +51,18 @@ const gradeList = (state = DEFAULT_GRADE_LIST, action) => {
         status: fetchStates.fetching,
         average: action.payload.average[0].round,
       };
+    case GRADE_LIST.FETCH_PERCENTAGES:
+      var arr = [];
+      action.payload.percentages.map((el) => {
+        if (el.percent !== null) {
+          arr.push(el.percent);
+        }
+      });
+      return {
+        ...state,
+        status: fetchStates.fetching,
+        percentages: arr,
+      };
     default:
       return state;
   }

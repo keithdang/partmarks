@@ -63,6 +63,14 @@ router.get("/subfilter", async (req, res) => {
     .catch((error) => console.error(error));
 });
 
+router.get("/percentages", async (req, res) => {
+  GradesTable.getSpecificPercent(req.query)
+    .then(({ percentages }) => {
+      res.json({ percentages });
+    })
+    .catch((error) => console.error(error));
+});
+
 router.get("/average", async (req, res) => {
   GradesTable.getGradeAverage(req.query)
     .then(({ average }) => {

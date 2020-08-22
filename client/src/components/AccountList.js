@@ -81,17 +81,19 @@ class AccountList extends Component {
 
   clickFilter = (item, filter, display) => {
     const { fetchList, average, graph } = this.props;
+
     this.setState({
       [filter.submit]: item[filter.submit],
     });
-    // console.log("[filter.submit]:", filter.submit);
-    // console.log("item[filter.submit]:", item[filter.submit]);
     fetchList({ [filter.submit]: item[filter.submit] });
     if (filter.subFilter && filter.subFilter.func) {
       this.setState({ filteredTitle: "", enableGraph: false });
       filter.subFilter.func({ [filter.submit]: item[filter.submit] });
     } else {
       this.setState({ filteredTitle: display, enableGraph: graph && true });
+      if (graph) {
+        graph.func({ courseId: item[filter.submit] });
+      }
       if (average) {
         average.func({ courseId: item[filter.submit] });
       }
@@ -99,6 +101,10 @@ class AccountList extends Component {
   };
 
   clickSubFilter = (item, filter, display) => {
+    console.log("yo");
+    console.log(item);
+    console.log(filter);
+    console.log(display);
     const { fetchList, average, graph } = this.props;
     this.setState(
       {
@@ -108,6 +114,9 @@ class AccountList extends Component {
       },
       () => {
         fetchList(this.state);
+        if (graph) {
+          graph.func(this.state);
+        }
         if (average) {
           average.func(this.state);
         }
@@ -198,17 +207,32 @@ class AccountList extends Component {
     const { dataArr, displayGraph } = this.state;
     var arr = dataArr;
     var barArr = graph.barX;
-    list.map((account) => {
-      var num = account[graph.data];
-      for (var i = 0; i < arr.length; i++) {
-        if (num <= barArr[i]) {
-          arr[i]++;
-          break;
+    if (graph.dataFetched) {
+      graph.dataFetched.map((element) => {
+        var num = element;
+        for (var i = 0; i < arr.length; i++) {
+          if (num <= barArr[i]) {
+            arr[i]++;
+            break;
+          }
         }
-      }
-    });
+      });
+    } else {
+      list.map((account) => {
+        var num = account[graph.data];
+        for (var i = 0; i < arr.length; i++) {
+          if (num <= barArr[i]) {
+            arr[i]++;
+            break;
+          }
+        }
+      });
+    }
+
+    console.log(graph.dataFetched);
     this.setState({
       dataArr: arr,
+      //   dataArr: graph.dataFetched ? graph.dataFetched : arr,
       displayGraph: !displayGraph,
     });
   };
