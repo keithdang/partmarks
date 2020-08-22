@@ -80,33 +80,37 @@ class AccountList extends Component {
   };
 
   clickFilter = (item, filter, display) => {
-    const { fetchList, average } = this.props;
+    const { fetchList, average, graph } = this.props;
     this.setState({
       [filter.submit]: item[filter.submit],
     });
-
+    // console.log("[filter.submit]:", filter.submit);
+    // console.log("item[filter.submit]:", item[filter.submit]);
     fetchList({ [filter.submit]: item[filter.submit] });
     if (filter.subFilter && filter.subFilter.func) {
+      this.setState({ filteredTitle: "", enableGraph: false });
       filter.subFilter.func({ [filter.submit]: item[filter.submit] });
     } else {
-      this.setState({ filteredTitle: display, enableGraph: true });
-      average.func({ courseId: item[filter.submit] });
+      this.setState({ filteredTitle: display, enableGraph: graph && true });
+      if (average) {
+        average.func({ courseId: item[filter.submit] });
+      }
     }
   };
 
   clickSubFilter = (item, filter, display) => {
-    const { fetchList, average } = this.props;
-
+    const { fetchList, average, graph } = this.props;
     this.setState(
       {
         [filter.submit]: item[filter.submit],
         filteredTitle: display,
-        enableGraph: true,
+        enableGraph: graph && true,
       },
       () => {
-        // console.log(this.state);
         fetchList(this.state);
-        average.func(this.state);
+        if (average) {
+          average.func(this.state);
+        }
       }
     );
   };
@@ -246,7 +250,7 @@ class AccountList extends Component {
           {filter && filter.list && list && list[0] && this.filterDropdown()}
           {graph && this.graph()}
         </div>
-        {enableGraph && (
+        {(enableGraph || (average && average.value)) && (
           <div>
             <h4>{filteredTitle}</h4>
             <h5>Average: {average.value}</h5>
@@ -272,7 +276,9 @@ class AccountList extends Component {
               {displayList
                 ? displayList.map(
                     (element) =>
-                      ((enableGraph && filter.displayProps.has(element)) ||
+                      ((enableGraph &&
+                        filter.displayProps &&
+                        filter.displayProps.has(element)) ||
                         !enableGraph) && <th>{element}</th>
                   )
                 : Object.keys(list[0]).map((prop) => <th>{prop}</th>)}
@@ -282,7 +288,9 @@ class AccountList extends Component {
                 <tr>
                   {Object.keys(account).map(
                     (value) =>
-                      ((enableGraph && filter.properties.has(value)) ||
+                      ((enableGraph &&
+                        filter.properties &&
+                        filter.properties.has(value)) ||
                         !enableGraph) && (
                         <td>
                           {editMode && edit.columns === value ? (

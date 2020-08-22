@@ -88,7 +88,7 @@ class Grade extends Component {
           filter={{
             display: "title",
             submit: "courseId",
-            subFilter: isTeacher && {
+            subFilter: {
               display: "title",
               submit: "title",
               func: fetchSubFilter,
@@ -111,24 +111,26 @@ class Grade extends Component {
               "Weight",
             ]),
           }}
-          graph={{
-            data: "percent",
-            labelArr: [
-              "0-10%",
-              "11-20%",
-              "21-30%",
-              "31-40%",
-              "41-50%",
-              "51-60%",
-              "61-70%",
-              "71-80%",
-              "81-90%",
-              "91-100%",
-            ],
-            barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-            dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            colorArr: this.colorArr(10),
-          }}
+          graph={
+            isTeacher && {
+              data: "percent",
+              labelArr: [
+                "0-10%",
+                "11-20%",
+                "21-30%",
+                "31-40%",
+                "41-50%",
+                "51-60%",
+                "61-70%",
+                "71-80%",
+                "81-90%",
+                "91-100%",
+              ],
+              barX: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+              dataArr: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              colorArr: this.colorArr(10),
+            }
+          }
         />
       </div>
     );
