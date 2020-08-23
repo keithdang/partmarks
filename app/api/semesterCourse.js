@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const SemesterCourseTable = require("../semesterCourse/table");
-const { authenticatedAccount } = require("./helper");
+const { authenticatedAccount, filterRole } = require("./helper");
 const router = new Router();
 
 router.get("/list", async (req, res) => {
@@ -18,7 +18,6 @@ router.get("/yourlist", async (req, res) => {
       var courseId = req.query.courseId;
       SemesterCourseTable.getCourses({ teacherId, courseId })
         .then(({ courseList }) => {
-          console.log("courselist", courseList);
           res.json({ courseList });
         })
         .catch((error) => console.error(error));
@@ -29,11 +28,7 @@ router.get("/yourlist", async (req, res) => {
 router.get("/filter", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {
-      var filter = {};
-      if (account.role === "teacher") {
-        filter["teacherId"] = account.id;
-      }
-      return SemesterCourseTable.getFilterList(filter);
+      return SemesterCourseTable.getFilterList(filterRole(account));
     })
     .then(({ filterList }) => res.json({ filterList }))
     .catch((error) => console.error(error));

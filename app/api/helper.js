@@ -11,6 +11,15 @@ const getRow = (rows, bAll) => {
   }
 };
 
+const filterRole = (account, filter = {}) => {
+  if (account.role === "teacher") {
+    filter["teacherId"] = account.id;
+  } else {
+    filter["studentId"] = account.id;
+  }
+  return filter;
+};
+
 const poolQuery = (input, output, bAll = true) => {
   //   console.log("poolquery query", input.query);
   //   console.log("poolquery params", input.params);
@@ -71,7 +80,6 @@ const setSessionCookie = ({ sessionString, res }) => {
 
 const authenticatedAccount = ({ sessionString }) => {
   console.log("kdawg authenticating....");
-  //   console.log(sessionString);
   return new Promise((resolve, reject) => {
     if (!sessionString || !Session.verify(sessionString)) {
       const error = new Error("Invalid session");
@@ -84,11 +92,11 @@ const authenticatedAccount = ({ sessionString }) => {
       AccountTable.getAccount({ usernameHash: hash(username) })
         .then(({ account }) => {
           const authenticated = account.sessionId === id;
-          console.log("got accounnt", account);
+          console.log("got account ", account.id);
           resolve({ account, authenticated });
         })
         .catch((error) => reject(error));
     }
   });
 };
-module.exports = { setSession, authenticatedAccount, poolQuery };
+module.exports = { setSession, authenticatedAccount, poolQuery, filterRole };

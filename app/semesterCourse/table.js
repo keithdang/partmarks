@@ -83,8 +83,6 @@ class SemesterCourseTable {
       semesterCourse.semester,
       semesterCourse.nYear,
     ];
-    console.log("Add SemC", query);
-    console.log("Add SemC", params);
     return poolQuery({ query, params }, "semesterCourse", false);
   }
 

@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const GradesTable = require("../grades/table");
 const ClassroomTable = require("../classroom/table");
-const { authenticatedAccount } = require("./helper");
+const { authenticatedAccount, filterRole } = require("./helper");
 
 const router = new Router();
 
@@ -9,12 +9,7 @@ router.get("/list", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {
       var filter = req.query;
-      if (account.role === "teacher") {
-        filter["teacherId"] = account.id;
-      } else {
-        filter["studentId"] = account.id;
-      }
-      return GradesTable.getGrades(filter);
+      return GradesTable.getGrades(filterRole(account, filter));
     })
     .then(({ gradeList }) => {
       res.json({ gradeList });
@@ -42,16 +37,9 @@ router.post("/update", async (req, res) => {
 router.get("/filter", async (req, res) => {
   authenticatedAccount({ sessionString: req.cookies.sessionString })
     .then(({ account }) => {
-      var filter = {};
-      if (account.role === "teacher") {
-        filter["teacherId"] = account.id;
-      } else {
-        filter["studentId"] = account.id;
-      }
-      return GradesTable.getFilterList(filter);
+      return GradesTable.getFilterList(filterRole(account));
     })
     .then(({ filterList }) => {
-      console.log("filterList:", filterList);
       res.json({ filterList });
     })
     .catch((error) => console.error(error));
