@@ -6,8 +6,8 @@ import {
   deleteCourse,
   fetchFilter,
 } from "../actions/course";
-import AccountList from "./AccountList";
-import AddForm from "./AddForm";
+import AccountList from "../components/AccountList";
+import AddForm from "../components/AddForm";
 import "../App.css";
 
 class Course extends Component {

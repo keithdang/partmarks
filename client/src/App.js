@@ -8,13 +8,13 @@ import {
   Redirect,
 } from "react-router-dom";
 import { Navbar, NavbarBrand, NavDropdown, Nav, Button } from "react-bootstrap";
-import Student from "./components/Student";
-import Teacher from "./components/Teacher";
-import Course from "./components/Course";
-import SemesterCourse from "./components/SemesterCourse";
-import Classroom from "./components/Classroom";
-import MarksTemplate from "./components/MarksTemplate";
-import Grade from "./components/Grade";
+import Student from "./containers/Student";
+import Teacher from "./containers/Teacher";
+import Course from "./containers/Course";
+import SemesterCourse from "./containers/SemesterCourse";
+import Classroom from "./containers/Classroom";
+import MarksTemplate from "./containers/MarksTemplate";
+import Grade from "./containers/Grade";
 import AuthForm from "./components/AuthForm";
 import { fetchAuthenticated, logout } from "./actions/account";
 

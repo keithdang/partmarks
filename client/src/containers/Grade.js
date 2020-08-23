@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button } from "react-bootstrap";
 import {
   fetchGradeList,
   fetchFilter,
@@ -9,7 +8,7 @@ import {
   fetchAverage,
   fetchPercentages,
 } from "../actions/grade";
-import AccountList from "./AccountList";
+import AccountList from "../components/AccountList";
 import { GRADE_LIST } from "../actions/types";
 import "../App.css";
 class Grade extends Component {

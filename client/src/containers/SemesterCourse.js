@@ -10,8 +10,8 @@ import {
 import { fetchCourseList } from "../actions/course";
 import { fetchTeacherList } from "../actions/teacher";
 import Button from "react-bootstrap/Button";
-import AccountList from "./AccountList";
-import AddSelectionForm from "./AddSelectionForm";
+import AccountList from "../components/AccountList";
+import AddSelectionForm from "../components/AddSelectionForm";
 import "../App.css";
 
 class SemesterCourse extends Component {

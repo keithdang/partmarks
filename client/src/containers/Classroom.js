@@ -10,8 +10,8 @@ import {
 } from "../actions/classroom";
 import { fetchSemesterCourseList } from "../actions/semesterCourse";
 import { fetchStudentList } from "../actions/student";
-import AccountList from "./AccountList";
-import AddSelectionForm from "./AddSelectionForm";
+import AccountList from "../components/AccountList";
+import AddSelectionForm from "../components/AddSelectionForm";
 import "../App.css";
 import { CLASSROOM_LIST } from "../actions/types";
 class Classroom extends Component {

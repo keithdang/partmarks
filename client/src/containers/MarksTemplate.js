@@ -7,11 +7,10 @@ import {
   deleteTemplate,
 } from "../actions/marksTemplate";
 import { fetchSemesterCourseList } from "../actions/semesterCourse";
-// import { fetchStudentList } from "../actions/student";
-import AccountList from "./AccountList";
-import AddForm from "./AddForm";
-import AddHybridForm from "./AddHybridForm";
+import AccountList from "../components/AccountList";
+import AddHybridForm from "../components/AddHybridForm";
 import "../App.css";
+
 class MarksTemplate extends Component {
   componentDidMount() {
     const { fetchTemplatesList, fetchSemesterCourseList } = this.props;

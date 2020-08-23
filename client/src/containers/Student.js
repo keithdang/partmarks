@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchStudent, fetchStudentList, addStudent } from "../actions/student";
-import AccountList from "./AccountList";
+import AccountList from "../components/AccountList";
 import "../App.css";
 
 class Student extends Component {
