@@ -11,6 +11,9 @@ import AddForm from "../components/AddForm";
 import "../App.css";
 
 class Course extends Component {
+  genKey = (account) => {
+    return account.courseId.toString();
+  };
   render() {
     const {
       addCourse,
@@ -37,6 +40,7 @@ class Course extends Component {
           title="Courses"
           deleteFunc={deleteCourse}
           fetchList={fetchCourseList}
+          genKey={this.genKey}
           filter={{
             display: "departmentId",
             submit: "departmentId",

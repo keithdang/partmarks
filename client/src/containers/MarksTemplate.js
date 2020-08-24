@@ -17,7 +17,15 @@ class MarksTemplate extends Component {
     fetchTemplatesList();
     fetchSemesterCourseList();
   }
-
+  genKey = (account) => {
+    return account.courseId.toString() + account.title;
+  };
+  submitParams = (account) => {
+    return {
+      courseId: account.courseId,
+      title: account.title,
+    };
+  };
   render() {
     const {
       marksTemplateList,
@@ -40,6 +48,8 @@ class MarksTemplate extends Component {
                 title="Marks Template"
                 fetchList={fetchTemplatesList}
                 deleteFunc={deleteTemplate}
+                genKey={this.genKey}
+                submitParams={this.submitParams}
                 filter={{
                   display: "title",
                   submit: "courseId",

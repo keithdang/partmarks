@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
@@ -19,11 +18,12 @@ class AddSelectionForm extends Component {
         <div className="list">
           {lists ? (
             lists.map((list) => (
-              <div>
+              <div key={list.title}>
                 <DropdownButton
                   id="dropdown-basic-button"
                   title={list.title}
                   as={ButtonGroup}
+                  key={list.title}
                 >
                   {list.list &&
                     list.displayTitle.map((item, index) => (
@@ -31,6 +31,7 @@ class AddSelectionForm extends Component {
                         onClick={() =>
                           this.setItem(list.tableId, list.list[index])
                         }
+                        key={item}
                       >
                         {item}
                       </Dropdown.Item>

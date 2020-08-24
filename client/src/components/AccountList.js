@@ -30,52 +30,34 @@ class AccountList extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.fetchList !== this.props.fetchList) {
-      console.log("update");
       this.props.fetchList();
     }
   }
 
   submit = (account) => {
-    const { deleteFunc, title } = this.props;
+    const { deleteFunc, submitParams } = this.props;
     let params;
-    switch (title) {
-      case "Classroom":
-        params = {
-          courseId: account.courseId,
-          studentId: account.studentId,
-        };
-        break;
-      case "Marks Template":
-        params = {
-          courseId: account.courseId,
-          title: account.title,
-        };
-        break;
-      default:
-        params = account.id || account.courseId;
+    if (submitParams) {
+      params = submitParams(account);
+    } else {
+      params = account.id || account.courseId;
     }
     deleteFunc(params);
   };
 
-  genKey = (account) => {
-    const { title } = this.props;
+  genKey = (account, column) => {
+    const { genKey } = this.props;
     let key;
-    switch (title) {
-      case "Classroom":
-        key = account.courseId.toString() + account.studentId.toString();
-        break;
-      case "Grades":
-        key =
-          account.courseId.toString() +
-          account.studentId.toString() +
-          account.title;
-        break;
-      case "Marks Template":
-        key = account.courseId.toString() + account.title;
-        break;
-      default:
-        key = account.id || account.courseId;
+    if (genKey) {
+      key = genKey(account);
+    } else {
+      key = account.id || account.courseId;
     }
+
+    if (column) {
+      key += column;
+    }
+    // console.log(key);
     return key;
   };
 
@@ -101,10 +83,6 @@ class AccountList extends Component {
   };
 
   clickSubFilter = (item, filter, display) => {
-    console.log("yo");
-    console.log(item);
-    console.log(filter);
-    console.log(display);
     const { fetchList, average, graph } = this.props;
     this.setState(
       {
@@ -130,7 +108,7 @@ class AccountList extends Component {
   };
 
   filterDropdown = () => {
-    const { fetchList, filter } = this.props;
+    const { filter } = this.props;
     return (
       <div>
         <DropdownButton
@@ -144,6 +122,7 @@ class AccountList extends Component {
               onClick={() =>
                 this.clickFilter(item, filter, item[filter.display])
               }
+              key={item[filter.display]}
             >
               {item[filter.display]}
             </Dropdown.Item>
@@ -229,16 +208,13 @@ class AccountList extends Component {
       });
     }
 
-    console.log(graph.dataFetched);
     this.setState({
       dataArr: arr,
-      //   dataArr: graph.dataFetched ? graph.dataFetched : arr,
       displayGraph: !displayGraph,
     });
   };
 
   graph = () => {
-    const { graph, list } = this.props;
     const { enableGraph } = this.state;
     return (
       <div>
@@ -252,7 +228,6 @@ class AccountList extends Component {
   showList = () => {
     const {
       list,
-      title,
       filter,
       deleteFunc,
       displayList,
@@ -297,26 +272,30 @@ class AccountList extends Component {
         ) : (
           <Table>
             <thead>
-              {displayList
-                ? displayList.map(
-                    (element) =>
-                      ((enableGraph &&
-                        filter.displayProps &&
-                        filter.displayProps.has(element)) ||
-                        !enableGraph) && <th>{element}</th>
-                  )
-                : Object.keys(list[0]).map((prop) => <th>{prop}</th>)}
+              <tr>
+                {displayList
+                  ? displayList.map(
+                      (element) =>
+                        ((enableGraph &&
+                          filter.displayProps &&
+                          filter.displayProps.has(element)) ||
+                          !enableGraph) && <th key={element}> {element} </th>
+                    )
+                  : Object.keys(list[0]).map((prop) => (
+                      <th key={prop}> {prop} </th>
+                    ))}
+              </tr>
             </thead>
             <tbody>
               {list.map((account) => (
-                <tr>
+                <tr key={this.genKey(account)}>
                   {Object.keys(account).map(
                     (value) =>
                       ((enableGraph &&
                         filter.properties &&
                         filter.properties.has(value)) ||
                         !enableGraph) && (
-                        <td>
+                        <td key={this.genKey(account, value)}>
                           {editMode && edit.columns === value ? (
                             <Form.Control
                               type="text"
@@ -331,7 +310,9 @@ class AccountList extends Component {
                       )
                   )}
                   {deleteFunc && edit.view && (
-                    <button onClick={() => this.submit(account)}>-</button>
+                    <td>
+                      <Button onClick={() => this.submit(account)}>-</Button>
+                    </td>
                   )}
                 </tr>
               ))}
@@ -350,7 +331,6 @@ class AccountList extends Component {
   };
 
   editPanel = () => {
-    const { edit } = this.props;
     const { editMode } = this.state;
     return (
       <div>

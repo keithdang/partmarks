@@ -22,7 +22,6 @@ class AuthForm extends Component {
 
   signup = () => {
     this.setState({ buttonClicked: true });
-    const { username, password } = this.state;
     this.props.signup(this.state);
   };
   login = () => {

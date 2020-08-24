@@ -16,7 +16,7 @@ class AddForm extends Component {
           <Form>
             <Row>
               {Object.keys(contents).map((prop) => (
-                <Col>
+                <Col key={prop}>
                   <Form.Control
                     type="text"
                     placeholder={contents[prop] ? contents[prop] : prop}

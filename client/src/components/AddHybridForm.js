@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Form, Row, Col } from "react-bootstrap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -24,11 +23,12 @@ class AddSelectionForm extends Component {
         <div className="list">
           {lists &&
             lists.map((list) => (
-              <div>
+              <div key={list.title}>
                 <DropdownButton
                   id="dropdown-basic-button"
                   title={list.title}
                   as={ButtonGroup}
+                  key={list.title}
                 >
                   {list.list &&
                     list.displayTitle.map((item, index) => (
@@ -36,6 +36,7 @@ class AddSelectionForm extends Component {
                         onClick={() =>
                           this.setItem(list.tableId, list.list[index])
                         }
+                        key={item}
                       >
                         {item}
                       </Dropdown.Item>
@@ -46,7 +47,7 @@ class AddSelectionForm extends Component {
           <Form>
             <Row>
               {Object.keys(contents).map((prop) => (
-                <Col>
+                <Col key={prop}>
                   <Form.Control
                     type="text"
                     placeholder={contents[prop] ? contents[prop] : prop}

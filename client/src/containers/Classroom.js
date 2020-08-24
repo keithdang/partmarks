@@ -31,6 +31,15 @@ class Classroom extends Component {
       fetchClassroomList();
     }
   }
+  submitParams = (account) => {
+    return {
+      courseId: account.courseId,
+      studentId: account.studentId,
+    };
+  };
+  genKey = (account) => {
+    return account.courseId.toString() + account.studentId.toString();
+  };
   randomRbga = () => {
     var o = Math.round,
       r = Math.random,
@@ -90,6 +99,8 @@ class Classroom extends Component {
             value: classroomList.average,
           }}
           deleteFunc={deleteCourse}
+          submitParams={this.submitParams}
+          genKey={this.genKey}
           filter={{
             display: "title",
             submit: "courseId",

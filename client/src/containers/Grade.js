@@ -22,6 +22,11 @@ class Grade extends Component {
       fetchGradeList();
     }
   }
+  genKey = (account) => {
+    return (
+      account.courseId.toString() + account.studentId.toString() + account.title
+    );
+  };
   randomRbga = () => {
     var o = Math.round,
       r = Math.random,
