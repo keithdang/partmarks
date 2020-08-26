@@ -12,7 +12,7 @@ class Student extends Component {
         <h1>Students</h1>
         <AccountList
           list={studentList.list}
-          displayList={["Id", "First Name"]}
+          displayList={["Id", "First Name", "Middle Name", "Last Name"]}
           title="Students"
           fetchList={fetchStudentList}
         />

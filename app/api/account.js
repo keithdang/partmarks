@@ -42,7 +42,7 @@ router.post("/signup", (req, res, next) => {
         console.log("adding Teacher:", teacher);
         return TeacherTable.addTeacher(teacher);
       } else {
-        var student = { firstName };
+        var student = { firstName, lastName, middleName };
         student["id"] = id.id;
         console.log("adding Student:", student);
         return StudentTable.addStudent(student);
@@ -155,7 +155,7 @@ router.get("/authenticated", (req, res, next) => {
       if (role === "student") {
         StudentTable.getStudent({ studentId: account.id })
           .then(({ student }) => {
-            console.log("student", student);
+            // console.log("student", student);
             res.json({
               authenticated: auth,
               role,
@@ -166,7 +166,7 @@ router.get("/authenticated", (req, res, next) => {
       } else {
         TeacherTable.getTeacher({ teacherId: account.id })
           .then(({ teacher }) => {
-            console.log("teacher", teacher);
+            // console.log("teacher", teacher);
             res.json({
               authenticated: auth,
               role,

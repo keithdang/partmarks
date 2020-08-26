@@ -21,8 +21,8 @@ const filterRole = (account, filter = {}) => {
 };
 
 const poolQuery = (input, output, bAll = true) => {
-  console.log("poolquery query", input.query);
-  console.log("poolquery params", input.params);
+  // console.log("poolquery query", input.query);
+  // console.log("poolquery params", input.params);
   return new Promise((resolve, reject) => {
     if (input.params && input.params[0] !== undefined) {
       pool.query(input.query, input.params, (error, response) => {

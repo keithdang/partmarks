@@ -20,7 +20,11 @@ export const fetchStudentList = () =>
 export const addStudent = (value) =>
   fetchPost({
     endpoint: "/students/add",
-    param: { firstName: value.firstName },
+    param: {
+      firstName: value.firstName,
+      middleName: value.middleName,
+      lastName: value.lastName,
+    },
     FETCH_TYPE: STUDENT_LIST.FETCH,
     SUCCESS_TYPE: STUDENT_LIST.FETCH_ADD,
   });

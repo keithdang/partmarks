@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, FormGroup, FormControl, FormCheck } from "react-bootstrap";
+import {
+  Button,
+  FormGroup,
+  FormControl,
+  FormCheck,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { signup, login, fetchAuthenticated } from "../actions/account";
 
 class AuthForm extends Component {
@@ -22,6 +30,7 @@ class AuthForm extends Component {
 
   signup = () => {
     this.setState({ buttonClicked: true });
+    console.log(this.state);
     this.props.signup(this.state);
   };
   login = () => {
@@ -47,21 +56,39 @@ class AuthForm extends Component {
   teacherForm = () => {
     var teacher = { firstName: "", middleName: "", lastName: "" };
     return (
-      <form>
-        {Object.keys(teacher).map((prop) => (
-          <input type="text" name={prop} onChange={this.myChangeHander} />
-        ))}
-      </form>
+      <Form>
+        <Row>
+          {Object.keys(teacher).map((prop) => (
+            <Col>
+              <Form.Control
+                type="text"
+                name={prop}
+                placeholder={prop}
+                onChange={this.myChangeHander}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Form>
     );
   };
   studentForm = () => {
-    var student = { firstName: "" };
+    var student = { firstName: "", middleName: "", lastName: "" };
     return (
-      <form>
-        {Object.keys(student).map((prop) => (
-          <input type="text" name={prop} onChange={this.myChangeHander} />
-        ))}
-      </form>
+      <Form>
+        <Row>
+          {Object.keys(student).map((prop) => (
+            <Col>
+              <Form.Control
+                type="text"
+                name={prop}
+                placeholder={prop}
+                onChange={this.myChangeHander}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Form>
     );
   };
 
@@ -121,7 +148,9 @@ class AuthForm extends Component {
         <h4>SignUp</h4>
         {this.accountDisplay()}
         {this.signUpAdditional()}
-        <Button onClick={this.signup}>Sign Up</Button>
+        <Button onClick={this.signup}>
+          Sign Up as {this.state.bTeacher ? "Teacher" : "Student"}
+        </Button>
       </div>
     );
   };

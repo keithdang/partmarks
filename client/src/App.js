@@ -103,7 +103,7 @@ class App extends Component {
             <AuthForm />
           </Route>
           <Route path="/">
-            <h2>Home</h2>
+            <h2 className="App">PART MARKS</h2>
           </Route>
         </Switch>
       </Router>

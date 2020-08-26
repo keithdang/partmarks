@@ -31,8 +31,13 @@ class StudentTable {
   }
 
   static addStudent(student) {
-    var query = `INSERT INTO students (id,"firstName") VALUES ($1,$2) RETURNING *`;
-    var params = [student.id, student.firstName];
+    var query = `INSERT INTO students (id,"firstName","middleName","lastName") VALUES ($1,$2,$3,$4) RETURNING *`;
+    var params = [
+      student.id,
+      student.firstName,
+      student.middleName,
+      student.lastName,
+    ];
     return poolQuery({ query, params }, "student", false);
   }
 
