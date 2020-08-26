@@ -79,6 +79,11 @@ class App extends Component {
             </div>
           )}
           <Nav className="ml-auto">
+            {account.firstName && (
+              <Navbar.Text style={{ paddingRight: "10px" }}>
+                {account.firstName}{" "}
+              </Navbar.Text>
+            )}
             {account.loggedIn ? (
               <Button onClick={() => this.props.logout()}>Log Out</Button>
             ) : (

@@ -1,23 +1,25 @@
 const pool = require("../databasePool");
 const { poolQuery } = require("../api/helper");
+
 class TeacherTable {
   static getTeacher({ teacherId }) {
-    return new Promise((resolve, reject) => {
-      pool.query(
-        `SELECT 
-        *
-                  FROM teacher
-                  WHERE id = $1`,
-        [teacherId],
-        (error, response) => {
-          if (error) return reject(error);
+    var query = `
+    SELECT 
+      *
+    FROM 
+      teacher where id = $1`;
+    var params = [teacherId];
+    return poolQuery({ query, params }, "teacher", false);
+  }
 
-          if (response.rows.length === 0)
-            return reject(new Error("no teachers"));
-          resolve({ teacher: response.rows[0] });
-        }
-      );
-    });
+  static getOne({ teacherId }) {
+    var query = `
+    SELECT 
+      *
+    FROM 
+      teacher where id = $1`;
+    var params = [teacherId];
+    return poolQuery({ query, params }, "teacher", false);
   }
 
   static getTeachers() {
