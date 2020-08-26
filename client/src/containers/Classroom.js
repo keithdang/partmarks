@@ -63,6 +63,7 @@ class Classroom extends Component {
     }
     return arr;
   };
+
   render() {
     const {
       classroomList,
@@ -77,6 +78,24 @@ class Classroom extends Component {
       account,
     } = this.props;
     var isTeacher = account.role === "teacher";
+    var selectList = [
+      {
+        title: "Courses",
+        tableId: "courseId",
+        list: semesterCourseList.list.map((item) => item.id),
+        displayTitle: semesterCourseList.list.map(
+          (item) => item.title + ":" + item.lastName
+        ),
+      },
+    ];
+    if (isTeacher) {
+      selectList.push({
+        title: "Students",
+        tableId: "studentId",
+        list: studentList.list.map((item) => item.id),
+        displayTitle: studentList.list.map((item) => item.firstName),
+      });
+    }
     return (
       <div className="App">
         <h1>Classroom</h1>
@@ -139,22 +158,7 @@ class Classroom extends Component {
             }}
             submitFunc={addCourse}
             fetchList={fetchClassroomList}
-            lists={[
-              {
-                title: "Courses",
-                tableId: "courseId",
-                list: semesterCourseList.list.map((item) => item.id),
-                displayTitle: semesterCourseList.list.map(
-                  (item) => item.title + ":" + item.lastName
-                ),
-              },
-              {
-                title: "Students",
-                tableId: "studentId",
-                list: studentList.list.map((item) => item.id),
-                displayTitle: studentList.list.map((item) => item.firstName),
-              },
-            ]}
+            lists={selectList}
           />
         )}
       </div>

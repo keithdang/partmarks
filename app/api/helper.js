@@ -26,7 +26,6 @@ const poolQuery = (input, output, bAll = true) => {
   return new Promise((resolve, reject) => {
     if (input.params && input.params[0] !== undefined) {
       pool.query(input.query, input.params, (error, response) => {
-        console.log(output + ":" + getRow(response.rows, bAll));
         if (error) return reject(error);
 
         if (response.rows.length === 0)

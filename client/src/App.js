@@ -79,7 +79,7 @@ class App extends Component {
             </div>
           )}
           <Nav className="ml-auto">
-            {account.firstName && (
+            {account.loggedIn && account.firstName && (
               <Navbar.Text style={{ paddingRight: "10px" }}>
                 {account.firstName}{" "}
               </Navbar.Text>

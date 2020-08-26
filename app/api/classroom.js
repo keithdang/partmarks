@@ -44,7 +44,17 @@ router.get("/grades", async (req, res) => {
 
 router.post("/add", async (req, res) => {
   let jsonres;
-  ClassroomTable.addCourse(req.query)
+  authenticatedAccount({ sessionString: req.cookies.sessionString })
+    .then(({ account }) => {
+      let filter;
+      if (account.role === "student") {
+        filter = { courseId: req.query.courseId, studentId: account.id };
+      } else {
+        filter = req.query;
+      }
+      console.log("Classroom add", filter);
+      return ClassroomTable.addCourse(filter);
+    })
     .then(({ classroom }) => {
       if (classroom) {
         jsonres = classroom;
