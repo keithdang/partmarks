@@ -6,5 +6,5 @@
 - Analytics include seeing classroom and grade statistics of averages, graphs and filtering accounts<br />
 - Backend: Node JS. Accounts, grades, class info stored in PostgreSQL as database<br />
 - Frontend: React Redux, React Bootstrap and Chart.js<br />
-  [Check out the site here!](https://https://partmarks.herokuapp.com/)<br />
+  [Check out the site here!](https://partmarks.herokuapp.com/)<br />
 - Try Student Role, username jeff, password foo to see for how it's already being used or create an account yourself!<br />
