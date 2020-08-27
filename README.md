@@ -8,3 +8,4 @@
 - Frontend: React Redux, React Bootstrap and Chart.js<br />
   [Check out the site here!](https://partmarks.herokuapp.com/)<br />
 - Try Student Role, username jeff, password foo to see for how it's already being used or create an account yourself!<br />
+  [Video Demo](https://www.youtube.com/watch?v=ET8dlFerC-o)<br />
